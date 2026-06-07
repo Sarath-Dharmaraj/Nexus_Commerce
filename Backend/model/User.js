@@ -1,0 +1,58 @@
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    passwordHash: {
+      type: String,
+      required: true,
+    },
+    profile: {
+      type: String,
+    },
+    systemRoles: {
+      type: [String],
+      default: ["Customer"],
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    sellerProfile: {
+      isApproved: { type: Boolean, default: false },
+      walletBalance: { type: Number, default: 0 },
+      bankAccountDetails: { number: String, routingCode: String },
+      payoutLedger: [
+        {
+          orderId: mongoose.Schema.Types.ObjectId,
+          amount: Number,
+          clearedAt: Date,
+        },
+      ],
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+userSchema.index({ systemRole: 1 });
+userSchema.index({ isAdmin: 1 }, { sparse: true });
+
+userSchema.pre("save", async (next) => {
+  if (!this.isModified("passwordHash")) return next();
+
+  this.passwordHash = await bcrypt.hash(this.passwordHash, 10);
+  next();
+});
+
+export default mongoose.model("User", userSchema);
