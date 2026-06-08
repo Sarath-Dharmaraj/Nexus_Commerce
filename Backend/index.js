@@ -1,8 +1,9 @@
 import express from "express";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 import router from "./routers/router.js";
@@ -17,8 +18,16 @@ mongoose
   .then(() => console.log("MongoDB is successfully connected"))
   .catch((error) => console.error("Error while connecting MongoDB:", err));
 
-app.use(Router);
+app.get("/", (req, res) => {
+  res.status(201).json({
+    success: true,
+    message: "API is working",
+  });
+});
 
-app.listen("3000", () => {
-  console.log("Server is listening at port number 3000");
+app.use(router);
+
+const port = process.env.port || 3000;
+app.listen(port, () => {
+  console.log("Server is listening at port number", port);
 });

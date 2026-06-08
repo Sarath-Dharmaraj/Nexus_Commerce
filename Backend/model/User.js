@@ -48,11 +48,10 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ systemRole: 1 });
 userSchema.index({ isAdmin: 1 }, { sparse: true });
 
-userSchema.pre("save", async (next) => {
-  if (!this.isModified("passwordHash")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("passwordHash")) return;
 
   this.passwordHash = await bcrypt.hash(this.passwordHash, 10);
-  next();
 });
 
 export default mongoose.model("User", userSchema);

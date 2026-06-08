@@ -1,9 +1,9 @@
-import user from "../Backend/model/User.js";
+import User from "../model/User.js";
 import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { fullName, email, passwod, isMerchant } = req.body;
+    const { fullName, email, password, isMerchant } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -14,7 +14,7 @@ export const registerUser = async (req, res) => {
     }
 
     const assignRole = ["Customer"];
-    if (idMerchant == true) assignRole.push(["Seller"]);
+    if (isMerchant == true) assignRole.push("Seller");
 
     const newUser = await User.create({
       fullName,
@@ -25,18 +25,18 @@ export const registerUser = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: newUser.id,
+        id: newUser._id,
         systemRoles: newUser.systemRoles,
         isAdmin: newUser.isAdmin,
       },
-      process.env.JsonWebStoken_SecretKey,
-      { expiresIn: "3D" },
+      process.env.JsonWebToken_SecretKey,
+      { expiresIn: "3d" },
     );
 
     res.cookie("nexus_commerce_security_token", token, {
       httpOnly: true,
       secure: false,
-      sameSite: true,
+      sameSite: "strict",
       maxAge: 1000 * 60 * 60 * 24 * 3,
     });
 
