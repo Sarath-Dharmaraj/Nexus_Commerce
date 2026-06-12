@@ -1,4 +1,17 @@
+import { useState } from "react";
+import { Form } from "react-router-dom";
+import {
+  PiEyeLight,
+  PiEyeSlash,
+  PiStorefrontBold,
+  PiArrowCircleRightBold,
+  PiGoogleLogoBold,
+  PiAppleLogoBold,
+} from "react-icons/pi";
+
 function Signup() {
+  const [isVisible, setVisible] = useState(false);
+
   return (
     // background frame
     <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center font-sans">
@@ -35,10 +48,127 @@ function Signup() {
           </div>
 
           {/* Right Column: Sign Up Details MAIN */}
-          <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
-            <p className="text-gray-400 border border-dashed border-gray-300 p-4 rounded text-center">
-              will update this grid
-            </p>
+          <div className="w-full md:w-1/2 px-28 flex flex-col justify-center gap-y-3">
+            <div className="flex flex-col gap-y-3">
+              <h1 className="text-xl font-semibold">Nexus Commerce</h1>
+              <p className="text-4xl font-semibold">Create your account</p>
+              <p className="text-slate-700">
+                Already have an account?&nbsp;
+                <a
+                  href="#"
+                  className="text-blue-700 font-semibold underline hover:no-underline"
+                >
+                  Sign in
+                </a>
+              </p>
+            </div>
+            <Form method="post">
+              <div className="space-y-2">
+                <div>
+                  <label
+                    htmlFor="fullname"
+                    className="text-gray-600 tracking-widest"
+                  >
+                    Full Name
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="fullname"
+                    id="fullname"
+                    placeholder="John doe"
+                    required
+                    className="w-full px-3 py-1 tracking-widest capitalize border rounded-l border-slate-400 hover:border-black"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="text-gray-600 tracking-widest"
+                  >
+                    Email
+                  </label>
+                  <br />
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="johndoe1991@gmail.com"
+                    required
+                    className="w-full px-3 py-1 tracking-widest border rounded-l border-slate-400 hover:border-black"
+                  />
+                </div>
+                <div className="relative">
+                  <label
+                    htmlFor="password"
+                    className="text-gray-600 tracking-widest"
+                  >
+                    Password
+                  </label>
+                  <br />
+                  <div className="flex items-center">
+                    <input
+                      type={isVisible ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      placeholder="••••••••••••"
+                      required
+                      className="w-full px-3 py-1 tracking-widest border rounded-l border-slate-400 hover:border-black"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setVisible(!isVisible);
+                      }}
+                      className="absolute right-5 text-xl"
+                    >
+                      {isVisible ? <PiEyeLight /> : <PiEyeSlash />}
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center border rounded-md border-blue-400 py-2 px-4">
+                  <div className="flex items-center justify-between gap-x-3 w-fit">
+                    <PiStorefrontBold className="text-3xl text-blue-700" />
+                    <div>
+                      <p className="font-semibold">Merchant Account</p>
+                      <p className="text-xs text-slate-600">
+                        I want to sell products on Nexus
+                      </p>
+                    </div>
+                  </div>
+                  <label className="flex items-center justify-end flex-1 cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" />
+
+                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  </label>
+                </div>
+                <div className="flex items-center justify-around text-white w-full py-2 bg-green-700">
+                  <button type="button" className="flex items-center">
+                    Creating Account <PiArrowCircleRightBold />
+                  </button>
+                </div>
+              </div>
+            </Form>
+            <div className="flex items-center gap-x-4">
+              <div className="h-px bg-gray-400 flex-1"></div>
+              <p className="tracking-widest text-slate-600">OR CONTINUE WITH</p>
+              <div className="h-px bg-gray-400 flex-1"></div>
+            </div>
+            <div className="flex items-center justify-between gap-x-5">
+              <button
+                type="button"
+                className="flex items-center justify-center text-white hover:text-black bg-red-600 hover:bg-gray-200 gap-x-1 border border-gray-300 rounded-l  py-2 flex-1"
+              >
+                <PiGoogleLogoBold /> Google
+              </button>
+
+              <button
+                type="button"
+                className="flex items-center justify-center text-white hover:text-black bg-black hover:bg-gray-200 gap-x-1 border border-gray-300 rounded-l py-2 flex-1"
+              >
+                <PiAppleLogoBold /> Apple
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -49,8 +179,8 @@ function Signup() {
         <div className="flex flex-1 items-end justify-around text-xs text-slate-700">
           {/*Brand */}
           <div className="flex flex-col">
-            <p className="font-semibold ">Nexus Commerce &nbsp;</p>
-            <p className="text-slate-500">Institutional Confidence.</p>
+            <p className="font-semibold ">Nexus Commerce</p>
+            <p className="text-slate-500"></p>
           </div>
 
           {/* Links */}
