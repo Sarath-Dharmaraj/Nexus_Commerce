@@ -7,6 +7,7 @@ import {
   PiArrowCircleRightBold,
   PiGoogleLogoBold,
   PiAppleLogoBold,
+  PiWarningFill,
 } from "react-icons/pi";
 
 function Signup() {
@@ -23,20 +24,35 @@ function Signup() {
 
   return (
     // background frame
-    <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center font-sans">
+    <div className="min-h-screen w-full tracking-wider bg-gray-100 flex items-center justify-center font-sans">
       {/* WARNING BANNER */}
       {isError && (
-        <div className="absolute left-1/2 top-1/2 text-red-700 w-xl flex flex-com">
-          <button onClick={() => setError(false)}>X</button>
-          <div>Server Error: {actionData.message}</div>
+        <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider w-full max-w-md p-2 border shadow-2xl rounded-lg  border-gray-500 flex flex-col gap-2 bg-white">
+          <div className="flex items-center justify-between px-2">
+            <PiWarningFill className="font-bold text-2xl text-yellow-600" />
+            <button
+              onClick={() => setError(false)}
+              className="self-end font-bold text-gray-600 hover:text-black"
+            >
+              X
+            </button>
+          </div>
+          <div className="h-px bg-black "></div>
+          <div className="px-2 font-semibold text-red-600">
+            {actionData.errorType === "VALIDATION_ERROR"
+              ? "Validation Error"
+              : "Server Error"}
+            :
+          </div>
+          <div className="px-2">{actionData?.message}</div>
         </div>
       )}
 
       {/* Maintainer frame: Added flex-col and overflow-hidden */}
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl min-h-[85vh] flex flex-col overflow-hidden">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl min-h-full md:min-h-[85vh] flex flex-col overflow-hidden">
         <div className="flex flex-col md:flex-row flex-1">
           {/* Left Column: Hero Image Frame */}
-          <div className="w-full md:w-1/2 bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat flex flex-col items-start justify-center gap-y-14 p-10">
+          <div className="w-full md:w-1/2 bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-14 p-10">
             <h1 className="text-5xl font-bold text-white">
               Join the modern <br />
               <span className="text-green-500">marketplace</span>
@@ -64,8 +80,8 @@ function Signup() {
             </div>
           </div>
 
-          {/* Right Column: Sign Up Details MAIN */}
-          <div className="w-full md:w-1/2 px-28 flex flex-col justify-center gap-y-3">
+          {/* Right Column: Sign Up Detail s MAIN */}
+          <div className="w-full md:w-1/2 px-5 md:px-28 flex flex-col justify-center gap-y-3">
             <div className="flex flex-col gap-y-3">
               <h1 className="text-xl font-semibold">Nexus Commerce</h1>
               <p className="text-4xl font-semibold">Create your account</p>
@@ -196,7 +212,7 @@ function Signup() {
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-0 px-5 w-full flex pt-2 mt-2 border-t border-slate-50">
+      <div className="fixed bottom-0 px-5 w-full hidden md:flex pt-2 mt-2 border-t border-slate-50">
         {/* brand and link */}
         <div className="flex flex-1 items-end justify-around text-xs text-slate-700">
           {/*Brand */}
