@@ -6,6 +6,7 @@ import {
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import { signupAction } from "./services/signupAction";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +21,7 @@ function App() {
     {
       path: "/signup",
       element: <Signup />,
+      action: signupAction,
     },
   ]);
 

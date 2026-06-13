@@ -13,6 +13,13 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
 mongoose
   .connect("mongodb://localhost:27017/")
   .then(() => console.log("MongoDB is successfully connected"))
@@ -25,7 +32,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use(router);
+app.use("/api", router);
 
 const port = process.env.port || 3000;
 app.listen(port, () => {
