@@ -19,8 +19,6 @@ export const signupAction = async ({ request }) => {
     isMerchant,
   };
 
-  console.log("Payload is created");
-
   if (!passwordRegex.test(password)) {
     console.log("password validation faile");
     return {
@@ -35,8 +33,7 @@ export const signupAction = async ({ request }) => {
 
   try {
     await api.post("/auth/signup", userPayload);
-    console.log("Signup successful");
-    redirect("/login");
+    return redirect("/login");
   } catch (error) {
     const serverMessage =
       error.response?.data?.error || "Failed to establish network pipeline.";
@@ -45,7 +42,33 @@ export const signupAction = async ({ request }) => {
       success: false,
       ErrorType: "SERVER_ERROR",
       message: serverMessage,
-      field: userPayload,
+      error: serverMessage,
+    };
+  }
+};
+
+export const loginAction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const userPayload = {
+    email,
+    password,
+  };
+
+  try {
+    await api.post("/auth/login", userPayload);
+    return redirect("/home");
+  } catch (error) {
+    const serverMessage =
+      error.response?.data?.error || "Failed to establish network pipeline.";
+    console.log(serverMessage);
+    return {
+      success: false,
+      ErrorType: "SERVER_ERROR",
+      message: serverMessage,
       error: serverMessage,
     };
   }

@@ -23,7 +23,7 @@ function Signup() {
   }, [actionData]);
 
   return (
-    <div className="h-screen w-full tracking-wider bg-gray-100 flex items-center justify-center font-sans p-4 md:p-8 md:pb-20 lg:pb-14 overflow-hidden">
+    <div className="h-screen w-full tracking-wider bg-gray-200 flex items-center justify-center font-sans p-4 md:p-8 md:pb-20 lg:pb-14 overflow-hidden">
       {/* WARNING BANNER */}
       {isError && (
         <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider w-[90%] sm:w-full max-w-md p-2 border shadow-2xl rounded-lg  border-gray-500 flex flex-col gap-2 bg-white">

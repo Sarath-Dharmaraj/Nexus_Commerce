@@ -1,6 +1,28 @@
 import User from "../model/User.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
+// function to set JWT and cookie
+const setCookieAuth = (user, res) => {
+  const token = jwt.sign(
+    {
+      id: user._id,
+      systemRoles: user.systemRoles,
+      isAdmin: user.isAdmin,
+    },
+    process.env.JsonWebToken_SecretKey,
+    { expiresIn: "3d" },
+  );
+
+  res.cookie("nexus_commerce_security_token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "strict",
+    maxAge: 1000 * 60 * 60 * 24 * 3,
+  });
+};
+
+// Route to sign up
 export const registerUser = async (req, res) => {
   try {
     const { fullName, email, password, isMerchant } = req.body;
@@ -23,22 +45,7 @@ export const registerUser = async (req, res) => {
       systemRoles: assignRole,
     });
 
-    const token = jwt.sign(
-      {
-        id: newUser._id,
-        systemRoles: newUser.systemRoles,
-        isAdmin: newUser.isAdmin,
-      },
-      process.env.JsonWebToken_SecretKey,
-      { expiresIn: "3d" },
-    );
-
-    res.cookie("nexus_commerce_security_token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 1000 * 60 * 60 * 24 * 3,
-    });
+    setCookieAuth(newUser, res);
 
     res.status(201).json({
       success: true,
@@ -50,10 +57,49 @@ export const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
       success: false,
       error: "Internal server error during registration.",
+    });
+  }
+};
+
+// route to Sign in
+export const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      error: "Invalid Email or Password",
+    });
+  }
+
+  const isPassword = await bcrypt.compare(password, user.passwordHash);
+  try {
+    if (!isPassword) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid Email or Password",
+      });
+    }
+
+    setCookieAuth(user, res);
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        systemRoles: user.systemRoles,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error during login.",
     });
   }
 };
