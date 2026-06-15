@@ -23,11 +23,10 @@ function Signup() {
   }, [actionData]);
 
   return (
-    // background frame
-    <div className="min-h-screen w-full tracking-wider bg-gray-100 flex items-center justify-center font-sans">
+    <div className="h-screen w-full tracking-wider bg-gray-100 flex items-center justify-center font-sans p-4 md:p-8 md:pb-20 lg:pb-14 overflow-hidden">
       {/* WARNING BANNER */}
       {isError && (
-        <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider w-full max-w-md p-2 border shadow-2xl rounded-lg  border-gray-500 flex flex-col gap-2 bg-white">
+        <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider w-[90%] sm:w-full max-w-md p-2 border shadow-2xl rounded-lg  border-gray-500 flex flex-col gap-2 bg-white">
           <div className="flex items-center justify-between px-2">
             <PiWarningFill className="font-bold text-2xl text-yellow-600" />
             <button
@@ -48,97 +47,103 @@ function Signup() {
         </div>
       )}
 
-      {/* Maintainer frame: Added flex-col and overflow-hidden */}
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl min-h-full md:min-h-[85vh] flex flex-col overflow-hidden">
-        <div className="flex flex-col md:flex-row flex-1">
+      {/* Main Card Frame */}
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl h-full max-h-[187.5] flex flex-col overflow-hidden">
+        <div className="flex flex-col md:flex-row flex-1 h-full">
           {/* Left Column: Hero Image Frame */}
-          <div className="w-full md:w-1/2 bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-14 p-10">
-            <h1 className="text-5xl font-bold text-white">
+          <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-16">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
               Join the modern <br />
               <span className="text-green-500">marketplace</span>
             </h1>
-            <p className="text-white text-l max-w-md">
+            <p className="text-white text-xs lg:text-sm max-w-md">
               Experience Institutional-grade Commerce. Scale your business or
               shop curated luxury with frictionless financial operations and
               razor-sharp precision.
             </p>
-            <div className="grid grid-cols-2 gap-4 mt-2 w-md">
+            <div className="grid grid-cols-2 gap-4 mt-2 w-full max-w-md">
               {[
                 ["DATA SECURITY", "256-bits AES"],
                 ["NETWORK SPEED", "40ms Latency"],
               ].map((val, index) => (
                 <div
                   key={index}
-                  className="col-span-1 border-l-2 border-green-500 pl-4"
+                  className="col-span-1 border-l-2 border-green-500 pl-3"
                 >
-                  <p className="text-green-500 text-[10px] font-bold tracking-widest uppercase mb-1">
+                  <p className="text-green-500 text-[9px] lg:text-[10px] font-bold tracking-widest uppercase mb-0.5">
                     {val[0]}
                   </p>
-                  <p className="text-white text-sm font-medium">{val[1]}</p>
+                  <p className="text-white text-xs lg:text-sm font-medium">
+                    {val[1]}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Column: Sign Up Detail s MAIN */}
-          <div className="w-full md:w-1/2 px-5 md:px-28 flex flex-col justify-center gap-y-3">
-            <div className="flex flex-col gap-y-3">
-              <h1 className="text-xl font-semibold">Nexus Commerce</h1>
-              <p className="text-4xl font-semibold">Create your account</p>
-              <p className="text-slate-700">
+          {/* Right Column: Sign Up Details MAIN */}
+          <div className="w-full md:w-7/12 lg:w-1/2 h-full px-6 sm:px-12 md:px-8 lg:px-16 xl:px-24 flex flex-col justify-center gap-y-2 lg:gap-y-3 py-4">
+            <div className="flex flex-col gap-y-0.5 lg:gap-y-1">
+              <h1 className="text-base lg:text-lg font-semibold text-gray-800">
+                Nexus Commerce
+              </h1>
+              <p className="text-2xl lg:text-3xl font-bold text-gray-900">
+                Create your account
+              </p>
+              <p className="text-xs lg:text-sm text-slate-600">
                 Already have an account?&nbsp;
                 <a
                   href="#"
-                  className="text-blue-700 font-semibold underline hover:no-underline"
+                  className="text-blue-600 font-semibold underline hover:no-underline"
                 >
                   Sign in
                 </a>
               </p>
             </div>
+
             <Form method="post">
-              <div className="space-y-2">
+              <div className="space-y-1.5 lg:space-y-2.5 mt-1">
                 <div>
                   <label
                     htmlFor="fullName"
-                    className="text-gray-600 tracking-widest"
+                    className="block text-[10px] lg:text-xs font-semibold text-gray-500 tracking-widest uppercase mb-1"
                   >
                     Full Name
                   </label>
-                  <br />
                   <input
                     type="text"
                     name="fullName"
                     id="fullName"
-                    placeholder="John doe"
+                    placeholder="John Doe"
                     required
-                    className="w-full px-3 py-1 tracking-widest capitalize border rounded-l border-slate-400 hover:border-black"
+                    className="w-full px-3 py-1.5 text-sm tracking-wide capitalize border rounded border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                   />
                 </div>
+
                 <div>
                   <label
                     htmlFor="email"
-                    className="text-gray-600 tracking-widest"
+                    className="block text-[10px] lg:text-xs font-semibold text-gray-500 tracking-widest uppercase mb-1"
                   >
                     Email
                   </label>
-                  <br />
                   <input
                     type="email"
                     name="email"
                     id="email"
                     placeholder="johndoe1991@gmail.com"
                     required
-                    className="w-full px-3 py-1 tracking-widest border rounded-l border-slate-400 hover:border-black"
+                    className="w-full px-3 py-1.5 text-sm tracking-wide border rounded border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                   />
                 </div>
+
                 <div className="relative">
                   <label
                     htmlFor="password"
-                    className="text-gray-600 tracking-widest"
+                    className="block text-[10px] lg:text-xs font-semibold text-gray-500 tracking-widest uppercase mb-1"
                   >
                     Password
                   </label>
-                  <br />
                   <div className="flex items-center">
                     <input
                       type={isVisible ? "text" : "password"}
@@ -146,25 +151,26 @@ function Signup() {
                       id="password"
                       placeholder="••••••••••••"
                       required
-                      className="w-full px-3 py-1 tracking-widest border rounded-l border-slate-400 hover:border-black"
+                      className="w-full px-3 py-1.5 text-sm tracking-wide border rounded border-gray-300 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                     />
                     <button
                       type="button"
-                      onClick={() => {
-                        setVisible(!isVisible);
-                      }}
-                      className="absolute right-5 text-xl"
+                      onClick={() => setVisible(!isVisible)}
+                      className="absolute right-3 text-lg text-gray-500 hover:text-black"
                     >
                       {isVisible ? <PiEyeLight /> : <PiEyeSlash />}
                     </button>
                   </div>
                 </div>
-                <div className="flex items-center border rounded-md border-blue-400 py-2 px-4">
-                  <div className="flex items-center justify-between gap-x-3 w-fit">
-                    <PiStorefrontBold className="text-3xl text-blue-700" />
+
+                <div className="flex items-center border rounded-md border-blue-200 bg-blue-50/50 py-1.5 px-3 mt-2">
+                  <div className="flex items-center justify-between gap-x-2 w-fit">
+                    <PiStorefrontBold className="text-xl lg:text-2xl text-blue-600" />
                     <div>
-                      <p className="font-semibold">Merchant Account</p>
-                      <p className="text-xs text-slate-600">
+                      <p className="font-semibold text-xs lg:text-sm text-gray-900">
+                        Merchant Account
+                      </p>
+                      <p className="text-[9px] lg:text-[10px] text-gray-500 leading-tight">
                         I want to sell products on Nexus
                       </p>
                     </div>
@@ -176,35 +182,43 @@ function Signup() {
                       value="true"
                       className="sr-only peer"
                     />
-
-                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[0.5] after:left-[0.5] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="relative flex items-center w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[0.5] after:left-[0.5] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
-                <div className="flex items-center justify-around text-white w-full py-2 bg-green-700">
-                  <button type="submit" className="flex items-center">
-                    Creating Account <PiArrowCircleRightBold />
+
+                <div className="mt-2 lg:mt-3">
+                  <button
+                    type="submit"
+                    className="flex items-center justify-center w-full gap-2 py-2 text-sm font-semibold text-white bg-green-700 hover:bg-green-800 transition-colors rounded"
+                  >
+                    Creating Account{" "}
+                    <PiArrowCircleRightBold className="text-lg" />
                   </button>
                 </div>
               </div>
             </Form>
-            <div className="flex items-center gap-x-4">
-              <div className="h-px bg-gray-400 flex-1"></div>
-              <p className="tracking-widest text-slate-600">OR CONTINUE WITH</p>
-              <div className="h-px bg-gray-400 flex-1"></div>
+
+            <div className="flex items-center gap-x-3 my-1 lg:my-2">
+              <div className="h-px bg-gray-200 flex-1"></div>
+              <p className="tracking-widest text-[9px] lg:text-[10px] font-semibold text-gray-400">
+                OR CONTINUE WITH
+              </p>
+              <div className="h-px bg-gray-200 flex-1"></div>
             </div>
-            <div className="flex items-center justify-between gap-x-5">
+
+            <div className="flex items-center justify-between gap-x-3 lg:gap-x-4">
               <button
                 type="button"
-                className="flex items-center justify-center text-white hover:text-black bg-red-600 hover:bg-gray-200 gap-x-1 border border-gray-300 rounded-l  py-2 flex-1"
+                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-red-600 hover:bg-gray-50 border hover:border-black rounded transition-colors"
               >
-                <PiGoogleLogoBold /> Google
+                <PiGoogleLogoBold className="text-base" /> Google
               </button>
 
               <button
                 type="button"
-                className="flex items-center justify-center text-white hover:text-black bg-black hover:bg-gray-200 gap-x-1 border border-gray-300 rounded-l py-2 flex-1"
+                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-black hover:bg-white border hover:border-black rounded transition-colors"
               >
-                <PiAppleLogoBold /> Apple
+                <PiAppleLogoBold className="text-base" /> Apple
               </button>
             </div>
           </div>
@@ -212,48 +226,43 @@ function Signup() {
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-0 px-5 w-full hidden md:flex pt-2 mt-2 border-t border-slate-50">
-        {/* brand and link */}
-        <div className="flex flex-1 items-end justify-around text-xs text-slate-700">
-          {/*Brand */}
-          <div className="flex flex-col">
-            <p className="font-semibold ">Nexus Commerce</p>
-            <p className="text-slate-500"></p>
-          </div>
-
-          {/* Links */}
-          <div className="flex items-center justify-end gap-5 text-xs font-medium text-slate-600">
+      <div className="fixed bottom-0 px-4 md:px-6 w-full hidden md:flex items-center justify-between py-2 bg-gray-100 border-t border-gray-300 z-10">
+        {/* Left side: Brand + Links */}
+        <div className="flex items-center gap-3 lg:gap-8">
+          <p className="font-semibold text-[10px] lg:text-xs text-slate-700 whitespace-nowrap md:tracking-tighter lg:tracking-normal">
+            Nexus Commerce
+          </p>
+          <div className="flex items-center gap-3 lg:gap-5 text-[10px] lg:text-xs font-medium text-slate-600">
             <a
               href="#"
-              className="hover:text-slate-900 transition-colors underline hover:no-underline"
+              className="hover:text-slate-900 transition-colors underline hover:no-underline whitespace-nowrap md:tracking-tighter lg:tracking-normal"
             >
               Privacy Policy
             </a>
             <a
               href="#"
-              className="hover:text-slate-900 transition-colors underline hover:no-underline"
+              className="hover:text-slate-900 transition-colors underline hover:no-underline whitespace-nowrap md:tracking-tighter lg:tracking-normal"
             >
               Terms of Service
             </a>
             <a
               href="#"
-              className="hover:text-slate-900 transition-colors underline hover:no-underline"
+              className="hover:text-slate-900 transition-colors underline hover:no-underline whitespace-nowrap md:tracking-tighter lg:tracking-normal"
             >
               Merchant Agreement
             </a>
             <a
               href="#"
-              className="hover:text-slate-900 transition-colors underline hover:no-underline"
+              className="hover:text-slate-900 transition-colors underline hover:no-underline whitespace-nowrap md:tracking-tighter lg:tracking-normal"
             >
               Investor Relations
             </a>
           </div>
         </div>
 
-        {/* Copy Rights */}
-        <div className="flex flex-col flex-1 md:flex-row items-end justify-end text-[10px] text-slate-500">
-          <p>&copy; 2026 Nexus Commerce.&nbsp;</p>
-          <p>Institutional Confidence.</p>
+        {/* Right side: Copyright */}
+        <div className="flex items-center text-[9px] lg:text-[10px] text-slate-500 whitespace-nowrap pl-4 md:tracking-tighter lg:tracking-normal">
+          <p>&copy; 2026 Nexus Commerce. Institutional Confidence.</p>
         </div>
       </div>
     </div>
