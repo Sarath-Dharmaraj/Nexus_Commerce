@@ -1,9 +1,15 @@
 import { Router } from "express";
 
-import { registerUser, userLogin } from "../controllers/authController.js";
+import { verifyCookie } from "../middleware/gaurdAuth.js";
+import {
+  verifyUserSession,
+  registerUser,
+  userLogin,
+} from "../controllers/authController.js";
 
 const authRouter = Router();
 
+authRouter.get("/me", verifyCookie, verifyCookie);
 authRouter.post("/signup", registerUser);
 authRouter.post("/login", userLogin);
 

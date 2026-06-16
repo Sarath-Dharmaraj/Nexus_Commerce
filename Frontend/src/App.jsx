@@ -1,20 +1,17 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 
-import { signupAction, loginAction } from "./services/authAction";
+import { signupAction, loginAction } from "./services/routerAction";
+import { gatewayLoader } from "./services/routerLoader";
 
 function App() {
   const router = createBrowserRouter([
     {
+      loader: gatewayLoader,
       path: "/",
-      element: <Navigate to="/login" replace />,
     },
     {
       path: "/login",

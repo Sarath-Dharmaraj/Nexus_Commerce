@@ -1,0 +1,39 @@
+import jwt from "jsonwebtoken";
+import { setCookieAuth } from "../controllers/authController.js";
+
+export const verifyCookie = async (req, res, next) => {
+  try {
+    const token = req.cookies.nexus_commerce_security_token;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: "AUTHENTICATION_FAILED: No secure token found.",
+      });
+    }
+
+    const payload = jwt.verify(token, process.env.JsonWebToken_SecretKey);
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    const timeLeft = payload.exp - currentTime;
+
+    const oneDayInSeconds = 24 * 60 * 60;
+
+    if (timeLeft < oneDayInSeconds) {
+      const user = await User.findById(payload.id);
+      setCookieAuth(user, res);
+    }
+
+    req.user = payload;
+
+    next();
+  } catch (error) {
+    console.error("Session Verification Error:", error.message);
+
+    return res.status(403).json({
+      success: false,
+      error:
+        "SESSION_EXPIRED: Your security session token is invalid or has expired.",
+    });
+  }
+};

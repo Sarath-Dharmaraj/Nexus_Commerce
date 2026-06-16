@@ -13,15 +13,22 @@ const setCookieAuth = (user, res) => {
     process.env.JsonWebToken_SecretKey,
     { expiresIn: "3d" },
   );
-
+  console.log(token);
   res.cookie("nexus_commerce_security_token", token, {
     httpOnly: true,
     secure: false,
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 1000 * 60 * 60 * 24 * 3,
   });
 };
 
+//verifying user session
+export const verifyUserSession = (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: res.user,
+  });
+};
 // Route to sign up
 export const registerUser = async (req, res) => {
   try {
