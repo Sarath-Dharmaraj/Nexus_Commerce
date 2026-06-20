@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profile: {
+    profileImage: {
       type: String,
     },
     systemRoles: {
