@@ -27,6 +27,29 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    membership: {
+      type: Boolean,
+      default: false,
+    },
+    paymentMethod: [
+      {
+        cardType: String,
+        lastFourDigit: Number,
+        expireDate: String,
+        isDefault: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    primaryAddress: {
+      street: String,
+      suite: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      country: String,
+    },
     sellerProfile: {
       isApproved: { type: Boolean, default: false },
       walletBalance: { type: Number, default: 0 },

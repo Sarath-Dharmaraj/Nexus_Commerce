@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContextNode.Provider value={{ state, refreshPage: dispatch }}>
+    <AuthContextNode.Provider value={{ ...state, refreshPage: dispatch }}>
       {children}
     </AuthContextNode.Provider>
   );

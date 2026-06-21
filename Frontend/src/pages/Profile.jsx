@@ -1,5 +1,5 @@
 function Profile() {
-  return <div className="font-hanken">Proifle</div>;
+  return <div>profile</div>;
 }
 
 export default Profile;

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 // function to set JWT and cookie
-const setCookieAuth = (user, res) => {
+export const setCookieAuth = (user, res) => {
   const token = jwt.sign(
     {
       id: user._id,

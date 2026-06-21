@@ -33,7 +33,7 @@ export const signupAction = async ({ request }) => {
 
   try {
     await api.post("/auth/signup", userPayload);
-    return redirect("/login");
+    return redirect("/protectedLayout");
   } catch (error) {
     const serverMessage =
       error.response?.data?.error || "Failed to establish network pipeline.";
@@ -60,7 +60,7 @@ export const loginAction = async ({ request }) => {
 
   try {
     await api.post("/auth/login", userPayload);
-    return redirect("/home");
+    return redirect("/protectedLayout");
   } catch (error) {
     const serverMessage =
       error.response?.data?.error || "Failed to establish network pipeline.";

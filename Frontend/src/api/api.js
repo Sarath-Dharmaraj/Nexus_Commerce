@@ -11,9 +11,13 @@ api.interceptors.response.use(
   (error) => {
     if (
       error.response &&
-      (error.response.status === 401 || error.response.status === 403)
+      (error.response.status === 401 || error.response.status === 403) &&
+      window.location.pathname !== "/signup" &&
+      window.location.pathname !== "/login"
     )
       window.location.href = "/login";
+    console.log("api");
+    return Promise.reject(error);
   },
 );
 

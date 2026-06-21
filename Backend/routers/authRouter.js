@@ -9,7 +9,7 @@ import {
 
 const authRouter = Router();
 
-authRouter.get("/me", verifyCookie, verifyCookie);
+authRouter.get("/me", verifyCookie, verifyUserSession);
 authRouter.post("/signup", registerUser);
 authRouter.post("/login", userLogin);
 
