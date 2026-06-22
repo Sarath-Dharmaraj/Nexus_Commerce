@@ -11,47 +11,51 @@ function Navbar() {
 
   return (
     <>
-      <div className="sticky top-0 left-0 z-50 w-full h-auto md:h-20 px-4 md:px-8 py-4 md:py-0 flex flex-wrap md:flex-nowrap items-center justify-between bg-slate-100 gap-y-4">
-        <div className="w-full md:w-auto text:sm md:text-xl lg:text-2xl whitespace-nowrap font-semibold md:text-left">
+      <div className="sticky top-0 left-0 z-50 w-full h-auto md:h-20 px-2 md:px-4 lg:px-8 py-2 md:py-0 flex flex-wrap md:flex-nowrap items-center justify-between bg-slate-100 gap-y-2">
+        <div className="w-full md:w-auto text-xl md:text-2xl font-semibold px-2 md:px-0 md:text-left shrink-0">
           Nexus Commerce
         </div>
 
         <div
-          className={`flex flex-1 items-center justify-between pr-4 md:px-12 ${
+          className={`flex flex-1 items-center justify-between px-2 md:px-4 lg:px-8 ${
             location.pathname === "/home"
               ? "md:flex-row-reverse"
               : "md:flex-row"
           }`}
         >
-          <nav className="hidden md:flex items-center text-md capitalize md:gap-5 lg:gap-8">
-            <a href="#shop" className="hover:text-blue-500 cursor-pointer">
+          <nav className="hidden md:flex items-center text-sm lg:text-base capitalize gap-4 lg:gap-8 shrink-0">
+            <a
+              href="#shop"
+              className="hover:text-blue-500 cursor-pointer underline"
+            >
               shop
             </a>
             <a
               href="#categories"
-              className="hover:text-blue-500 cursor-pointer"
+              className="hover:text-blue-500 cursor-pointer underline"
             >
               categories
             </a>
-            <a href="#deals" className="hover:text-blue-500 cursor-pointer">
+            <a
+              href="#deals"
+              className="hover:text-blue-500 cursor-pointer underline"
+            >
               deals
             </a>
           </nav>
 
-          {/* Search Input Container */}
           <div className="relative flex items-center w-full md:w-auto">
-            <MdOutlineSearch className="absolute left-3 text-2xl text-slate-500" />
+            <MdOutlineSearch className="absolute left-2 text-lg md:text-xl lg:text-2xl text-slate-500" />
             <input
               type="text"
               name="search"
-              placeholder="Search Product..."
-              className="w-full md:w-64 lg:w-96 h-10 text-slate-600 border border-slate-500 hover:border-blue-300 focus:border-blue-300 focus:outline-none rounded-md pl-10 pr-4 bg-slate-200"
+              placeholder="Search..."
+              className="w-full md:w-40 lg:w-72 xl:w-96 h-8 md:h-10 text-sm lg:text-base text-slate-600 border border-slate-500 hover:border-blue-300 focus:border-blue-300 focus:outline-none rounded-md pl-8 md:pl-9 lg:pl-10 pr-3 md:pr-4 bg-slate-200"
             />
           </div>
         </div>
 
-        {/* Row 2 on Mobile (Icons) / Right Side on Desktop */}
-        <div className="flex items-center text-2xl gap-4 md:gap-6 shrink-0">
+        <div className="flex items-center text-xl lg:text-2xl gap-3 lg:gap-6 shrink-0">
           <MdOutlineAccountCircle className="cursor-pointer hover:text-blue-500 transition-colors" />
           <MdOutlineHistory className="cursor-pointer hover:text-blue-500 transition-colors" />
           <MdShoppingCart className="cursor-pointer hover:text-blue-500 transition-colors" />
