@@ -4,9 +4,9 @@ import Navbar from "./Navbar";
 function ProtectedLayout() {
   const user = useLoaderData();
   return (
-    <div className="font-hanken tracking-widest w-screen min-h-screen">
+    <div className="font-hanken tracking-widest w-full h-screen overflow-hidden flex flex-col">
       <Navbar user={user} />
-      <main>
+      <main className="flex-1 overflow-y-auto">
         <Outlet context={user} />
       </main>
     </div>
