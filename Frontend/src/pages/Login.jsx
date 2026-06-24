@@ -8,7 +8,6 @@ import {
   PiAppleLogoBold,
   PiWarningFill,
 } from "react-icons/pi";
-
 function Signup() {
   const [isVisible, setVisible] = useState(false);
   const [isError, setError] = useState(false);
@@ -57,7 +56,6 @@ function Signup() {
               <p className="text-xs lg:text-sm text-slate-600">
                 Don't have an account?&nbsp;
                 <a
-          
                   className="text-blue-600 font-semibold underline hover:no-underline"
                   onClick={() => {
                     nav("/signup", { replace: true });
@@ -155,7 +153,7 @@ function Signup() {
             </div>
           </div>
           {/* Left Column: Hero Image Frame */}
-          <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-between gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-24">
+          <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('/login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-between gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-24">
             <div className="flex flex-col gap-5">
               <h1 className="text-sm lg:text-md xl:text-lg font-bold text-white leading-tight">
                 Nexus Commerce

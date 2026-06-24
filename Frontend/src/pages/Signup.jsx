@@ -52,7 +52,7 @@ function Signup() {
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl h-full max-h-[187.5] flex flex-col overflow-hidden">
         <div className="flex flex-col md:flex-row flex-1 h-full">
           {/* Left Column: Hero Image Frame */}
-          <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('C:\\Users\\acer\\Documents\\Projects\\Nexus_Commerce\\Frontend\\src\\assets\\login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-16">
+          <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('/login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-16">
             <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
               Join the modern <br />
               <span className="text-green-500">marketplace</span>
