@@ -20,11 +20,11 @@ function tabSwitcher(state, action) {
 }
 const profileContext = createContext(null);
 
-export const ProfileProvider = ({ children }) => {
+export const ProfileProvider = ({ children, userData }) => {
   const [state, dispatch] = useReducer(tabSwitcher, initialState);
 
   return (
-    <profileContext.Provider value={{ state, dispatch }}>
+    <profileContext.Provider value={{ state, dispatch, userData }}>
       {children}
     </profileContext.Provider>
   );

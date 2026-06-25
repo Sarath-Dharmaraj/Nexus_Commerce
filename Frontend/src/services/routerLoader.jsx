@@ -14,10 +14,10 @@ export const gatewayLoader = async () => {
 
 export const ProtectedLoader = async () => {
   try {
-    const response = await api.get("/auth/me");
+    const response = await api.get("/user/data");
     return response.data.user;
     // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    replace("/login");
+    return replace("/login");
   }
 };

@@ -16,7 +16,6 @@ api.interceptors.response.use(
       window.location.pathname !== "/login"
     )
       window.location.href = "/login";
-    console.log("api");
     return Promise.reject(error);
   },
 );

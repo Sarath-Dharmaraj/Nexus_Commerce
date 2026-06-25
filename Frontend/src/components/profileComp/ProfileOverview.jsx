@@ -1,3 +1,5 @@
+import { useProfile } from "../../context/profileContext";
+
 import {
   MdBrightness7,
   MdCreditCard,
@@ -8,6 +10,7 @@ import {
 } from "react-icons/md";
 
 function ProfileOverview() {
+  const { userData } = useProfile();
   return (
     <div className="row-span-4 flex flex-col items-center gap-4">
       <div className="aspect-square w-52 rounded-2xl bg-white border border-slate-200  shadow-sm flex flex-col items-center justify-around">
@@ -17,8 +20,12 @@ function ProfileOverview() {
           alt="Profile"
         />
         <div className="flex flex-col items-center justify-around">
-          <p className="text-xl font-semibold capitalize">Eleanor Vance</p>
-          <p className="text-xs capitalize">Nexus Prime Member</p>
+          <p className="text-xl font-semibold capitalize">
+            {userData.fullName}
+          </p>
+          <p className="text-xs capitalize">
+            {userData.membership ? "Nexus Prime Member" : "Nexus Member"}
+          </p>
         </div>
       </div>
       <div className="flex flex-col w-full px-2 text-xs text-slate-600 tracking-tight capitalize flex-1">
