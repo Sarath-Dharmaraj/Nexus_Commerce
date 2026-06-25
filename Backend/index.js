@@ -23,7 +23,7 @@ app.use(
 mongoose
   .connect("mongodb://localhost:27017/")
   .then(() => console.log("MongoDB is successfully connected"))
-  .catch((error) => console.error("Error while connecting MongoDB:", err));
+  .catch((error) => console.error("Error while connecting MongoDB:", error));
 
 app.get("/", (req, res) => {
   res.status(201).json({
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", router);
 
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log("Server is listening at port number", port);
 });

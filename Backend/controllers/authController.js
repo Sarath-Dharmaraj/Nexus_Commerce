@@ -1,32 +1,12 @@
-import User from "../model/User.js";
-import jwt from "jsonwebtoken";
+import setCookieAuth from "../middleware/setCookieAuth.js";
 import bcrypt from "bcrypt";
-
-// function to set JWT and cookie
-export const setCookieAuth = (user, res) => {
-  const token = jwt.sign(
-    {
-      id: user._id,
-      systemRoles: user.systemRoles,
-      isAdmin: user.isAdmin,
-    },
-    process.env.JsonWebToken_SecretKey,
-    { expiresIn: "3d" },
-  );
-  console.log(token);
-  res.cookie("nexus_commerce_security_token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    maxAge: 1000 * 60 * 60 * 24 * 3,
-  });
-};
+import User from "../model/User.js";
 
 //verifying user session
 export const verifyUserSession = (req, res) => {
   res.status(200).json({
     success: true,
-    user: res.user,
+    user: req.user,
   });
 };
 // Route to sign up

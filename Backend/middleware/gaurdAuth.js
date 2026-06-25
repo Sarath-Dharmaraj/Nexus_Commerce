@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { setCookieAuth } from "../controllers/authController.js";
+import setCookieAuth from "./setCookieAuth.js";
 
 export const verifyCookie = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ export const verifyCookie = async (req, res, next) => {
       });
     }
 
-    const payload = jwt.verify(token, process.env.JsonWebToken_SecretKey);
+    const payload = jwt.verify(token, process.env.JSONWEBTOKEN_SECRET_KEY);
 
     const currentTime = Math.floor(Date.now() / 1000);
     const timeLeft = payload.exp - currentTime;
