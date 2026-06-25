@@ -46,7 +46,7 @@ export const registerUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      error: "Internal server error during registration.",
+      error: `Internal server error: ${error}`,
     });
   }
 };
@@ -86,7 +86,7 @@ export const userLogin = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      error: "Internal server error during login.",
+      error: `Internal server error ${error}`,
     });
   }
 };

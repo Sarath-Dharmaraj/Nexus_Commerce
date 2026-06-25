@@ -42,14 +42,20 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    primaryAddress: {
-      street: String,
-      suite: String,
-      city: String,
-      state: String,
-      zipCode: String,
-      country: String,
-    },
+    address: [
+      {
+        street: String,
+        suite: String,
+        city: String,
+        state: String,
+        zipCode: String,
+        country: String,
+        isPrimary: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
     sellerProfile: {
       isApproved: { type: Boolean, default: false },
       walletBalance: { type: Number, default: 0 },
