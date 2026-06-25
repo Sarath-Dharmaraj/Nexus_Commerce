@@ -6,7 +6,11 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ProtectedLayout from "./components/ProtectedLayout";
 
-import { signupAction, loginAction } from "./services/routerAction";
+import {
+  signupAction,
+  loginAction,
+  profileAction,
+} from "./services/routerAction";
 import { gatewayLoader, ProtectedLoader } from "./services/routerLoader";
 import { AuthProvider } from "./context/globalAuth";
 
@@ -32,16 +36,16 @@ function App() {
       loader: ProtectedLoader,
       children: [
         {
-      path: "/home",
-      element: <Home />,
-    },
-    {
-      path: "/profile",
-      element: <Profile />,
-    },
+          path: "/home",
+          element: <Home />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+          action: profileAction,
+        },
       ],
     },
-    
   ]);
 
   return (

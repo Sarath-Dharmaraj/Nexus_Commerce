@@ -63,14 +63,77 @@ export const loginAction = async ({ request }) => {
     await api.post("/auth/login", userPayload);
     return redirect("/profile");
   } catch (error) {
+    console.log(error);
     const serverMessage =
       error.response?.data?.error || "Failed to establish network pipeline.";
-    console.log(serverMessage);
     return {
       success: false,
       ErrorType: "SERVER_ERROR",
       message: serverMessage,
       error: serverMessage,
+    };
+  }
+};
+
+export const profileAction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const formType = formData.get("form_type");
+  const actionType = formData.get("action_type");
+  // const itemId = formData.get("item_id"); //future idea
+
+  try {
+    switch (formType) {
+      case "CARDS": {
+        const cardPayload = {
+          cardType: formData.get("card_type"),
+          lastFourDigit: Number(formData.get("card_digit")),
+          expireDate: formData.get("card_ExpireOn"),
+          isDefault: formData.get("card_isDefault") === "on",
+        };
+
+        if (actionType === "EDIT") {
+          null;
+        } else {
+          await api.post("/user/payment-method", cardPayload);
+        }
+        break;
+      }
+
+      case "ADDRESS": {
+        const addressPayload = {
+          street: formData.get("street"),
+          suite: formData.get("suite"),
+          city: formData.get("city"),
+          state: formData.get("state"),
+          zipCode: formData.get("zipCode"),
+          country: formData.get("country"),
+          isPrimary: formData.get("isPrimary") === "on",
+        };
+
+        if (actionType === "EDIT") {
+          null;
+        } else {
+          await api.post("/user/address", addressPayload);
+        }
+        break;
+      }
+
+      default:
+        throw new Error(
+          "Unknown form submission block context mapping executed.",
+        );
+    }
+
+    return { success: true, message: `${formType} processed cleanly!` };
+  } catch (error) {
+    console.error("Profile Action Pipeline Crash:", error);
+    return {
+      success: false,
+      errorType: "SERVER_ERROR",
+      message:
+        error.response?.data?.error ||
+        `Failed processing ${formType} payload request.`,
     };
   }
 };
