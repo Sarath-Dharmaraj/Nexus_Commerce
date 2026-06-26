@@ -12,8 +12,6 @@ import {
   profileAction,
 } from "./services/routerAction";
 import { gatewayLoader, ProtectedLoader } from "./services/routerLoader";
-import { AuthProvider } from "./context/globalAuth";
-
 function App() {
   const router = createBrowserRouter([
     {
@@ -48,11 +46,7 @@ function App() {
     },
   ]);
 
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

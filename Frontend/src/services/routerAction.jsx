@@ -125,7 +125,11 @@ export const profileAction = async ({ request }) => {
         );
     }
 
-    return { success: true, message: `${formType} processed cleanly!` };
+    return {
+      success: true,
+      formType: formType,
+      message: `${formType} processed cleanly!`,
+    };
   } catch (error) {
     console.error("Profile Action Pipeline Crash:", error);
     return {
