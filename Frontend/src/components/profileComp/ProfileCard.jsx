@@ -7,7 +7,7 @@ function ProfileCard() {
   const { state, dispatch, userData } = useProfile();
   const { paymentMethod } = userData;
   return (
-    <div className="col-span-2 row-span-2 w-full px-4 py-5 h-52 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
+    <div className="col-span-2 row-span-2 w-full h-60 md:h-full px-4 py-5 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
       {state.isCardsOpen && <AddCards />}
       <div className="flex items-center justify-between text-lg font-bold tracking-tight text-slate-800 shrink-0">
         <span className="inline-flex items-center">

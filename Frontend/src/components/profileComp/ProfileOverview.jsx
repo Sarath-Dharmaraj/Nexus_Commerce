@@ -12,8 +12,8 @@ import {
 function ProfileOverview() {
   const { userData } = useProfile();
   return (
-    <div className="row-span-4 flex flex-col items-center gap-4">
-      <div className="aspect-square w-52 rounded-2xl bg-white border border-slate-200  shadow-sm flex flex-col items-center justify-around">
+    <div className="row-span-4 md:h-full col-span-1 flex flex-col items-center gap-4">
+      <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200  shadow-sm flex flex-col items-center justify-around">
         <img
           src="profile.png"
           className="w-38 object-cover rounded-md "
@@ -28,7 +28,7 @@ function ProfileOverview() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col w-full px-2 text-xs text-slate-600 tracking-tight capitalize flex-1">
+      <div className="flex flex-col w-full h-full px-2 text-xs text-slate-600 tracking-tight capitalize flex-1">
         <p className="inline-flex px-4 py-2 cursor-pointer bg-blue-100 text-black font-semibold rounded-sm">
           <MdOutlinePerson className="self-center mx-1" />
           Profile Overview

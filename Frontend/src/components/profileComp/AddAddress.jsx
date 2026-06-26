@@ -9,7 +9,7 @@ function AddAddress({ selectedItem }) {
   const { dispatch } = useProfile();
   const isEdit = !!selectedItem;
   return (
-    <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-around bg-black/30">
+    <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30">
       {/* parent container */}
       <div className="flex flex-col items-center justify-around text-600 tracking-tight font-hanken w-150 py-4 bg-slate-50 border rounded-2xl border-slate-200 shadow-2xl">
         {/* title and close bar */}
@@ -28,7 +28,7 @@ function AddAddress({ selectedItem }) {
           </span>
         </div>
         {/* list of cards */}
-        <div className="flex flex-col items-start justify-around w-full px-14 py-8 text-slate-600 tracking-tight font-bold">
+        <div className="flex flex-col items-start justify-around w-full px-4 md:px-14 py-8 text-slate-600 tracking-tight font-bold">
           <Form method="post" className="w-full flex flex-col gap-4">
             <input type="hidden" name="form_type" value="ADDRESS" />
             <input

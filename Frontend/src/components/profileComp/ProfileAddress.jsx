@@ -10,7 +10,7 @@ function ProfileAddress() {
   const primaryAddress = address.find((item) => item.isPrimary === true);
 
   return (
-    <div className="col-span-2 row-span-2 w-full px-4 py-5 h-52 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
+    <div className="col-span-2 row-span-2 w-full h-60 md:h-full px-4 py-5 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
       {state.isAddressOpen && <AddAddress />}
       {/* Header Container */}
       <div className="flex items-center justify-between text-lg font-bold tracking-tight text-slate-800 shrink-0">
@@ -27,7 +27,7 @@ function ProfileAddress() {
       </div>
 
       {primaryAddress ? (
-        <div className="flex flex-col items-start px-4 py-3 border border-slate-200 rounded-xl bg-slate-50/50 text-sm text-slate-600 gap-0.5 flex-1 justify-center">
+        <div className="flex flex-col justify-center items-start px-4 py-3 border border-slate-200 rounded-xl bg-slate-50/50 text-xl text-slate-600 gap-0.5 flex-1 ">
           <span className="font-bold text-slate-800 mb-1">
             {userData.fullName}
           </span>

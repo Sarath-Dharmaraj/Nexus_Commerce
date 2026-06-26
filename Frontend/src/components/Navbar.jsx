@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <>
       <div className="sticky top-0 left-0 z-50 w-full h-auto md:h-20 px-3 md:px-10 lg:px-14 py-2 md:py-0 border-b border-slate-400 flex flex-wrap md:flex-nowrap items-center justify-between bg-slate-50 gap-y-2">
-        <div className="w-full md:w-auto text-xl md:text-2xl font-semibold px-2 md:px-0 md:text-left shrink-0">
+        <div className="w-full md:w-auto text-xl md:text-2xl font-semibold px-4 md:px-0 md:text-left shrink-0">
           Nexus Commerce
         </div>
 
