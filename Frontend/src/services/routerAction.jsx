@@ -80,7 +80,7 @@ export const profileAction = async ({ request }) => {
 
   const formType = formData.get("form_type");
   const actionType = formData.get("action_type");
-  // const itemId = formData.get("item_id"); //future idea
+  const itemId = formData.get("item_id");
 
   try {
     switch (formType) {
@@ -93,7 +93,7 @@ export const profileAction = async ({ request }) => {
         };
 
         if (actionType === "EDIT") {
-          null;
+          await api.put(`/user/payment-method/${itemId}`, cardPayload);
         } else {
           await api.post("/user/payment-method", cardPayload);
         }
@@ -112,17 +112,25 @@ export const profileAction = async ({ request }) => {
         };
 
         if (actionType === "EDIT") {
-          null;
+          await api.put(`/user/address/${itemId}`, addressPayload);
         } else {
           await api.post("/user/address", addressPayload);
         }
         break;
       }
 
+      case "PROFILE_DATA": {
+        await api.put("/user/data", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        break;
+      }
+
       default:
-        throw new Error(
-          "Unknown form submission block context mapping executed.",
-        );
+        return {
+          success: false,
+          message: "use valid form",
+        };
     }
 
     return {

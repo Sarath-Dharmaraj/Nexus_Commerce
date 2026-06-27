@@ -9,6 +9,7 @@ function SubmissionAlert() {
   useEffect(() => {
     if (actionData?.success) {
       dispatch({ type: "CLOSE_ALL" });
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActive(true);
 
       const timer = setTimeout(() => {

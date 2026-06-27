@@ -4,10 +4,12 @@ import { useProfile } from "../../context/profileContext";
 import { MdCreditCard } from "react-icons/md";
 // component to add cards here
 
-function AddCards({ selectedItem }) {
-  const { dispatch } = useProfile();
+function AddCards() {
+  const { state, dispatch } = useProfile();
+  const { selectedItem } = state;
   const isEdit = !!selectedItem;
 
+  if (!state.isAddCardOpen) return null;
   return (
     <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30">
       {/* parent container */}

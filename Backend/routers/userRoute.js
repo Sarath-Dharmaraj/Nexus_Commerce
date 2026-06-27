@@ -7,6 +7,8 @@ import {
   putUserData,
   postUserAddress,
   postUserPaymentMethod,
+  putUserAddress,
+  putUserPaymentMethod,
 } from "../controllers/userController.js";
 
 const userRouter = Router();
@@ -19,6 +21,8 @@ userRouter.put(
   putUserData,
 );
 userRouter.post("/address", verifyCookie, postUserAddress);
+userRouter.put("/address/:id", verifyCookie, putUserAddress);
 userRouter.post("/payment-method", verifyCookie, postUserPaymentMethod);
+userRouter.put("/payment-method/:id", verifyCookie, putUserPaymentMethod);
 
 export default userRouter;

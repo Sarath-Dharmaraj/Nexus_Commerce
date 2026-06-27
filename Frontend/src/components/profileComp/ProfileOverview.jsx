@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 
 function ProfileOverview() {
-  const { userData } = useProfile();
+  const { dispatch, userData } = useProfile();
   return (
     <div className="row-span-4 md:h-full col-span-1 flex flex-col items-center gap-4">
       <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200  shadow-sm flex flex-col items-center justify-around">
@@ -41,10 +41,16 @@ function ProfileOverview() {
           <MdFavoriteBorder className="self-center mx-1" />
           saved Items
         </span>
-        <span className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm">
+        <span
+          className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm"
+          onClick={() => dispatch({ type: "OPEN_CARD_LIST" })}
+        >
           <MdCreditCard className="self-center mx-1" /> payment methods
         </span>
-        <span className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm">
+        <span
+          className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm"
+          onClick={() => dispatch({ type: "OPEN_ADDRESS_LIST" })}
+        >
           <MdLocationPin className="self-center mx-1" />
           addresses
         </span>

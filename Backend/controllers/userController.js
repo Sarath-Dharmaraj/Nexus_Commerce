@@ -85,3 +85,73 @@ export const postUserPaymentMethod = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const putUserAddress = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const addressId = req.params.id;
+    const updatedAddress = cleanedPayload(req.body);
+
+    if (updatedAddress.isPrimary === true) {
+      await User.updateOne(
+        { _id: userId, "address.isPrimary": true },
+        { $set: { "address.$.isPrimary": false } },
+      );
+    }
+
+    const updateFields = {};
+    for (const [key, value] of Object.entries(updatedAddress)) {
+      updateFields[`address.$.${key}`] = value;
+    }
+
+    const result = await User.updateOne(
+      { _id: userId, "address._id": addressId },
+      { $set: updateFields },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Address entry not found." });
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const putUserPaymentMethod = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const paymentId = req.params.id;
+    const updatedPayment = cleanedPayload(req.body);
+
+    if (updatedPayment.isDefault === true) {
+      await User.updateOne(
+        { _id: userId, "paymentMethod.isDefault": true },
+        { $set: { "paymentMethod.$.isDefault": false } },
+      );
+    }
+
+    const updateFields = {};
+    for (const [key, value] of Object.entries(updatedPayment)) {
+      updateFields[`paymentMethod.$.${key}`] = value;
+    }
+
+    const result = await User.updateOne(
+      { _id: userId, "paymentMethod._id": paymentId },
+      { $set: updateFields },
+    );
+
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ success: false, error: "Payment method not found." });
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};

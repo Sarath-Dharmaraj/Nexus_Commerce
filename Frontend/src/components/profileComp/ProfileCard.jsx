@@ -4,11 +4,11 @@ import { MdCreditCard } from "react-icons/md";
 
 // The main the function
 function ProfileCard() {
-  const { state, dispatch, userData } = useProfile();
+  const { dispatch, userData } = useProfile();
   const { paymentMethod } = userData;
   return (
     <div className="col-span-2 row-span-2 w-full h-60 md:h-full px-4 py-5 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
-      {state.isCardsOpen && <AddCards />}
+      <AddCards />
       <div className="flex items-center justify-between text-lg font-bold tracking-tight text-slate-800 shrink-0">
         <span className="inline-flex items-center">
           <MdCreditCard className="mx-1 text-xl text-slate-500" />
@@ -16,7 +16,7 @@ function ProfileCard() {
         </span>
         <button
           className="inline-flex items-center justify-center w-7 h-7 text-sm border rounded-md border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer"
-          onClick={() => dispatch({ type: "OPEN_CARDS" })}
+          onClick={() => dispatch({ type: "OPEN_ADD_CARD" })}
         >
           +
         </button>

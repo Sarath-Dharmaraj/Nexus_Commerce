@@ -5,8 +5,10 @@ import { MdLocationPin } from "react-icons/md";
 
 // component to add cards here
 
-function AddAddress({ selectedItem }) {
-  const { dispatch } = useProfile();
+function AddAddress() {
+  const { state, dispatch } = useProfile();
+  const { selectedItem } = state;
+  if (!state.isAddAddressOpen) return null;
   const isEdit = !!selectedItem;
   return (
     <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30">

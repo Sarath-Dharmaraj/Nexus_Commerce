@@ -3,7 +3,7 @@ import AddAddress from "./AddAddress";
 import { MdLocationPin, MdOutlineCreate } from "react-icons/md";
 
 function ProfileAddress() {
-  const { state, dispatch, userData } = useProfile();
+  const { dispatch, userData } = useProfile();
 
   const { address } = userData;
 
@@ -11,7 +11,7 @@ function ProfileAddress() {
 
   return (
     <div className="col-span-2 row-span-2 w-full h-60 md:h-full px-4 py-5 flex flex-col gap-3 bg-white border rounded-2xl border-slate-200 shadow-sm overflow-hidden">
-      {state.isAddressOpen && <AddAddress />}
+      <AddAddress />
       {/* Header Container */}
       <div className="flex items-center justify-between text-lg font-bold tracking-tight text-slate-800 shrink-0">
         <span className="inline-flex items-center">
@@ -20,7 +20,7 @@ function ProfileAddress() {
         </span>
         <button
           className="inline-flex items-center justify-center w-7 h-7 text-sm border rounded-md border-slate-300 hover:bg-slate-50 transition-colors"
-          onClick={() => dispatch({ type: "OPEN_ADDRESS" })}
+          onClick={() => dispatch({ type: "OPEN_ADD_ADDRESS" })}
         >
           <MdOutlineCreate />
         </button>
