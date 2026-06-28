@@ -7,23 +7,33 @@ import {
   MdLocationPin,
   MdOutlinePerson,
   MdShoppingBag,
+  MdOutlineCreate,
 } from "react-icons/md";
 
 function ProfileOverview() {
   const { dispatch, userData } = useProfile();
   return (
-    <div className="row-span-4 md:h-full col-span-1 flex flex-col items-center gap-4">
-      <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200  shadow-sm flex flex-col items-center justify-around">
+    <div className=" relative row-span-4 md:h-full col-span-1 flex flex-col items-center gap-4">
+      <MdOutlineCreate
+        className="absolute top-2 right-2 text-slate-400 cursor-pointer hover:text-slate-800"
+        onClick={() => dispatch({ type: "OPEN_PROFILE_EDIT" })}
+      />
+      <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-around overflow-hidden">
         <img
-          src="profile.png"
-          className="w-38 object-cover rounded-md "
+          src={userData?.profileImage || "profile.png"}
+          className="w-38 object-cover pt-5"
           alt="Profile"
         />
-        <div className="flex flex-col items-center justify-around">
-          <p className="text-xl font-semibold capitalize">
+
+        <div className="flex flex-col items-center justify-around w-full px-4 mb-4">
+          <p
+            className="text-xl font-semibold capitalize truncate w-full text-center"
+            title={userData.fullName}
+          >
             {userData.fullName}
           </p>
-          <p className="text-xs capitalize">
+
+          <p className="text-xs capitalize text-slate-500 truncate w-full text-center">
             {userData.membership ? "Nexus Prime Member" : "Nexus Member"}
           </p>
         </div>

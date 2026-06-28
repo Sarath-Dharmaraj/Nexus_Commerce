@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Form } from "react-router-dom";
 import { useProfile } from "../../context/profileContext";
 import { MdOutlinePerson } from "react-icons/md";
@@ -5,7 +6,21 @@ import { MdOutlinePerson } from "react-icons/md";
 function ProfileEdit() {
   const { state, dispatch, userData } = useProfile();
 
+  // 1. Initialize preview state with user's current image, falling back to profile.png
+  const [imagePreview, setImagePreview] = useState(
+    userData?.profileImage || "profile.png",
+  );
+
+  // 2. Handle file selection to instantly update the circular preview image
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   if (!state.isProfileEditOpen) return null;
+
   return (
     <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30 backdrop-blur-sm">
       <div className="flex flex-col items-center justify-around tracking-tight font-hanken w-150 py-4 bg-slate-50 border rounded-2xl border-slate-200 shadow-2xl">
@@ -30,6 +45,34 @@ function ProfileEdit() {
           >
             <input type="hidden" name="form_type" value="PROFILE_DATA" />
 
+            {/* --- NEW: Centered Image Preview & Upload Button --- */}
+            <div className="flex flex-col items-center w-full gap-3 mt-2">
+              <img
+                src={imagePreview}
+                alt="Profile Preview"
+                className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-white shadow-md bg-slate-200"
+              />
+
+              {/* This label acts as the visual button */}
+              <label
+                htmlFor="profileImage"
+                className="cursor-pointer text-xs md:text-sm font-bold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:border-blue-300 px-4 py-2 rounded-lg transition-colors"
+              >
+                Upload New Image
+              </label>
+
+              {/* The actual input is hidden. Note: removed defaultValue as it breaks file inputs */}
+              <input
+                type="file"
+                name="profileImage"
+                id="profileImage"
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+            </div>
+            {/* ------------------------------------------------ */}
+
             <div className="flex flex-col items-start w-full gap-1 text-sm font-semibold text-slate-700">
               <label htmlFor="fullName">Full Name</label>
               <input
@@ -44,7 +87,7 @@ function ProfileEdit() {
 
             <button
               type="submit"
-              className="bg-slate-900 hover:bg-blue-600 px-5 py-2 w-fit text-white font-bold text-sm border rounded-xl self-end shadow-sm transition-colors cursor-pointer mt-2"
+              className="bg-slate-900 hover:bg-blue-600 px-5 py-2 w-full md:w-fit text-white font-bold text-sm border rounded-xl self-end shadow-sm transition-colors cursor-pointer mt-4"
             >
               Save Profile
             </button>
