@@ -155,3 +155,57 @@ export const putUserPaymentMethod = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const deleteUserAddress = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const addressId = req.params.id;
+
+    const result = await User.updateOne(
+      { _id: userId },
+      { $pull: { address: { _id: addressId } } },
+    );
+
+    if (result.modifiedCount === 0) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "Address not found or already deleted.",
+        });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Address deleted successfully." });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const deleteUserPaymentMethod = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const paymentId = req.params.id;
+
+    const result = await User.updateOne(
+      { _id: userId },
+      { $pull: { paymentMethod: { _id: paymentId } } },
+    );
+
+    if (result.modifiedCount === 0) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "Payment method not found or already deleted.",
+        });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Payment method deleted successfully." });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+};
