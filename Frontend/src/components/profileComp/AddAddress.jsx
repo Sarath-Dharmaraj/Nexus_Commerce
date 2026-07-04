@@ -13,7 +13,7 @@ function AddAddress() {
   return (
     <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30">
       {/* parent container */}
-      <div className="flex flex-col items-center justify-around text-600 tracking-tight font-hanken w-150 py-4 bg-slate-50 border rounded-2xl border-slate-200 shadow-2xl">
+      <div className="flex flex-col items-center justify-around text-slate-600 tracking-tight font-hanken w-150 py-4 bg-slate-50 border rounded-2xl border-slate-200 shadow-2xl">
         {/* title and close bar */}
         <div className="flex items-center justify-between w-full px-4 border-b border-slate-200">
           <span className="inline-flex items-center justify-around text-lg font-bold text-slate-800 ">

@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ProtectedLayout from "./components/ProtectedLayout";
+import Merchant from "./pages/Merchant";
 
 import {
   signupAction,
@@ -12,6 +13,7 @@ import {
   profileAction,
 } from "./services/routerAction";
 import { gatewayLoader, ProtectedLoader } from "./services/routerLoader";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -43,6 +45,10 @@ function App() {
           action: profileAction,
         },
       ],
+    },
+    {
+      path: "/merchant",
+      element: <Merchant />,
     },
   ]);
 
