@@ -21,7 +21,7 @@ function ProfileOverview() {
       <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-around overflow-hidden">
         <img
           src={userData?.profileImage || "profile.png"}
-          className="w-38 object-cover pt-5"
+          className="h-30 object-cover pt-5"
           alt="Profile"
         />
 
