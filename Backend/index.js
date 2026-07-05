@@ -13,13 +13,13 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173/nexus_commerce",
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );
 
 mongoose
-  .connect("mongodb://localhost:27017/")
+  .connect("mongodb://localhost:27017/nexus_commerce")
   .then(() => console.log("MongoDB is successfully connected"))
   .catch((error) => console.error("Error while connecting MongoDB:", error));
 

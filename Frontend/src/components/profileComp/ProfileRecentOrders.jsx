@@ -88,7 +88,7 @@ function ProfileRecentOrders() {
         </span>
       </div>
 
-      <div className="overflow-y-auto scrollbar-thumb-slate-300 scrollbar-thin flex-1 pr-1">
+      <div className="overflow-y-auto scrollbar-thumb-slate-300 scrollbar-thin flex-1 pr-1 mb-4">
         <div className="pr-3 py-1">
           {recentOrders.map((item) => (
             <div
