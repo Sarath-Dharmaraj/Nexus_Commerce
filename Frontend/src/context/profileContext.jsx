@@ -20,7 +20,7 @@ function tabSwitcher(state, action) {
       return { ...initialState, isAddressListOpen: true };
     case "OPEN_PROFILE_EDIT":
       return { ...initialState, isProfileEditOpen: true };
-    case "OPEN_ADD_CARD": 
+    case "OPEN_ADD_CARD":
       return {
         ...initialState,
         isAddCardOpen: true,
