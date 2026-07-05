@@ -1,16 +1,42 @@
-# React + Vite
+# Nexus Commerce - Frontend Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The user interface for Nexus Commerce, built for speed and responsiveness using the latest React ecosystem tools.
 
-Currently, two official plugins are available:
+## 🛠️ Architecture & Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Core:** React 19 bootstrapped with Vite.
+- **Styling:** Tailwind CSS v4 utilizing the new `@tailwindcss/vite` plugin for lightning-fast compilation.
+- **Routing:** React Router v7. This project heavily utilizes the new Data Router paradigms (`loader`, `action`, `useActionData`, `useRevalidator`) in `routerAction.jsx` and `routerLoader.jsx` to handle API calls and mutations directly within the routing layer.
+- **State Management:** Context API (`profileContext.jsx`) managing complex UI states (modals, active tabs, selected items for editing).
+- **API Client:** Axios configured with global interceptors to automatically handle 401/403 unauthorized responses and redirect to login.
 
-## React Compiler
+## 📁 Directory Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `/src/api` - Configured Axios instances.
+- `/src/components` - Reusable UI components categorized by feature (e.g., `/profileComp`, `/merchComp`).
+- `/src/context` - Global state providers.
+- `/src/pages` - Top-level route components (`Home`, `Login`, `Signup`, `Profile`, `Merchant`).
+- `/src/services` - Router actions and loaders for data fetching/mutations.
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js
+- pnpm
+
+### Installation & Execution
+
+1.  Navigate to the frontend directory:
+    ```bash
+    cd Frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    pnpm install
+    ```
+3.  Start the Vite development server:
+    ```bash
+    pnpm run dev
+    ```
+    The client will be available at `http://localhost:5173`. Ensure the backend is running concurrently for full functionality.
