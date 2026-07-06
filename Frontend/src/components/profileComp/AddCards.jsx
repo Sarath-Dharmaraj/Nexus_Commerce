@@ -11,7 +11,7 @@ function AddCards() {
 
   if (!state.isAddCardOpen) return null;
   return (
-    <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30">
+    <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/30 backdrop-blur-sm transition-opacity">
       {/* parent container */}
       <div className="flex flex-col items-center justify-around text-600 tracking-tight font-hanken w-150 py-4 bg-slate-50 border rounded-2xl border-slate-200 shadow-2xl">
         {/* title and close bar */}
@@ -21,7 +21,7 @@ function AddCards() {
             Add a New Payment Method
           </span>
           <span
-            className="text-2xl text-slate-800 font-bold hover:text-black border border-slate-50 hover:border-slate-200 rounded-lg hover:bg-slate-100 px-2"
+            className="text-2xl text-slate-800 font-bold hover:text-black border border-slate-50 hover:border-slate-200 rounded-lg hover:bg-slate-100 px-2 cursor-pointer"
             onClick={() => {
               dispatch({ type: "CLOSE" });
             }}

@@ -36,7 +36,7 @@ function DeletionAlert({ isOpen, onClose, itemType, itemId }) {
 
   return (
     <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full px-2 md:px-0 flex items-center justify-around bg-black/40 backdrop-blur-sm transition-opacity">
-      <div className="flex flex-col items-center justify-start w-[400px] bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden tracking-tight font-hanken">
+      <div className="flex flex-col items-center justify-start w-100 bg-white border border-slate-200 shadow-2xl rounded-2xl overflow-hidden tracking-tight font-hanken">
         {/* Header */}
         <div className="flex justify-between items-center w-full px-4 py-3 bg-red-50 border-b border-red-100">
           <span className="flex items-center text-red-600 font-bold text-lg">

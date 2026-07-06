@@ -16,7 +16,7 @@ function SubmissionAlert() {
 
       const timer = setTimeout(() => {
         setActive(false);
-      }, 5000);
+      }, 50000);
 
       return () => clearTimeout(timer);
     }
