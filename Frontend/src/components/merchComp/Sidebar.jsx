@@ -6,8 +6,11 @@ import {
   MdBrightness7,
   MdContactSupport,
 } from "react-icons/md";
+import { useMerchant } from "../../context/merchantContext";
 
 function Sidebar() {
+  const { state, dispatch } = useMerchant();
+  console.log(state);
   return (
     <div className="hiddden md:static w-[17.5%]  py-5 bg-slate-50 border-r border-slate-200">
       <div className="flex flex-col items-center gap-14 mx-5 py-2 h-full">
@@ -32,16 +35,31 @@ function Sidebar() {
         </div>
         {/* Nav */}
         <div className="flex flex-col items-start justify-around gap-2 w-full text-slate-600 tracking-wider font-bold capitalize">
-          <span className="w-full inline-flex items-center gap-2 px-5 py-2 rounded-md hover:bg-sky-100">
-            <MdAccountBalanceWallet className="text-lg text-slate-500" />
+          <span
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md ${state.wallet ? "bg-blue-600 text-white" : "hover:bg-sky-100"}`}
+            onClick={() => dispatch({ type: "WALLET" })}
+          >
+            <MdAccountBalanceWallet
+              className={`text-lg ${!state.wallet ? "text-slate-500" : "text-white"} `}
+            />
             wallet
           </span>
-          <span className="w-full inline-flex items-center gap-2 px-5 py-2 rounded-md hover:bg-sky-100">
-            <MdInventory className="text-lg text-slate-500" />
+          <span
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md ${state.inventory ? "bg-blue-600 text-white" : "hover:bg-sky-100"}`}
+            onClick={() => dispatch({ type: "INVENTORY" })}
+          >
+            <MdInventory
+              className={`text-lg ${!state.inventory ? "text-slate-500" : "text-white"} `}
+            />
             inventory
           </span>
-          <span className="w-full inline-flex items-center gap-2 px-5 py-2 rounded-md hover:bg-sky-100">
-            <MdOutlineShoppingBag className="text-lg text-slate-500" />
+          <span
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md ${state.orders ? "bg-blue-600 text-white" : "hover:bg-sky-100"}`}
+            onClick={() => dispatch({ type: "ORDERS" })}
+          >
+            <MdOutlineShoppingBag
+              className={`text-lg ${!state.orders ? "text-slate-500" : "text-white"} `}
+            />
             orders
           </span>
         </div>
