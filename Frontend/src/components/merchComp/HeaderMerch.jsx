@@ -21,7 +21,7 @@ function HeaderMerch() {
             <span className="cursor-pointer">
               <MdHome />
             </span>
-            <span>
+            <span className="cursor-pointer">
               <MdLocalGroceryStore className="cursor-pointer" />
             </span>
           </div>
