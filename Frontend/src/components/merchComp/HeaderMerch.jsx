@@ -2,7 +2,7 @@ import { MdOutlineSearch, MdHome, MdLocalGroceryStore } from "react-icons/md";
 
 function HeaderMerch() {
   return (
-    <div className="w-full py-2 bg-slate-50 px-10 border-b border-slate-200">
+    <div className="w-full py-2 bg-slate-50 px-10 border-b border-slate-400">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center justify-between flex-1">
           {/* search bar */}

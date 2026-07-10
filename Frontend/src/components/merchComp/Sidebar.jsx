@@ -12,7 +12,7 @@ function Sidebar() {
   const { state, dispatch } = useMerchant();
   console.log(state);
   return (
-    <div className="hiddden md:static w-xs py-5 bg-slate-50 border-r border-slate-200">
+    <div className="hiddden md:static w-xs py-5 bg-slate-50 border-r border-slate-400">
       <div className="flex flex-col items-center gap-14 mx-5 py-2 h-full">
         {/* Ttile */}
         <div className="w-full flex flex-col items-start gap-4">

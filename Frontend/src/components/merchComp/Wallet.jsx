@@ -1,35 +1,36 @@
-import { MdAccountBalance } from "react-icons/md";
+import {
+  MdAccountBalance,
+  MdOutlineMoving,
+  MdAccessTime,
+  MdTimeline,
+} from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
 
 function Wallet() {
   const { state } = useMerchant();
 
-  const financialOverviewData = [
-    {
+  const financialOverviewData = {
+    card1: {
       id: "card_1",
       title: "ACTIVE BALANCE",
       value: "$42,850.00",
       subtitle: "+12.4%",
       trend: "up",
-      iconType: "bank",
     },
-    {
+    card2: {
       id: "card_2",
       title: "PENDING PAYOUTS",
       value: "$8,420.50",
-      subtitle: "Expected clearance: 2 Days",
+      subtitle: "2 Days",
       trend: "neutral",
-      iconType: "clock",
     },
-    {
+    card3: {
       id: "card_3",
       title: "TOTAL REVENUE (Yth)",
       value: "$1.2M",
-      subtitle: "Progress to goal",
       progressValue: 75,
-      iconType: "chart",
     },
-  ];
+  };
 
   const payoutLedgerData = [
     {
@@ -131,53 +132,79 @@ function Wallet() {
         </div>
 
         {/* 3 cards */}
+        {/* card no 1 */}
         <div className="grid grid-cols-3 w-full gap-8 shrink-0">
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
             <div className="flex items-center justify-between w-full">
-              <p className="text-xs font-bold uppercase">Active Balance</p>
+              <p className="text-xs font-bold uppercase">
+                {financialOverviewData.card1.title}
+              </p>
               <span className="text-blue-800 text-xl ">
                 <MdAccountBalance />
               </span>
             </div>
             <p className="text-3xl tracking-wider font-bold text-slate-800">
-              $24.000.000
+              {financialOverviewData.card1.value}
             </p>
             <div>
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="text-green-600">+12.5%</span> vs last month
+                <span className="inline-flex text-green-600 pr-1">
+                  <MdOutlineMoving />
+                </span>
+                <span className="text-green-600">
+                  {financialOverviewData.card1.subtitle}
+                </span>{" "}
+                vs last month
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          {/* card no 2 */}
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
             <div className="flex items-center justify-between w-full">
-              <p className="text-xs font-bold uppercase">Active Balance</p>
-              <span className="text-blue-800 text-xl ">
-                <MdAccountBalance />
+              <p className="text-xs font-bold uppercase">
+                {financialOverviewData.card2.title}
+              </p>
+              <span className="text-black text-xl ">
+                <MdAccessTime />
               </span>
             </div>
             <p className="text-3xl tracking-wider font-bold text-slate-800">
-              $24.000.000
+              {financialOverviewData.card2.value}
             </p>
             <div>
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="text-green-600">+12.5%</span> vs last month
+                Expected clearance:{" "}
+                <span className="font-bold text-black">
+                  {financialOverviewData.card2.subtitle}
+                </span>
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+
+          {/* card no 3 */}
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
             <div className="flex items-center justify-between w-full">
-              <p className="text-xs font-bold uppercase">Active Balance</p>
-              <span className="text-blue-800 text-xl ">
-                <MdAccountBalance />
+              <p className="text-xs font-bold uppercase">
+                {financialOverviewData.card3.title}
+              </p>
+              <span className="text-black text-xl ">
+                <MdTimeline />
               </span>
             </div>
             <p className="text-3xl tracking-wider font-bold text-slate-800">
-              $24.000.000
+              {financialOverviewData.card3.value}
             </p>
-            <div>
-              <p className="text-xs tracking-wider text-slate-600">
-                <span className="text-green-600">+12.5%</span> vs last month
-              </p>
+            <div className="relative w-full h-px border rounded-2xl border-blue-200">
+              <div
+                className={`absolute w-[${financialOverviewData.card3.progressValue}%] self-center h-px border-2 rounded-2xl border-blue-600`}
+              ></div>
+            </div>
+
+            <div className="text-xs tracking-wider text-slate-600 flex justify-between w-full">
+              <span>Progress to goal:</span>
+              <span className="font-extrabold text-black">
+                {financialOverviewData.card3.progressValue} %
+              </span>
             </div>
           </div>
         </div>
@@ -192,9 +219,9 @@ function Wallet() {
               </p>
             </div>
 
-            <div className="w-full border rounded-md border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-blue-50 bg-slate-50 relative shadow-inner">
-              <table className="w-full text-left border-collapse">
-                <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
+            <div className="w-full border rounded-md border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
+              <table className="w-full text-left border-collapse whitespace-nowrap">
+                <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
                   <tr>
                     <th className="px-4 py-3">Transaction ID</th>
                     <th className="px-4 py-3">Date</th>
@@ -207,7 +234,7 @@ function Wallet() {
                   {payoutLedgerData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-xs tracking-wide text-slate-800 hover:bg-slate-100/50 transition-colors"
+                      className="border-b border-slate-300 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-blue-50 transition-colors"
                     >
                       <td className="px-4 py-3 font-bold">
                         {item.transactionId}
