@@ -28,7 +28,7 @@ function Wallet() {
       id: "card_3",
       title: "TOTAL REVENUE (Yth)",
       value: "$1.2M",
-      progressValue: 75,
+      progressValue: 80,
     },
   };
 
@@ -196,14 +196,17 @@ function Wallet() {
             </p>
             <div className="relative w-full h-px border rounded-2xl border-blue-200">
               <div
-                className={`absolute w-[${financialOverviewData.card3.progressValue}%] self-center h-px border-2 rounded-2xl border-blue-600`}
+                style={{
+                  width: `${financialOverviewData.card3.progressValue}%`,
+                }}
+                className={`absolute z-50 self-center h-px border-2 rounded-2xl border-blue-600`}
               ></div>
             </div>
 
             <div className="text-xs tracking-wider text-slate-600 flex justify-between w-full">
               <span>Progress to goal:</span>
               <span className="font-extrabold text-black">
-                {financialOverviewData.card3.progressValue} %
+                {financialOverviewData.card3.progressValue}
               </span>
             </div>
           </div>

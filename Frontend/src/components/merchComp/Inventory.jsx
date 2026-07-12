@@ -76,9 +76,75 @@ function Inventory() {
       unitPrice: "$1,850.00",
       status: "Flagged",
     },
+    {
+      id: "sku_1",
+      imageUrl: "/images/nexus-keyboard.png",
+      title: "Nexus Precision MK-II",
+      sku: "NX-8812-BL",
+      category: "Computing",
+      stockLevel: 1248,
+      stockStatus: "high",
+      unitPrice: "$249.00",
+      status: "Approved",
+    },
+    {
+      id: "sku_2",
+      imageUrl: "/images/acoustics-zen.png",
+      title: "Acoustics Zen Pro",
+      sku: "AZ-900-MP",
+      category: "Audio",
+      stockLevel: 4,
+      stockStatus: "low",
+      unitPrice: "$399.50",
+      status: "Pending",
+    },
+    {
+      id: "sku_3",
+      imageUrl: "/images/chronos-vault.png",
+      title: "Chronos Vault X",
+      sku: "CH-X01-SS",
+      category: "Watches",
+      stockLevel: 82,
+      stockStatus: "high",
+      unitPrice: "$1,850.00",
+      status: "Flagged",
+    },
+    {
+      id: "sku_1",
+      imageUrl: "/images/nexus-keyboard.png",
+      title: "Nexus Precision MK-II",
+      sku: "NX-8812-BL",
+      category: "Computing",
+      stockLevel: 1248,
+      stockStatus: "high",
+      unitPrice: "$249.00",
+      status: "Approved",
+    },
+    {
+      id: "sku_2",
+      imageUrl: "/images/acoustics-zen.png",
+      title: "Acoustics Zen Pro",
+      sku: "AZ-900-MP",
+      category: "Audio",
+      stockLevel: 4,
+      stockStatus: "low",
+      unitPrice: "$399.50",
+      status: "Pending",
+    },
+    {
+      id: "sku_3",
+      imageUrl: "/images/chronos-vault.png",
+      title: "Chronos Vault X",
+      sku: "CH-X01-SS",
+      category: "Watches",
+      stockLevel: 82,
+      stockStatus: "high",
+      unitPrice: "$1,850.00",
+      status: "Flagged",
+    },
   ];
 
-  const ledgerColorSwitcher = (status) => {
+  const StatusColorSwitch = (status) => {
     switch (status) {
       case "Pending":
         return "text-blue-700 bg-blue-50 border-blue-200";
@@ -86,6 +152,16 @@ function Inventory() {
         return "text-green-700 bg-green-50 border-green-200";
       case "Flagged":
         return "text-red-700 bg-red-50 border-red-200";
+      default:
+    }
+  };
+
+  const unitColorSwitch = (status) => {
+    switch (status) {
+      case "high":
+        return "text-green-700";
+      case "low":
+        return "text-red-700";
       default:
     }
   };
@@ -234,23 +310,33 @@ function Inventory() {
                   {inventoryTableData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-blue-50 transition-colors"
+                      className="border-b border-slate-300 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"
                     >
                       <td>
                         <img src={item.imageUrl} alt="img" />
                       </td>
                       <td>
-                        <p>{item.title}</p>
-                        <p>{item.sku}</p>
+                        <p className="text-black font-black">{item.title}</p>
+                        <p className="text-xs font-thin">{item.sku}</p>
                       </td>
-                      <td className="px-4 py-3 ">{item.category}</td>
-                      <td className="px-4 py-3 ">{item.stockLevel}</td>
-                      <td className="px-4 py-3 text-bold font-900">
+                      <td className="px-4 py-6">
+                        <span className="px-3 py-1 font-semibold rounded-full bg-slate-100 text-slate-400">
+                          {item.category}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={`px-3 py-1 font-semibold rounded-full ${unitColorSwitch(item.stockStatus)}`}
+                        >
+                          {item.stockLevel}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 font-black text-black ">
                         {item.unitPrice}
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`px-3 py-1 font-semibold rounded-full ${ledgerColorSwitcher(item.status)}`}
+                          className={`px-3 py-1 font-semibold rounded-full ${StatusColorSwitch(item.status)}`}
                         >
                           {item.status}
                         </span>
