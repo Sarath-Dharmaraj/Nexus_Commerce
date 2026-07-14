@@ -169,11 +169,11 @@ function Inventory() {
   if (!state.inventory) return null;
 
   return (
-    <div className="w-full h-screen bg-slate-50 px-3 py-5 flex flex-col overflow-hidden">
-      <div className="flex flex-col items-center gap-3 w-full px-2 py-2 h-full min-h-0">
+    <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden">
+      <div className="flex flex-col items-center gap-6 w-full px-5 py-5 h-full min-h-0">
         <div className="flex items-start w-full font-hanken tracking-tight text-slate-600 shrink-0">
           <p className="text-2xl font-bold text-slate-800 capitalize">
-            financial overview
+            Inventory Management
           </p>
         </div>
 
