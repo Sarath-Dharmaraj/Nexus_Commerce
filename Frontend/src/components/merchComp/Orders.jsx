@@ -31,126 +31,57 @@ function Orders() {
     },
   };
 
-  const inventoryTableData = [
+  const ordersTableData = [
     {
-      id: "sku_1",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
+      orderId: "#NXS-82910",
+      date: "Oct 24, 2023",
+      customer: {
+        name: "Jane Doe",
+        initials: "JD",
+      },
+      total: "$249.00",
+      status: "FULFILLED", // Map to green pill badge
     },
     {
-      id: "sku_2",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
+      orderId: "#NXS-82911",
+      date: "Oct 24, 2023",
+      customer: {
+        name: "Marcus Sterling",
+        initials: "MS",
+      },
+      total: "$1,120.50",
+      status: "PENDING", // Map to blue pill badge
     },
     {
-      id: "sku_3",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
+      orderId: "#NXS-82912",
+      date: "Oct 23, 2023",
+      customer: {
+        name: "Aria Laurent",
+        initials: "AL",
+      },
+      total: "$89.00",
+      status: "CANCELLED", // Map to red/pink pill badge
     },
     {
-      id: "sku_1",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
-    },
-    {
-      id: "sku_2",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
-    },
-    {
-      id: "sku_3",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
-    },
-    {
-      id: "sku_1",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
-    },
-    {
-      id: "sku_2",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
-    },
-    {
-      id: "sku_3",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
+      orderId: "#NXS-82913",
+      date: "Oct 23, 2023",
+      customer: {
+        name: "Robert King",
+        initials: "RK",
+      },
+      total: "$3,400.00",
+      status: "FULFILLED",
     },
   ];
 
   const StatusColorSwitch = (status) => {
     switch (status) {
-      case "Pending":
+      case "PENDING":
         return "text-blue-700 bg-blue-50 border-blue-200";
-      case "Approved":
+      case "FULFILLED":
         return "text-green-700 bg-green-50 border-green-200";
-      case "Flagged":
+      case "CANCELLED":
         return "text-red-700 bg-red-50 border-red-200";
-      default:
-    }
-  };
-
-  const unitColorSwitch = (status) => {
-    switch (status) {
-      case "high":
-        return "text-green-700";
-      case "low":
-        return "text-red-700";
       default:
     }
   };
@@ -238,69 +169,54 @@ function Orders() {
 
         {/* 2nd row (Ledger + Quick Add) */}
         <div className="grid grid-cols-4 w-full flex-1 min-h-0">
-          <div className="col-span-4 w-full flex flex-col border rounded-xl border-slate-400 h-full min-h-0 overflow-auto">
-            <div className="flex items-center justify-between w-full px-7 text-slate-600">
-              <div className="flex items-center justify-around gap-3 tracking-wider">
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
-                  All Items
+          <div className="col-span-4 w-full flex flex-col h-full min-h-0 gap-4 overflow-auto">
+            <div className="flex items-center justify-between w-full text-slate-600">
+              <div className="flex items-center justify-around gap-8 tracking-wider">
+                <span className="py-3 font-black text-black hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 cursor-pointer">
+                  All Orders
                 </span>
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
-                  Pending
-                </span>
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
-                  Flagged
+                <span className="py-3 font-black text-black hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 cursor-pointer">
+                  Payment History
                 </span>
               </div>
               <div className="flex items-center justify-around gap-3">
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-blue-200 cursor-pointer">
-                  <MdFilterList />
+                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-blue-100 cursor-pointer">
+                  <MdFilterList className="text-xl" /> <span>Filter</span>
                 </span>
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-blue-200 cursor-pointer">
-                  <MdOutlineSaveAlt />
+                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-blue-100 cursor-pointer">
+                  <MdOutlineSaveAlt className="text-xl" /> <span>Export</span>
                 </span>
               </div>
             </div>
+
+            <div className="h-px w-full bg-slate-400 mb-2"></div>
             {/* table */}
-            <div className="w-full border-t border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
+            <div className="w-full border rounded-md border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
               <table className="w-full text-left border-collapse whitespace-nowrap">
                 <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
-                  <tr>
-                    <th className="px-4 py-3">Image</th>
-                    <th className="px-4 py-3">SKU Title and ID</th>
-                    <th className="px-4 py-3">Category</th>
-                    <th className="px-4 py-3">Stock Level</th>
-                    <th className="px-4 py-3">Unit Price</th>
+                  <tr className="text-center">
+                    <th className="px-4 py-3">Order ID</th>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Customer Name</th>
+                    <th className="px-4 py-3">Total</th>
                     <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {inventoryTableData.map((item, index) => (
+                  {ordersTableData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"
+                      className="border-b border-slate-300 last:border-b-0 text-center text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"
                     >
-                      <td>
-                        <img src={item.imageUrl} alt="img" />
+                      <td className="text-blue-800 font-black">
+                        {item.orderId}
                       </td>
-                      <td>
-                        <p className="text-black font-black">{item.title}</p>
-                        <p className="text-xs font-thin">{item.sku}</p>
+                      <td className="px-4 py-3 text-slate-600">{item.date}</td>
+                      <td className="px-4 py-3 text-slate-800">
+                        {item.customer.name}
                       </td>
-                      <td className="px-4 py-6">
-                        <span className="px-3 py-1 font-semibold rounded-full bg-slate-100 text-slate-400">
-                          {item.category}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`px-3 py-1 font-semibold rounded-full ${unitColorSwitch(item.stockStatus)}`}
-                        >
-                          {item.stockLevel}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 font-black text-black ">
-                        {item.unitPrice}
+                      <td className="px-4 py-3 font-black text-black">
+                        {item.total}
                       </td>
                       <td className="px-4 py-3">
                         <span
@@ -308,9 +224,6 @@ function Orders() {
                         >
                           {item.status}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold">
-                        -
                       </td>
                     </tr>
                   ))}
