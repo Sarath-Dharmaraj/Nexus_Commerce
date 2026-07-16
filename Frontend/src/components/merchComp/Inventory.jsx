@@ -7,9 +7,30 @@ import {
   MdFilterList,
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
+import { useReducer } from "react";
+
+const initialState = {
+  all_items: true,
+  pending: false,
+  flagged: false,
+};
+
+function tabSwitcher(localState, action) {
+  switch (action.type) {
+    case "ALL_ITEMS":
+      return initialState;
+    case "PENDING":
+      return { ...initialState, all_items: false, pending: true };
+    case "FLAGGED":
+      return { ...initialState, all_items: false, flagged: true };
+    default:
+      return initialState;
+  }
+}
 
 function Inventory() {
   const { state } = useMerchant();
+  const [localState, dispatch] = useReducer(tabSwitcher, initialState);
 
   const inventoryOverviewData = {
     card1: {
@@ -144,6 +165,12 @@ function Inventory() {
     },
   ];
 
+  const filteredInventoryData = inventoryTableData.filter((item) => {
+    if (localState.pending) return item.status === "Pending";
+    if (localState.flagged) return item.status === "Flagged";
+    return true; // If localState.all_items is true, return everything
+  });
+
   const StatusColorSwitch = (status) => {
     switch (status) {
       case "Pending":
@@ -273,13 +300,22 @@ function Inventory() {
           <div className="col-span-4 w-full flex flex-col border rounded-xl border-slate-400 h-full min-h-0 overflow-auto">
             <div className="flex items-center justify-between w-full px-7 text-slate-600">
               <div className="flex items-center justify-around gap-3 tracking-wider">
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
+                <span
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.all_items ? "bg-blue-100 text-blue-800" : null}`}
+                  onClick={() => dispatch({ type: "ALL-ITEMS" })}
+                >
                   All Items
                 </span>
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
+                <span
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.pending ? "bg-blue-100 text-blue-800" : null}`}
+                  onClick={() => dispatch({ type: "PENDING" })}
+                >
                   Pending
                 </span>
-                <span className="px-4 py-1 my-2 rounded-lg hover:bg-blue-200 cursor-pointer">
+                <span
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.flagged ? "bg-blue-100 text-blue-800" : null}`}
+                  onClick={() => dispatch({ type: "FLAGGED" })}
+                >
                   Flagged
                 </span>
               </div>
@@ -307,7 +343,7 @@ function Inventory() {
                   </tr>
                 </thead>
                 <tbody>
-                  {inventoryTableData.map((item, index) => (
+                  {filteredInventoryData.map((item, index) => (
                     <tr
                       key={index}
                       className="border-b border-slate-300 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"

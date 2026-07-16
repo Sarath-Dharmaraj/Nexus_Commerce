@@ -1,9 +1,19 @@
-import { useReducer, createContext, useContext } from "react";
+import { useReducer, createContext, useContext, useEffect } from "react";
 
 const initialState = {
   wallet: true,
   inventory: false,
   orders: false,
+};
+
+const initializeState = (defaultState) => {
+  try {
+    const storedState = sessionStorage.getItem("merchantUIState");
+    return storedState ? JSON.parse(storedState) : defaultState;
+  } catch (error) {
+    console.error("Failed to parse stored merchant UI state", error);
+    return defaultState;
+  }
 };
 
 function tabSwitcher(state, action) {
@@ -22,7 +32,12 @@ function tabSwitcher(state, action) {
 const MerchantContext = createContext(null);
 
 export function MerchantProvider({ children, userData }) {
-  const [state, dispatch] = useReducer(tabSwitcher, initialState);
+  const [state, dispatch] = useReducer(tabSwitcher, initialState, initializeState);
+
+  useEffect(() => {
+    sessionStorage.setItem("merchantUIState", JSON.stringify(state));
+  }, [state]);
+
   return (
     <MerchantContext.Provider value={{ state, dispatch, userData }}>
       {children}
