@@ -196,8 +196,8 @@ function Inventory() {
   if (!state.inventory) return null;
 
   return (
-    <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden">
-      <div className="flex flex-col items-center gap-6 w-full px-5 py-5 h-full min-h-0">
+    <div className="w-full h-screen bg-slate-50 px-5 py-6 flex flex-col overflow-hidden">
+      <div className="flex flex-col items-center gap-8 w-full px-5 py-5 h-full min-h-0">
         <div className="flex items-start w-full font-hanken tracking-tight text-slate-600 shrink-0">
           <p className="text-2xl font-bold text-slate-800 capitalize">
             Inventory Management
@@ -207,7 +207,7 @@ function Inventory() {
         {/* 4 cards */}
         {/* card no 1 */}
         <div className="grid grid-cols-4 w-full gap-3 shrink-0">
-          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest ">
                 {inventoryOverviewData.card1.title}:
@@ -218,18 +218,18 @@ function Inventory() {
             </p>
             <div className="self-end">
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="inline-flex text-green-600 pr-1">
+                <span className="inline-flex items-center gap-1 text-green-600 pr-1">
                   <MdOutlineMoving />
+                  <span className="text-green-600">
+                    {inventoryOverviewData.card1.subtitle}
+                  </span>
+                  <span>vs last month</span>
                 </span>
-                <span className="text-green-600">
-                  {inventoryOverviewData.card1.subtitle}
-                </span>{" "}
-                vs last month
               </p>
             </div>
           </div>
           {/* card no 2 */}
-          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest">
                 {inventoryOverviewData.card2.title}:
@@ -240,18 +240,18 @@ function Inventory() {
             </p>
             <div className="self-end">
               <p className="text-xs flex tracking-wider text-slate-600">
-                <span className="inline-flex text-red-800 pr-1">
+                <span className="inline-flex items-center gap-1 text-red-800 pr-1">
                   <MdReport />
-                </span>
-                <span className="text-red-600 whitespace-nowrap">
-                  {inventoryOverviewData.card2.subtitle}
+                  <span className="text-red-600 whitespace-nowrap">
+                    {inventoryOverviewData.card2.subtitle}
+                  </span>
                 </span>
               </p>
             </div>
           </div>
 
           {/* card no 3 */}
-          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest">
                 {inventoryOverviewData.card3.title}:
@@ -262,18 +262,18 @@ function Inventory() {
             </p>
             <div className="self-end">
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="inline-flex text-black pr-1">
+                <span className="inline-flex items-center gap-1 text-black pr-1">
                   <MdCheckCircleOutline />
+                  <span className="text-black">
+                    {inventoryOverviewData.card3.subtitle}
+                  </span>
+                  <span>approval rate</span>
                 </span>
-                <span className="text-black">
-                  {inventoryOverviewData.card3.subtitle}
-                </span>
-                <span>approval rate</span>
               </p>
             </div>
           </div>
           {/* card 4 */}
-          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest">
                 {inventoryOverviewData.card4.title}:
@@ -284,11 +284,11 @@ function Inventory() {
             </p>
             <div className="self-end">
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="inline-flex text-blue-600 pr-1">
+                <span className="inline-flex items-center text-blue-600 gap-1 ">
                   <MdVerified />
-                </span>
-                <span className="text-blue-600">
-                  {inventoryOverviewData.card4.subtitle}
+                  <span className="text-blue-600">
+                    {inventoryOverviewData.card4.subtitle}
+                  </span>
                 </span>
               </p>
             </div>
@@ -297,8 +297,8 @@ function Inventory() {
 
         {/* 2nd row (Ledger + Quick Add) */}
         <div className="grid grid-cols-4 w-full flex-1 min-h-0">
-          <div className="col-span-4 w-full flex flex-col border rounded-xl border-slate-400 h-full min-h-0 overflow-auto">
-            <div className="flex items-center justify-between w-full px-7 text-slate-600">
+          <div className="col-span-4 w-full flex flex-col border rounded-lg border-slate-200 shadow-even h-full min-h-0 overflow-auto">
+            <div className="flex items-center justify-between w-full px-7 py-1 text-slate-600">
               <div className="flex items-center justify-around gap-3 tracking-wider">
                 <span
                   className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.all_items ? "bg-blue-100 text-blue-800" : null}`}
@@ -320,17 +320,17 @@ function Inventory() {
                 </span>
               </div>
               <div className="flex items-center justify-around gap-3">
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-blue-200 cursor-pointer">
+                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
                   <MdFilterList />
                 </span>
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-blue-200 cursor-pointer">
+                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
                   <MdOutlineSaveAlt />
                 </span>
               </div>
             </div>
             {/* table */}
             <div className="w-full border-t border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
-              <table className="w-full text-left border-collapse whitespace-nowrap">
+              <table className="w-full text-center border-collapse whitespace-nowrap">
                 <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
                   <tr>
                     <th className="px-4 py-3">Image</th>
@@ -346,7 +346,7 @@ function Inventory() {
                   {filteredInventoryData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"
+                      className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white transition-colors"
                     >
                       <td>
                         <img src={item.imageUrl} alt="img" />
@@ -355,7 +355,7 @@ function Inventory() {
                         <p className="text-black font-black">{item.title}</p>
                         <p className="text-xs font-thin">{item.sku}</p>
                       </td>
-                      <td className="px-4 py-6">
+                      <td className="px-4 py-4">
                         <span className="px-3 py-1 font-semibold rounded-full bg-slate-100 text-slate-400">
                           {item.category}
                         </span>

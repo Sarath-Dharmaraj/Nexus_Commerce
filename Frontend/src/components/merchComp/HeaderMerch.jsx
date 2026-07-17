@@ -2,7 +2,7 @@ import { MdOutlineSearch, MdHome, MdLocalGroceryStore } from "react-icons/md";
 
 function HeaderMerch() {
   return (
-    <div className="w-full py-2 bg-slate-50 px-10 border-b border-slate-400">
+    <div className="w-full py-2 bg-slate-50 px-10 border-b border-slate-200">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center justify-between flex-1">
           {/* search bar */}
@@ -12,16 +12,16 @@ function HeaderMerch() {
               type="text"
               name="search"
               placeholder="Search..."
-              className="w-full md:w-40 lg:w-72 xl:w-96 h-8 md:h-10 text-sm lg:text-base text-slate-600 border border-slate-500 hover:border-blue-200 focus:border-blue-200 focus:outline-none rounded-md pl-8 md:pl-9 lg:pl-10 pr-3 md:pr-4 bg-slate-100"
+              className="w-full md:w-40 lg:w-72 xl:w-96 h-8 md:h-10 text-sm lg:text-base text-slate-600 border border-slate-400 hover:border-blue-200 focus:border-blue-200 focus:outline-none rounded-md pl-8 md:pl-9 lg:pl-10 pr-3 md:pr-4 bg-slate-100"
             />
           </div>
 
           {/* nav */}
           <div className="flex items-center justify-around gap-8 text-2xl ">
-            <span className="cursor-pointer">
+            <span className="cursor-pointer hover:text-slate-400 transition-color">
               <MdHome />
             </span>
-            <span className="cursor-pointer">
+            <span className="cursor-pointer hover:text-slate-400 transition-color">
               <MdLocalGroceryStore className="cursor-pointer" />
             </span>
           </div>

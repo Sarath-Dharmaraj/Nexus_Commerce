@@ -12,14 +12,14 @@ function Sidebar() {
   const { state, dispatch } = useMerchant();
   console.log(state);
   return (
-    <div className="hiddden md:static w-xs py-5 bg-slate-50 border-r border-slate-400">
+    <div className="hiddden md:static w-xs py-5 bg-blue-50 border-r border-slate-200 font-hanken">
       <div className="flex flex-col items-center gap-14 mx-5 py-2 h-full">
         {/* Ttile */}
         <div className="w-full flex flex-col items-start gap-4">
-          <span className="text-2xl font-bold tracking-tighter text-slate-800">
-            Nexus
+          <span className="text-2xl font-black tracking-wider text-black">
+            Nexus Commerce
           </span>
-          <div className="flex items-center justify-around gap-3 ">
+          <div className="flex items-center justify-around gap-3 px-3 py-2 bg-white border rounded-md border-slate-100 shadow-xl">
             <span className="bg-teal-700 text-white text-xl lg:text-2xl p-2 rounded-lg ">
               <MdBadge />
             </span>
@@ -34,9 +34,9 @@ function Sidebar() {
           </div>
         </div>
         {/* Nav */}
-        <div className="flex flex-col items-start justify-around gap-2 w-full text-slate-600 tracking-wider font-bold capitalize">
+        <div className="flex flex-col items-start justify-around gap-2 w-full bg-white py-5 px-3 border rounded-md border-slate-100 shadow-2xs text-slate-600 tracking-wider font-bold capitalize ">
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.wallet ? "bg-blue-600 text-white px-8" : "hover:bg-blue-100"}`}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.wallet ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
             onClick={() => dispatch({ type: "WALLET" })}
           >
             <MdAccountBalanceWallet
@@ -45,7 +45,7 @@ function Sidebar() {
             wallet
           </span>
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.inventory ? "bg-blue-600 text-white px-8" : "hover:bg-blue-100"}`}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.inventory ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
             onClick={() => dispatch({ type: "INVENTORY" })}
           >
             <MdInventory
@@ -54,7 +54,7 @@ function Sidebar() {
             inventory
           </span>
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.orders ? "bg-blue-600 text-white px-8" : "hover:bg-blue-100"}`}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.orders ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
             onClick={() => dispatch({ type: "ORDERS" })}
           >
             <MdOutlineShoppingBag
@@ -72,7 +72,7 @@ function Sidebar() {
           </div>
           <span className="h-px  bg-slate-400"></span>
           {/* profile view */}
-          <div className="flex items-center justify-around mb-2">
+          <div className="flex items-center justify-around mb-2 bg-white py-3 border border-slate-200 rounded-md shadow-sm">
             <span className="w-12">
               <img src="profile.png" alt="profile" className="rounded-xl" />
             </span>
@@ -87,11 +87,11 @@ function Sidebar() {
           </div>
           {/* nav */}
           <div className="flex flex-col items-start justify-around gap-2 capitalize text-800 tracking-widest">
-            <span className="w-full inline-flex items-center gap-2 px-7 py-2 text-sm rounded-md hover:bg-blue-100 cursor-pointer">
+            <span className="w-full inline-flex items-center gap-2 px-7 py-2 font-black text-slate-800 rounded-md hover:bg-slate-200 cursor-pointer">
               <MdBrightness7 className="text-lg text-slate-500" />
               setting
             </span>
-            <span className="w-full inline-flex items-center gap-2 px-7 py-2 text-sm rounded-md hover:bg-blue-100 cursor-pointer">
+            <span className="w-full inline-flex items-center gap-2 px-7 py-2 text-sm rounded-md hover:bg-slate-200 cursor-pointer">
               <MdContactSupport className="text-lg text-slate-500" />
               support
             </span>

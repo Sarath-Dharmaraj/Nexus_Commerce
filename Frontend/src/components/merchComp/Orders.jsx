@@ -100,7 +100,7 @@ function Orders() {
         {/* 3 cards */}
         {/* card no 1 */}
         <div className="grid grid-cols-3 w-full gap-3  shrink-0">
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest ">
                 {ordersOverviewCards.card1.title}:
@@ -122,7 +122,7 @@ function Orders() {
             </div>
           </div>
           {/* card no 2 */}
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest">
                 {ordersOverviewCards.card2.title}:
@@ -144,7 +144,7 @@ function Orders() {
           </div>
 
           {/* card no 3 */}
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest">
                 {ordersOverviewCards.card3.title}:
@@ -180,10 +180,10 @@ function Orders() {
                 </span>
               </div>
               <div className="flex items-center justify-around gap-3">
-                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-blue-100 cursor-pointer">
+                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
                   <MdFilterList className="text-xl" /> <span>Filter</span>
                 </span>
-                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-blue-100 cursor-pointer">
+                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
                   <MdOutlineSaveAlt className="text-xl" /> <span>Export</span>
                 </span>
               </div>
@@ -191,8 +191,8 @@ function Orders() {
 
             <div className="h-px w-full bg-slate-400 mb-2"></div>
             {/* table */}
-            <div className="w-full border rounded-md border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
-              <table className="w-full text-left border-collapse whitespace-nowrap">
+            <div className="border rounded-md border-slate-300 shadow-even z-10 m-2 flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative">
+              <table className="w-full text-center border-collapse whitespace-nowrap">
                 <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
                   <tr className="text-center">
                     <th className="px-4 py-3">Order ID</th>
@@ -206,7 +206,7 @@ function Orders() {
                   {ordersTableData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-center text-sm tracking-wider text-slate-600 bg-white hover:bg-blue-50 transition-colors"
+                      className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-center text-sm tracking-wider text-slate-600 bg-white transition-colors"
                     >
                       <td className="text-blue-800 font-black">
                         {item.orderId}

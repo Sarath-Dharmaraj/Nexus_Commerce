@@ -3,12 +3,20 @@
 
 @font-face {
   font-display: swap;
-  font-family: 'Hanken Grotesk';
+  font-family: "Hanken Grotesk";
   font-style: normal;
   font-weight: 400;
-  src: url('/fonts/hanken-grotesk-v12-latin-regular.woff2') format('woff2'); 
+  src: url("/fonts/hanken-grotesk-v12-latin-regular.woff2") format("woff2");
 }
 
 @theme {
-  --font-hanken: 'Hanken Grotesk', sans-serif;
+  --font-hanken: "Hanken Grotesk", sans-serif;
+  /* This creates shadow-even */
+  --shadow-even: 0 0 15px rgba(0, 0, 0, 0.1);
+
+  /* This creates shadow-even-lg */
+  --shadow-even-lg: 0 0 20px rgba(0, 0, 0, 0.15);
+
+  /* This creates shadow-even-2xl */
+  --shadow-even-2xl: 0 0 25px rgba(0, 0, 0, 0.25);
 }

@@ -134,7 +134,7 @@ function Wallet() {
         {/* 3 cards */}
         {/* card no 1 */}
         <div className="grid grid-cols-3 w-full gap-8 shrink-0">
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-center justify-between w-full">
               <p className="text-xs font-bold uppercase">
                 {financialOverviewData.card1.title}
@@ -159,7 +159,7 @@ function Wallet() {
             </div>
           </div>
           {/* card no 2 */}
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-center justify-between w-full">
               <p className="text-xs font-bold uppercase">
                 {financialOverviewData.card2.title}
@@ -182,7 +182,7 @@ function Wallet() {
           </div>
 
           {/* card no 3 */}
-          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-400 hover:border-black w-full">
+          <div className="flex flex-col items-start justify-around gap-4 px-4 py-4 bg-white border rounded-md border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-center justify-between w-full">
               <p className="text-xs font-bold uppercase">
                 {financialOverviewData.card3.title}
@@ -194,12 +194,12 @@ function Wallet() {
             <p className="text-3xl tracking-wider font-bold text-slate-800">
               {financialOverviewData.card3.value}
             </p>
-            <div className="relative w-full h-px border rounded-2xl border-blue-200">
+            <div className="relative w-full h-px border-2 rounded-2xl border-blue-200">
               <div
                 style={{
                   width: `${financialOverviewData.card3.progressValue}%`,
                 }}
-                className={`absolute z-50 self-center h-px border-2 rounded-2xl border-blue-600`}
+                className={`absolute z-50 self-center h-px border-4 rounded-2xl border-blue-600`}
               ></div>
             </div>
 
@@ -222,7 +222,7 @@ function Wallet() {
               </p>
             </div>
 
-            <div className="w-full border rounded-md border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
+            <div className="w-full border rounded-md border-slate-200 hover:border-slate-300 flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative">
               <table className="w-full text-left border-collapse whitespace-nowrap">
                 <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
                   <tr>
@@ -237,7 +237,7 @@ function Wallet() {
                   {payoutLedgerData.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-blue-50 transition-colors"
+                      className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-slate-200 transition-colors"
                     >
                       <td className="px-4 py-3 font-bold">
                         {item.transactionId}
@@ -268,7 +268,7 @@ function Wallet() {
             <p className="text-xl tracking-tight font-bold text-slate-800 capitalize">
               quick add product
             </p>
-            <div className="w-full flex flex-col justify-around gap-4 px-6 py-6 text-xs tracking-wider font-semibold capitalize border rounded-sm border-slate-400 hover:border-black bg-white shadow-sm">
+            <div className="w-full flex flex-col justify-around gap-4 px-6 py-6 text-xs tracking-wider font-semibold capitalize border rounded-sm border-slate-200 hover:border-slate-300 shadow-2xl bg-white">
               <div className="flex flex-col items-start justify-around gap-1">
                 <label htmlFor="sku_title">SKU title</label>
                 <input
