@@ -6,8 +6,9 @@ import {
   MdOutlineSaveAlt,
   MdFilterList,
 } from "react-icons/md";
+
 import { useMerchant } from "../../context/merchantContext";
-import { useReducer } from "react";
+import { useReducer, useState, useEffect } from "react";
 
 const initialState = {
   all_items: true,
@@ -31,6 +32,9 @@ function tabSwitcher(localState, action) {
 function Inventory() {
   const { state } = useMerchant();
   const [localState, dispatch] = useReducer(tabSwitcher, initialState);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
 
   const inventoryOverviewData = {
     card1: {
@@ -98,7 +102,7 @@ function Inventory() {
       status: "Flagged",
     },
     {
-      id: "sku_1",
+      id: "sku_4",
       imageUrl: "/images/nexus-keyboard.png",
       title: "Nexus Precision MK-II",
       sku: "NX-8812-BL",
@@ -109,7 +113,7 @@ function Inventory() {
       status: "Approved",
     },
     {
-      id: "sku_2",
+      id: "sku_5",
       imageUrl: "/images/acoustics-zen.png",
       title: "Acoustics Zen Pro",
       sku: "AZ-900-MP",
@@ -120,7 +124,7 @@ function Inventory() {
       status: "Pending",
     },
     {
-      id: "sku_3",
+      id: "sku_6",
       imageUrl: "/images/chronos-vault.png",
       title: "Chronos Vault X",
       sku: "CH-X01-SS",
@@ -131,7 +135,7 @@ function Inventory() {
       status: "Flagged",
     },
     {
-      id: "sku_1",
+      id: "sku_7",
       imageUrl: "/images/nexus-keyboard.png",
       title: "Nexus Precision MK-II",
       sku: "NX-8812-BL",
@@ -142,7 +146,7 @@ function Inventory() {
       status: "Approved",
     },
     {
-      id: "sku_2",
+      id: "sku_8",
       imageUrl: "/images/acoustics-zen.png",
       title: "Acoustics Zen Pro",
       sku: "AZ-900-MP",
@@ -153,7 +157,7 @@ function Inventory() {
       status: "Pending",
     },
     {
-      id: "sku_3",
+      id: "sku_9",
       imageUrl: "/images/chronos-vault.png",
       title: "Chronos Vault X",
       sku: "CH-X01-SS",
@@ -168,8 +172,30 @@ function Inventory() {
   const filteredInventoryData = inventoryTableData.filter((item) => {
     if (localState.pending) return item.status === "Pending";
     if (localState.flagged) return item.status === "Flagged";
-    return true; // If localState.all_items is true, return everything
+    return true;
   });
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrentPage(1);
+  }, [localState]);
+
+  const totalPages = Math.ceil(filteredInventoryData.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentItems = filteredInventoryData.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
 
   const StatusColorSwitch = (status) => {
     switch (status) {
@@ -180,6 +206,7 @@ function Inventory() {
       case "Flagged":
         return "text-red-700 bg-red-50 border-red-200";
       default:
+        return "";
     }
   };
 
@@ -190,6 +217,7 @@ function Inventory() {
       case "low":
         return "text-red-700";
       default:
+        return "";
     }
   };
 
@@ -203,10 +231,9 @@ function Inventory() {
             Inventory Management
           </p>
         </div>
-
-        {/* 4 cards */}
-        {/* card no 1 */}
+        {/* cards */}
         <div className="grid grid-cols-4 w-full gap-3 shrink-0">
+          {/* card no 1 */}
           <div className="flex flex-col items-start justify-around gap-3 px-2 py-2 bg-white border rounded-sm border-slate-200 hover:border-slate-300 shadow-xl w-full">
             <div className="flex items-start w-full">
               <p className="text-xs font-bold uppercase tracking-widest ">
@@ -297,93 +324,148 @@ function Inventory() {
 
         {/* 2nd row (Ledger + Quick Add) */}
         <div className="grid grid-cols-4 w-full flex-1 min-h-0">
-          <div className="col-span-4 w-full flex flex-col border rounded-lg border-slate-200 shadow-even h-full min-h-0 overflow-auto">
+          <div className="col-span-4 w-full flex flex-col border rounded-lg border-slate-200 shadow-even h-full min-h-0 overflow-hidden bg-white">
             <div className="flex items-center justify-between w-full px-7 py-1 text-slate-600">
               <div className="flex items-center justify-around gap-3 tracking-wider">
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.all_items ? "bg-blue-100 text-blue-800" : null}`}
-                  onClick={() => dispatch({ type: "ALL-ITEMS" })}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.all_items ? "bg-blue-100 text-blue-800" : ""}`}
+                  onClick={() => dispatch({ type: "ALL_ITEMS" })} // Fixed typo here (ALL_ITEMS)
                 >
                   All Items
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.pending ? "bg-blue-100 text-blue-800" : null}`}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.pending ? "bg-blue-100 text-blue-800" : ""}`}
                   onClick={() => dispatch({ type: "PENDING" })}
                 >
                   Pending
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.flagged ? "bg-blue-100 text-blue-800" : null}`}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.flagged ? "bg-blue-100 text-blue-800" : ""}`}
                   onClick={() => dispatch({ type: "FLAGGED" })}
                 >
                   Flagged
                 </span>
               </div>
               <div className="flex items-center justify-around gap-3">
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
+                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdFilterList />
                 </span>
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-200 cursor-pointer">
+                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdOutlineSaveAlt />
                 </span>
               </div>
             </div>
-            {/* table */}
-            <div className="w-full border-t border-slate-400 hover:border-black flex-1 overflow-y-auto overflow-x-hidden scrollbar-none bg-slate-50 relative shadow-inner">
+
+            {/* table wrapper */}
+            <div className="w-full border-t border-slate-200 flex-1 overflow-y-auto overflow-x-hidden scrollbar-none relative">
               <table className="w-full text-center border-collapse whitespace-nowrap">
-                <thead className="sticky top-0 bg-slate-100 z-10 border-b border-slate-400 text-xs tracking-wider text-slate-600 shadow-sm">
+                <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200 text-xs tracking-wider text-slate-500 font-semibold shadow-sm">
                   <tr>
-                    <th className="px-4 py-3">Image</th>
-                    <th className="px-4 py-3">SKU Title and ID</th>
-                    <th className="px-4 py-3">Category</th>
-                    <th className="px-4 py-3">Stock Level</th>
-                    <th className="px-4 py-3">Unit Price</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-4">Image</th>
+                    <th className="px-4 py-4">SKU Title and ID</th>
+                    <th className="px-4 py-4">Category</th>
+                    <th className="px-4 py-4">Stock Level</th>
+                    <th className="px-4 py-4">Unit Price</th>
+                    <th className="px-4 py-4">Status</th>
+                    <th className="px-4 py-4 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredInventoryData.map((item, index) => (
+                  {currentItems.map((item, index) => (
                     <tr
                       key={index}
-                      className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white transition-colors"
+                      className="border-b border-slate-100 even:bg-slate-50/50 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white transition-colors"
                     >
-                      <td>
-                        <img src={item.imageUrl} alt="img" />
+                      <td className="px-4 py-3">
+                        <img
+                          src={item.imageUrl}
+                          alt="img"
+                          className="h-10 mx-auto"
+                        />
                       </td>
-                      <td>
-                        <p className="text-black font-black">{item.title}</p>
-                        <p className="text-xs font-thin">{item.sku}</p>
+                      <td className="text-left px-4 py-3">
+                        <p className="text-slate-800 font-bold">{item.title}</p>
+                        <p className="text-xs text-slate-400 tracking-widest">
+                          {item.sku}
+                        </p>
                       </td>
-                      <td className="px-4 py-4">
-                        <span className="px-3 py-1 font-semibold rounded-full bg-slate-100 text-slate-400">
+                      <td className="px-4 py-3">
+                        <span className="px-3 py-1 font-semibold rounded-full bg-blue-50 text-blue-500 text-xs tracking-widest">
                           {item.category}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`px-3 py-1 font-semibold rounded-full ${unitColorSwitch(item.stockStatus)}`}
+                          className={`font-semibold ${unitColorSwitch(item.stockStatus)}`}
                         >
-                          {item.stockLevel}
+                          {item.stockLevel}{" "}
+                          <span className="font-light text-xs">units</span>
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-black text-black ">
+                      <td className="px-4 py-3 font-bold text-slate-800">
                         {item.unitPrice}
                       </td>
                       <td className="px-4 py-3">
                         <span
-                          className={`px-3 py-1 font-semibold rounded-full ${StatusColorSwitch(item.status)}`}
+                          className={`px-3 py-1 text-xs font-bold rounded-full ${StatusColorSwitch(item.status)}`}
                         >
-                          {item.status}
+                          • {item.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold">
-                        -
+                      <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold tracking-widest">
+                        ...
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* --- PAGINATION FOOTER --- */}
+            <div className="flex items-center justify-between w-full px-6 py-4 border-t border-slate-200 bg-white text-xs text-slate-500 font-medium">
+              <p>
+                Showing
+                {filteredInventoryData.length === 0
+                  ? 0
+                  : indexOfFirstItem + 1}{" "}
+                to {Math.min(indexOfLastItem, filteredInventoryData.length)} of{" "}
+                {filteredInventoryData.length} entries
+              </p>
+
+              <div className="flex items-center border border-slate-200 rounded-md overflow-hidden">
+                <button
+                  onClick={handlePrev}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  &lt; Previous
+                </button>
+
+                {[...Array(totalPages)].map((_, index) => {
+                  const pageNumber = index + 1;
+                  return (
+                    <button
+                      key={pageNumber}
+                      onClick={() => handlePageClick(pageNumber)}
+                      className={`px-3 py-1.5 border-l border-slate-200 transition-colors ${
+                        currentPage === pageNumber
+                          ? "bg-slate-900 text-white"
+                          : "hover:bg-slate-50 text-slate-600"
+                      }`}
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                })}
+
+                <button
+                  onClick={handleNext}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  className="px-3 py-1.5 border-l border-slate-200 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next &gt;
+                </button>
+              </div>
             </div>
           </div>
         </div>

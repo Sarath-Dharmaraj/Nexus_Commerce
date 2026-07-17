@@ -322,7 +322,7 @@ function Wallet() {
                 </select>
               </div>
 
-              <button className="w-full bg-slate-900 text-white font-bold tracking-widest uppercase py-3 rounded-sm hover:bg-black transition-colors mt-2">
+              <button className="w-full bg-slate-500 text-white font-bold tracking-widest uppercase py-3 rounded-sm hover:bg-black transition-colors mt-2">
                 + Create SKU
               </button>
             </div>
