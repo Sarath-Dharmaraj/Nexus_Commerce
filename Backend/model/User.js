@@ -58,13 +58,21 @@ const userSchema = new mongoose.Schema(
     ],
     sellerProfile: {
       isApproved: { type: Boolean, default: false },
+      merchantLevel: { type: String, default: "Standard" },
       walletBalance: { type: Number, default: 0 },
+      pendingPayouts: { type: Number, default: 0 },
+      totalRevenueYtd: { type: Number, default: 0 },
       bankAccountDetails: { number: String, routingCode: String },
       payoutLedger: [
         {
-          orderId: mongoose.Schema.Types.ObjectId,
+          transactionId: String,
           amount: Number,
-          clearedAt: Date,
+          status: {
+            type: String,
+            enum: ["Processing", "Cleared", "Failed"],
+            default: "Processing",
+          },
+          date: Date,
         },
       ],
     },
