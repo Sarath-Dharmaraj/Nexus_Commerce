@@ -1,4 +1,5 @@
-import mongoose, { Mongoose } from "mongoose";
+// models/Product.js
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
@@ -38,7 +39,15 @@ const productSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      default: "/images/default-product.png",
+      default: "",
+    },
+    additionalImages: {
+      type: [String],
+      default: [],
+    },
+    searchTags: {
+      type: [String],
+      default: [],
     },
     status: {
       type: String,
@@ -48,6 +57,13 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+productSchema.pre("save", function (next) {
+  if (!this.searchTags || this.searchTags.length === 0) {
+    this.searchTags = this.skuTitle.toLowerCase().split(/\s+/);
+  }
+  next();
+});
 
 productSchema.index({ merchantId: 1 });
 

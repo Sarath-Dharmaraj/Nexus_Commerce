@@ -8,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+const avatarStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "nexus_commerce_avatars",
@@ -16,4 +16,13 @@ const storage = new CloudinaryStorage({
   },
 });
 
-export const uploadAvatar = multer({ storage });
+const productStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "nexus_commerce_avatars",
+    allowedFormats: ["jpg", "png", "jpeg", "webp"],
+  },
+});
+
+export const uploadAvatar = multer({ storage: avatarStorage });
+export const uploadProductImg = multer({ storage: productStorage });

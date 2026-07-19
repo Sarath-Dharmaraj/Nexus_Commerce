@@ -37,3 +37,59 @@ export const verifyCookie = async (req, res, next) => {
     });
   }
 };
+
+export const isSeller = (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        error:
+          "UNAUTHORIZED: Missing user payload. Ensure verifyCookie runs first.",
+      });
+    }
+
+    if (req.user.systemRoles && req.user.systemRoles.includes("Seller")) {
+      return next();
+    }
+
+    return res.status(403).json({
+      success: false,
+      error:
+        "FORBIDDEN: You must have an active Seller profile to perform this action.",
+    });
+  } catch (error) {
+    console.error("Seller Authorization Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "SERVER_ERROR: Failed to verify seller authorization matrix.",
+    });
+  }
+};
+
+export const isAdminRole = (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        error:
+          "UNAUTHORIZED: Missing user payload. Ensure verifyCookie runs first.",
+      });
+    }
+
+    if (req.user.isAdmin === true) {
+      return next();
+    }
+
+    return res.status(403).json({
+      success: false,
+      error:
+        "FORBIDDEN: This action is strictly restricted to system administrators.",
+    });
+  } catch (error) {
+    console.error("Admin Authorization Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      error: "SERVER_ERROR: Failed to verify admin authorization matrix.",
+    });
+  }
+};
