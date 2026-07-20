@@ -32,6 +32,9 @@ app.get("/", (req, res) => {
 
 app.use("/api", router);
 
+// global error handler
+router.use(errorHandler);
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log("Server is listening at port number", port);

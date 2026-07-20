@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema(
     skuTitle: {
       type: String,
       required: true,
+      unique: true,
     },
     skuId: {
       type: String,
@@ -39,7 +40,8 @@ const productSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      default: "",
+      default:
+        "https://res.cloudinary.com/delqw275i/image/upload/v1782365389/samples/radial_02.png",
     },
     additionalImages: {
       type: [String],

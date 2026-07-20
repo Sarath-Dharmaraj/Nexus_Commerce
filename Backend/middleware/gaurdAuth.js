@@ -1,3 +1,5 @@
+// authorization
+import User from "../model/User.js";
 import jwt from "jsonwebtoken";
 import setCookieAuth from "./setCookieAuth.js";
 
@@ -16,6 +18,18 @@ export const verifyCookie = async (req, res, next) => {
 
     const currentTime = Math.floor(Date.now() / 1000);
     const timeLeft = payload.exp - currentTime;
+
+    // const oneSecond = 1000;
+    // const oneMinute = oneSecond * 60;
+    // const oneHour = oneMinute * 60;
+    // const oneDay = oneHour * 24;
+
+    // const days = Math.floor(timeLeft / oneDay);
+    // const hours = Math.floor((timeLeft % oneDay) / oneHour);
+    // const minutes = Math.floor((timeLeft % oneHour) / oneMinute);
+    // const seconds = Math.floor((timeLeft % oneMinute) / oneSecond);
+
+    // console.log(days, hours, minutes, seconds);
 
     const oneDayInSeconds = 24 * 60 * 60;
 
@@ -38,6 +52,7 @@ export const verifyCookie = async (req, res, next) => {
   }
 };
 
+// Seller authentication
 export const isSeller = (req, res, next) => {
   try {
     if (!req.user) {
@@ -66,6 +81,7 @@ export const isSeller = (req, res, next) => {
   }
 };
 
+// admin athentication
 export const isAdminRole = (req, res, next) => {
   try {
     if (!req.user) {

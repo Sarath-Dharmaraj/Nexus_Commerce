@@ -1,0 +1,46 @@
+import mongoose from "mongoose";
+import { Product } from "../model/Product";
+import generateSKu from "../utilit/skuGenerator";
+
+// post products
+export const postProduct = async (req, res) => {
+  const { skuTitle, price, stockLevel, category, searchTags } = req.body;
+
+  let imageUrl =
+    "https://res.cloudinary.com/delqw275i/image/upload/v1782365389/samples/radial_02.png";
+  let additionalImages = [];
+
+  if (req.files) {
+    if (req.files["mainImage"]) imageUrl = req.files["mainImage"][0].path;
+    if (req.files["additionalImages"]) {
+      additionalImages = req.files["additionalImages"].map((file) => file.path);
+    }
+  }
+
+  //   sku ID generation and verification
+  let isVerified = false;
+  let generatedSkuId;
+  while (!isVerified) {
+    generatedSkuId = generateSKu(skuTitle);
+
+    const existingSKu = await Product.findOne({ skuId: generatedSkuId });
+
+    if (!existingSKu) isVerified = true;
+  }
+  const newProduct = await Product.create({
+    merchantId: req.user.id,
+    skuTitle,
+    skuId: generatedSkuId,
+    price,
+    stockLevel,
+    category,
+    imageUrl,
+    additionalImages,
+    searchTags,
+  });
+
+  res.status(201).json({
+    success: true,
+    data: newProduct,
+  });
+};
