@@ -8,7 +8,6 @@ import { MerchantProvider, useMerchant } from "../context/merchantContext";
 
 function MerchantLayout() {
   const { state } = useMerchant();
-  console.log(state);
   return (
     <div className="w-screen h-screen font-hanken tracking-tight">
       <div className="flex h-screen">

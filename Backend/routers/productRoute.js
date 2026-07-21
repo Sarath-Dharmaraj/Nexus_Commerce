@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { verifyCookie, isSeller } from "../middleware/gaurdAuth";
-import { asyncHandler } from "../middleware/errorMiddleware";
-import { postProduct } from "../controllers/productController";
-import { uploadProductImg } from "../middleware/cloudinary";
+import { verifyCookie, isSeller } from "../middleware/gaurdAuth.js";
+import { asyncHandler } from "../middleware/errorMiddleware.js";
+import { postProduct } from "../controllers/productController.js";
+import { uploadProductImg } from "../middleware/cloudinary.js";
 // router setup
 const productRouter = Router();
 

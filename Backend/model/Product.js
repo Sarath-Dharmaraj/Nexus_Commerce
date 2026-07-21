@@ -11,7 +11,6 @@ const productSchema = new mongoose.Schema(
     skuTitle: {
       type: String,
       required: true,
-      unique: true,
     },
     skuId: {
       type: String,
@@ -60,11 +59,10 @@ const productSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-productSchema.pre("save", function (next) {
+productSchema.pre("save", function () {
   if (!this.searchTags || this.searchTags.length === 0) {
     this.searchTags = this.skuTitle.toLowerCase().split(/\s+/);
   }
-  next();
 });
 
 productSchema.index({ merchantId: 1 });

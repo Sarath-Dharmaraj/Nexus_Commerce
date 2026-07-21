@@ -19,17 +19,17 @@ export const verifyCookie = async (req, res, next) => {
     const currentTime = Math.floor(Date.now() / 1000);
     const timeLeft = payload.exp - currentTime;
 
-    // const oneSecond = 1000;
-    // const oneMinute = oneSecond * 60;
-    // const oneHour = oneMinute * 60;
-    // const oneDay = oneHour * 24;
+    const oneMinute = 60;
+    const oneHour = oneMinute * 60; // 3600
+    const oneDay = oneHour * 24; // 86400
 
-    // const days = Math.floor(timeLeft / oneDay);
-    // const hours = Math.floor((timeLeft % oneDay) / oneHour);
-    // const minutes = Math.floor((timeLeft % oneHour) / oneMinute);
-    // const seconds = Math.floor((timeLeft % oneMinute) / oneSecond);
+    const days = Math.floor(timeLeft / oneDay);
+    const hours = Math.floor((timeLeft % oneDay) / oneHour);
+    const minutes = Math.floor((timeLeft % oneHour) / oneMinute);
 
-    // console.log(days, hours, minutes, seconds);
+    const seconds = Math.floor(timeLeft % oneMinute);
+
+    console.log(`${days}d ${hours}h ${minutes}m ${seconds}s`);
 
     const oneDayInSeconds = 24 * 60 * 60;
 

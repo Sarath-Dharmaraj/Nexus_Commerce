@@ -31,7 +31,7 @@ function ProfileCard() {
           <div className="pr-2 py-0.5 flex flex-col gap-2">
             {paymentMethod.map((item, index) => (
               <div
-                key={index} // Note: Using _id is safer than index if you have it!
+                key={index}
                 className="grid grid-cols-3 items-center gap-4 px-4 py-2.5 border rounded-xl bg-slate-50/50 border-slate-200 hover:bg-slate-100/50 transition-colors"
               >
                 <div className="col-span-1 text-xs uppercase font-bold py-1 text-center bg-slate-200 border rounded-md border-slate-300 text-slate-700 tracking-wider">
@@ -59,7 +59,6 @@ function ProfileCard() {
           </div>
         </div>
       ) : (
-        // Empty State matching ProfileAddress
         <div
           className="flex-1 border-2 border-dashed border-slate-200 bg-slate-50/50 rounded-xl flex items-center justify-center text-sm font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
           onClick={() => dispatch({ type: "OPEN_ADD_CARD" })}

@@ -1,6 +1,7 @@
 import { redirect } from "react-router-dom";
 import api from "../api/api";
 
+// signup action
 export const signupAction = async ({ request }) => {
   const formData = await request.formData();
 
@@ -48,6 +49,7 @@ export const signupAction = async ({ request }) => {
   }
 };
 
+// login action
 export const loginAction = async ({ request }) => {
   const formData = await request.formData();
 
@@ -75,6 +77,7 @@ export const loginAction = async ({ request }) => {
   }
 };
 
+//  profile action
 export const profileAction = async ({ request }) => {
   const formData = await request.formData();
 
@@ -147,5 +150,38 @@ export const profileAction = async ({ request }) => {
         error.response?.data?.error ||
         `Failed processing ${formType} payload request.`,
     };
+  }
+};
+
+// Merchant page action - adding products
+export const merchantAction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const intent = formData.get("intent");
+
+  try {
+    switch (intent) {
+      case "quick_add_product": {
+        await api.post("/products/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log("Product added successfully");
+        return {
+          success: true,
+          intent,
+          message: "Product added successfully!",
+        };
+      }
+
+      default:
+        throw new Response("Invalid Intent", { status: 400 });
+    }
+  } catch (error) {
+    console.error("Action Error", error);
+
+    const errorMessage = error.response?.data?.error || error.message;
+
+    return { success: false, error: errorMessage };
   }
 };

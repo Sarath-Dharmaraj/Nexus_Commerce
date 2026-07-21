@@ -13,6 +13,7 @@ export const gatewayLoader = async () => {
   }
 };
 
+//profile page
 export const ProtectedLoader = async () => {
   try {
     const response = await api.get("/user/data");

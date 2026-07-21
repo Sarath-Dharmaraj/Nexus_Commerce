@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv/config";
 
 import router from "./routers/router.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
 

@@ -6,12 +6,10 @@ import { MdOutlinePerson } from "react-icons/md";
 function ProfileEdit() {
   const { state, dispatch, userData } = useProfile();
 
-  // 1. Initialize preview state with user's current image, falling back to profile.png
   const [imagePreview, setImagePreview] = useState(
     userData?.profileImage || "profile.png",
   );
 
-  // 2. Handle file selection to instantly update the circular preview image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -33,7 +31,7 @@ function ProfileEdit() {
             className="text-2xl text-slate-800 font-bold hover:text-black border border-transparent hover:border-slate-200 rounded-lg hover:bg-slate-100 px-2 cursor-pointer transition-colors"
             onClick={() => dispatch({ type: "CLOSE_ALL" })}
           >
-            ×
+            x
           </span>
         </div>
 
@@ -53,7 +51,6 @@ function ProfileEdit() {
                 className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-white shadow-md bg-slate-200"
               />
 
-              {/* This label acts as the visual button */}
               <label
                 htmlFor="profileImage"
                 className="cursor-pointer text-xs md:text-sm font-bold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:border-blue-300 px-4 py-2 rounded-lg transition-colors"
@@ -61,7 +58,6 @@ function ProfileEdit() {
                 Upload New Image
               </label>
 
-              {/* The actual input is hidden. Note: removed defaultValue as it breaks file inputs */}
               <input
                 type="file"
                 name="profileImage"

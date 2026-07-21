@@ -1,3 +1,5 @@
+import { Form } from "react-router-dom";
+
 import {
   MdAccountBalance,
   MdOutlineMoving,
@@ -5,7 +7,6 @@ import {
   MdTimeline,
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
-
 function Wallet() {
   const { state } = useMerchant();
 
@@ -263,19 +264,46 @@ function Wallet() {
             </div>
           </div>
 
-          {/* quick add money */}
+          {/* quick add product */}
           <div className="col-span-1 flex flex-col items-start justify-start gap-4 w-full shrink-0">
             <p className="text-xl tracking-tight font-bold text-slate-800 capitalize">
               quick add product
             </p>
-            <div className="w-full flex flex-col justify-around gap-4 px-6 py-6 text-xs tracking-wider font-semibold capitalize border rounded-sm border-slate-200 hover:border-slate-300 shadow-2xl bg-white">
-              <div className="flex flex-col items-start justify-around gap-1">
-                <label htmlFor="sku_title">SKU title</label>
-                <input
-                  type="text"
-                  name="sku_title"
-                  className="w-full text-slate-500 px-2 border border-slate-200 py-1.5 focus:outline-none focus:border-slate-400 rounded-sm"
-                />
+            <Form
+              method="post"
+              encType="multipart/form-data"
+              className="w-full flex flex-col justify-around gap-4 px-6 py-6 text-xs tracking-wider font-semibold capitalize border rounded-sm border-slate-200 hover:border-slate-300 shadow-2xl bg-white"
+            >
+              <input type="hidden" name="intent" value="quick_add_product" />
+              <div className="w-full flex justify-between gap-4">
+                <div className="flex flex-col items-start justify-start gap-1 flex-1">
+                  <label htmlFor="skuTitle">SKU title</label>
+                  <input
+                    type="text"
+                    name="skuTitle"
+                    id="skuTitle"
+                    className="w-full text-slate-500 px-2 border border-slate-200 py-1.5 focus:outline-none focus:border-slate-400 rounded-sm"
+                  />
+                </div>
+
+                <div className="flex flex-col items-start justify-start gap-1 w-20 shrink-0">
+                  <label htmlFor="mainImage">Image</label>
+                  <label
+                    htmlFor="mainImage"
+                    className="w-full h-8.5 flex items-center justify-center border border-slate-200 border-dashed rounded-sm cursor-pointer hover:border-slate-400 hover:bg-slate-50 transition-colors overflow-hidden"
+                  >
+                    <span className="text-slate-400 text-lg font-light leading-none -mt-0.5">
+                      +
+                    </span>
+                  </label>
+                  <input
+                    type="file"
+                    name="mainImage"
+                    id="mainImage"
+                    className="hidden"
+                    accept="image/*"
+                  />
+                </div>
               </div>
 
               <div className="w-full flex justify-between gap-4">
@@ -296,10 +324,10 @@ function Wallet() {
                 </div>
 
                 <div className="flex flex-col items-start justify-start gap-1 w-full">
-                  <label htmlFor="stock">Initial Stock</label>
+                  <label htmlFor="stockLevel">Initial Stock</label>
                   <input
                     type="number"
-                    name="stock"
+                    name="stockLevel"
                     className="w-full pl-2 py-1.5 text-slate-700 border rounded-sm border-slate-200 focus:outline-none focus:border-slate-400"
                   />
                 </div>
@@ -322,10 +350,13 @@ function Wallet() {
                 </select>
               </div>
 
-              <button className="w-full bg-slate-500 text-white font-bold tracking-widest uppercase py-3 rounded-sm hover:bg-black transition-colors mt-2">
+              <button
+                type="submit"
+                className="w-full bg-slate-500 text-white font-bold tracking-widest uppercase py-3 rounded-sm hover:bg-black transition-colors mt-2"
+              >
                 + Create SKU
               </button>
-            </div>
+            </Form>
           </div>
         </div>
       </div>

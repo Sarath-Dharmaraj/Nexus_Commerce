@@ -10,7 +10,6 @@ import { useMerchant } from "../../context/merchantContext";
 
 function Sidebar() {
   const { state, dispatch } = useMerchant();
-  console.log(state);
   return (
     <div className="hiddden md:static w-xs py-5 bg-blue-50 border-r border-slate-200 font-hanken">
       <div className="flex flex-col items-center gap-14 mx-5 py-2 h-full">

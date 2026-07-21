@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Product } from "../model/Product";
-import generateSKu from "../utilit/skuGenerator";
+import Product from "../model/Product.js";
+import generateSKu from "../utilit/skuGenerator.js";
 
 // post products
 export const postProduct = async (req, res) => {

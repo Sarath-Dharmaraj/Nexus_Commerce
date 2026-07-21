@@ -11,6 +11,7 @@ import {
   signupAction,
   loginAction,
   profileAction,
+  merchantAction,
 } from "./services/routerAction";
 import { gatewayLoader, ProtectedLoader } from "./services/routerLoader";
 
@@ -49,6 +50,7 @@ function App() {
     {
       path: "/merchant",
       element: <Merchant />,
+      action: merchantAction,
     },
   ]);
 
