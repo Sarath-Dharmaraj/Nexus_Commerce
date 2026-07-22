@@ -13,7 +13,11 @@ import {
   profileAction,
   merchantAction,
 } from "./services/routerAction";
-import { gatewayLoader, ProtectedLoader } from "./services/routerLoader";
+import {
+  gatewayLoader,
+  ProtectedLoader,
+  merchantLoader,
+} from "./services/routerLoader";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +54,7 @@ function App() {
     {
       path: "/merchant",
       element: <Merchant />,
+      loader: merchantLoader,
       action: merchantAction,
     },
   ]);

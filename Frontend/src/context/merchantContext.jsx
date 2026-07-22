@@ -31,15 +31,19 @@ function tabSwitcher(state, action) {
 
 const MerchantContext = createContext(null);
 
-export function MerchantProvider({ children, userData }) {
-  const [state, dispatch] = useReducer(tabSwitcher, initialState, initializeState);
+export function MerchantProvider({ children, merchantData }) {
+  const [state, dispatch] = useReducer(
+    tabSwitcher,
+    initialState,
+    initializeState,
+  );
 
   useEffect(() => {
     sessionStorage.setItem("merchantUIState", JSON.stringify(state));
   }, [state]);
 
   return (
-    <MerchantContext.Provider value={{ state, dispatch, userData }}>
+    <MerchantContext.Provider value={{ state, dispatch, merchantData }}>
       {children}
     </MerchantContext.Provider>
   );

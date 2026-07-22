@@ -1,8 +1,12 @@
 import { Router } from "express";
 import { verifyCookie, isSeller } from "../middleware/gaurdAuth.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
-import { postProduct } from "../controllers/productController.js";
+import {
+  postProduct,
+  getMerchanInventory,
+} from "../controllers/productController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
+import { get } from "mongoose";
 // router setup
 const productRouter = Router();
 
@@ -16,7 +20,8 @@ const multiImageUpload = uploadProductImg.fields([
 productRouter.use(verifyCookie);
 productRouter.use(isSeller);
 
-// routes
+// routes for merchant
 productRouter.post("/", multiImageUpload, asyncHandler(postProduct));
+productRouter.get("/merchant", asyncHandler(getMerchanInventory));
 
 export default productRouter;

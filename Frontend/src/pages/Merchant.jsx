@@ -1,13 +1,13 @@
+import { useLoaderData } from "react-router-dom";
 import HeaderMerch from "../components/merchComp/HeaderMerch";
 import Inventory from "../components/merchComp/Inventory";
 import Orders from "../components/merchComp/Orders";
 import Sidebar from "../components/merchComp/Sidebar";
 import Wallet from "../components/merchComp/Wallet";
 
-import { MerchantProvider, useMerchant } from "../context/merchantContext";
+import { MerchantProvider } from "../context/merchantContext";
 
 function MerchantLayout() {
-  const { state } = useMerchant();
   return (
     <div className="w-screen h-screen font-hanken tracking-tight">
       <div className="flex h-screen">
@@ -24,8 +24,10 @@ function MerchantLayout() {
 }
 
 function Merchant() {
+  const data = useLoaderData();
+  console.log("merchant :", data);
   return (
-    <MerchantProvider>
+    <MerchantProvider merchantData={data}>
       <MerchantLayout />
     </MerchantProvider>
   );

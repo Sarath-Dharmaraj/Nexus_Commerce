@@ -44,3 +44,14 @@ export const postProduct = async (req, res) => {
     data: newProduct,
   });
 };
+
+// Get products for merchant
+export const getMerchanInventory = async (req, res) => {
+  const inventory = await Product.find({ merchantId: req.user.id });
+
+  return res.status(200).json({
+    success: true,
+    messagee: `Merchant ${req.user.id}'s Inventory extracted`,
+    data: inventory,
+  });
+};

@@ -30,7 +30,7 @@ function tabSwitcher(localState, action) {
 }
 
 function Inventory() {
-  const { state } = useMerchant();
+  const { state, merchantData } = useMerchant();
   const [localState, dispatch] = useReducer(tabSwitcher, initialState);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,110 +66,8 @@ function Inventory() {
       trend: "verified",
     },
   };
-
-  const inventoryTableData = [
-    {
-      id: "sku_1",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
-    },
-    {
-      id: "sku_2",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
-    },
-    {
-      id: "sku_3",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
-    },
-    {
-      id: "sku_4",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
-    },
-    {
-      id: "sku_5",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
-    },
-    {
-      id: "sku_6",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
-    },
-    {
-      id: "sku_7",
-      imageUrl: "/images/nexus-keyboard.png",
-      title: "Nexus Precision MK-II",
-      sku: "NX-8812-BL",
-      category: "Computing",
-      stockLevel: 1248,
-      stockStatus: "high",
-      unitPrice: "$249.00",
-      status: "Approved",
-    },
-    {
-      id: "sku_8",
-      imageUrl: "/images/acoustics-zen.png",
-      title: "Acoustics Zen Pro",
-      sku: "AZ-900-MP",
-      category: "Audio",
-      stockLevel: 4,
-      stockStatus: "low",
-      unitPrice: "$399.50",
-      status: "Pending",
-    },
-    {
-      id: "sku_9",
-      imageUrl: "/images/chronos-vault.png",
-      title: "Chronos Vault X",
-      sku: "CH-X01-SS",
-      category: "Watches",
-      stockLevel: 82,
-      stockStatus: "high",
-      unitPrice: "$1,850.00",
-      status: "Flagged",
-    },
-  ];
-
-  const filteredInventoryData = inventoryTableData.filter((item) => {
+  console.log(merchantData);
+  const filteredInventoryData = merchantData.filter((item) => {
     if (localState.pending) return item.status === "Pending";
     if (localState.flagged) return item.status === "Flagged";
     return true;
