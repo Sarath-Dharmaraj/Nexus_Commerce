@@ -25,7 +25,6 @@ function MerchantLayout() {
 
 function Merchant() {
   const data = useLoaderData();
-  console.log("merchant :", data);
   return (
     <MerchantProvider merchantData={data}>
       <MerchantLayout />

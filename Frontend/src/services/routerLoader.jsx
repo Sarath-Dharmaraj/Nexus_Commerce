@@ -28,9 +28,14 @@ export const ProtectedLoader = async () => {
 // Loader for merchant to extract Data
 export const merchantLoader = async () => {
   try {
-    const response = await api.get("/products/merchant");
-    console.log('loader:', response);
-    return response.data.data;
+    const [sellerResponse, inventoryResponse] = await Promise.all([
+      api.get("/user/seller-profile"),
+      api.get("/products/merchant"),
+    ]);
+    return {
+      sellerProfile: sellerResponse,
+      inventory: inventoryResponse,
+    };
   } catch (error) {
     console.error(error);
     return redirect("/profile");

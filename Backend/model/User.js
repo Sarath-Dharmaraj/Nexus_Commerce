@@ -59,6 +59,7 @@ const userSchema = new mongoose.Schema(
     sellerProfile: {
       isApproved: { type: Boolean, default: false },
       merchantLevel: { type: String, default: "Standard" },
+      lastMonthValue: { type: Number, default: 0 },
       walletBalance: { type: Number, default: 0 },
       pendingPayouts: { type: Number, default: 0 },
       totalRevenueYtd: { type: Number, default: 0 },

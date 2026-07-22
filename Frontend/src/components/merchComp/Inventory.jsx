@@ -30,7 +30,10 @@ function tabSwitcher(localState, action) {
 }
 
 function Inventory() {
-  const { state, merchantData } = useMerchant();
+  const {
+    state,
+    merchantData: { inventory: inventoryData },
+  } = useMerchant();
   const [localState, dispatch] = useReducer(tabSwitcher, initialState);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,8 +69,7 @@ function Inventory() {
       trend: "verified",
     },
   };
-  console.log(merchantData);
-  const filteredInventoryData = merchantData.filter((item) => {
+  const filteredInventoryData = inventoryData.filter((item) => {
     if (localState.pending) return item.status === "Pending";
     if (localState.flagged) return item.status === "Flagged";
     return true;
@@ -282,9 +284,11 @@ function Inventory() {
                         />
                       </td>
                       <td className="text-left px-4 py-3">
-                        <p className="text-slate-800 font-bold">{item.title}</p>
+                        <p className="text-slate-800 font-bold capitalize">
+                          {item.skuTitle}
+                        </p>
                         <p className="text-xs text-slate-400 tracking-widest">
-                          {item.sku}
+                          {item.skuId}
                         </p>
                       </td>
                       <td className="px-4 py-3">
@@ -301,7 +305,7 @@ function Inventory() {
                         </span>
                       </td>
                       <td className="px-4 py-3 font-bold text-slate-800">
-                        {item.unitPrice}
+                        {item.price}
                       </td>
                       <td className="px-4 py-3">
                         <span

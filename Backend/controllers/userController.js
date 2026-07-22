@@ -167,12 +167,10 @@ export const deleteUserAddress = async (req, res) => {
     );
 
     if (result.modifiedCount === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          error: "Address not found or already deleted.",
-        });
+      return res.status(404).json({
+        success: false,
+        error: "Address not found or already deleted.",
+      });
     }
 
     return res
@@ -194,12 +192,10 @@ export const deleteUserPaymentMethod = async (req, res) => {
     );
 
     if (result.modifiedCount === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          error: "Payment method not found or already deleted.",
-        });
+      return res.status(404).json({
+        success: false,
+        error: "Payment method not found or already deleted.",
+      });
     }
 
     return res
@@ -208,4 +204,20 @@ export const deleteUserPaymentMethod = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
+};
+
+// Route to fetch sellerProfile for merchant
+export const getSellerData = async (req, res) => {
+  const user = await User.findById(req.user.id).select("sellerProfile -_id");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not Found");
+  }
+
+  return res.json(200).json({
+    success: true,
+    message: "seller profile fetched",
+    data: user.sellerProfile,
+  });
 };
