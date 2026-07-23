@@ -35,29 +35,31 @@ function Sidebar() {
         {/* Nav */}
         <div className="flex flex-col items-start justify-around gap-2 w-full bg-white py-5 px-3 border rounded-md border-slate-100 shadow-2xs text-slate-600 tracking-wider font-bold capitalize ">
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.wallet ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
-            onClick={() => dispatch({ type: "WALLET" })}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.screen === "WALLET" ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
+            onClick={() => dispatch({ type: "SET_SCREEN", payload: "WALLET" })}
           >
             <MdAccountBalanceWallet
-              className={`text-lg ${!state.wallet ? "text-slate-500" : "text-white"} `}
+              className={`text-lg ${!(state.screen === "WALLET") ? "text-slate-500" : "text-white"} `}
             />
             wallet
           </span>
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.inventory ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
-            onClick={() => dispatch({ type: "INVENTORY" })}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.screen === "INVENTORY" ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
+            onClick={() =>
+              dispatch({ type: "SET_SCREEN", payload: "INVENTORY" })
+            }
           >
             <MdInventory
-              className={`text-lg ${!state.inventory ? "text-slate-500" : "text-white"} `}
+              className={`text-lg ${!(state.screen === "INVENTORY") ? "text-slate-500" : "text-white"} `}
             />
             inventory
           </span>
           <span
-            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.orders ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
-            onClick={() => dispatch({ type: "ORDERS" })}
+            className={`w-full inline-flex items-center gap-2 px-5 py-2 rounded-md transition duration-150 cursor-pointer ${state.screen === "ORDERS" ? "bg-slate-500 text-white px-8" : "hover:bg-slate-200"}`}
+            onClick={() => dispatch({ type: "SET_SCREEN", payload: "ORDERS" })}
           >
             <MdOutlineShoppingBag
-              className={`text-lg ${!state.orders ? "text-slate-500" : "text-white"} `}
+              className={`text-lg ${!(state.screen === "ORDERS") ? "text-slate-500" : "text-white"} `}
             />
             orders
           </span>

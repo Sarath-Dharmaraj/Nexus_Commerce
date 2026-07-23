@@ -18,7 +18,7 @@ import { asyncHandler } from "../middleware/errorMiddleware.js";
 const userRouter = Router();
 
 userRouter.use(verifyCookie);
-userRouter.use(asyncHandler);
+// userRouter.use(asyncHandler);
 
 userRouter.get("/data", getUserData);
 userRouter.put("/data", uploadAvatar.single("profileImage"), putUserData);
@@ -32,6 +32,6 @@ userRouter.delete("/payment-method/:id", deleteUserPaymentMethod);
 // is Seller
 userRouter.use(isSeller);
 
-userRouter.get("/seller-profile", getSellerData);
+userRouter.get("/seller-profile", asyncHandler(getSellerData));
 
 export default userRouter;

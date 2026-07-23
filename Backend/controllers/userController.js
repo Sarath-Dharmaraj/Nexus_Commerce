@@ -215,7 +215,7 @@ export const getSellerData = async (req, res) => {
     throw new Error("User not Found");
   }
 
-  return res.json(200).json({
+  return res.status(200).json({
     success: true,
     message: "seller profile fetched",
     data: user.sellerProfile,

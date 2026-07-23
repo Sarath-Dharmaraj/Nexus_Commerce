@@ -8,58 +8,113 @@ import {
 } from "react-icons/md";
 
 import { useMerchant } from "../../context/merchantContext";
-import { useReducer, useState, useEffect } from "react";
-
-const initialState = {
-  all_items: true,
-  pending: false,
-  flagged: false,
-};
-
-function tabSwitcher(localState, action) {
-  switch (action.type) {
-    case "ALL_ITEMS":
-      return initialState;
-    case "PENDING":
-      return { ...initialState, all_items: false, pending: true };
-    case "FLAGGED":
-      return { ...initialState, all_items: false, flagged: true };
-    default:
-      return initialState;
-  }
-}
+import { useState, useEffect, useMemo } from "react";
+import Filter_sort from "./Filter_sort";
 
 function Inventory() {
+  // hook set ups
   const {
     state,
-    merchantData: { inventory: inventoryData },
+    merchantData: { sellerProfile: sellerData, inventory: inventoryData },
   } = useMerchant();
-  const [localState, dispatch] = useReducer(tabSwitcher, initialState);
-
+  const [tab, setTab] = useState("ALL_ITEM");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+
+  // Card data calculation
+  const inventoryStats = useMemo(() => {
+    if (!inventoryData || inventoryData.length === 0) {
+      return {
+        totalValue: 0,
+        lowStockCount: 0,
+        activeSkusCount: 0,
+        approvedCount: 0,
+        approvalRate: 0,
+        valueGrowthRate: 0,
+      };
+    }
+
+    let totalValue = 0;
+    let lowStockCount = 0;
+    let activeSkusCount = 0;
+    let approvedCount = 0;
+    const LOW_STOCK_THRESHOLD = 20;
+
+    inventoryData.forEach((item) => {
+      const itemPrice = item.price || item.unitPrice || 0;
+
+      totalValue += itemPrice * item.stockLevel;
+
+      if (item.stockLevel > 0 && item.stockLevel <= LOW_STOCK_THRESHOLD)
+        lowStockCount++;
+      if (item.stockLevel > 0) activeSkusCount++;
+      if (item.status === "Approved") approvedCount++;
+    });
+
+    const approvalRate = Math.round(
+      (approvedCount / inventoryData.length) * 100,
+    );
+
+    const lastMonth = sellerData?.lastMonthValue || 0;
+    let valueGrowthRate = 0;
+
+    if (lastMonth > 0) {
+      valueGrowthRate = ((totalValue - lastMonth) / lastMonth) * 100;
+    } else if (totalValue > 0) {
+      valueGrowthRate = 100;
+    }
+
+    return {
+      totalValue,
+      lowStockCount,
+      activeSkusCount,
+      approvedCount,
+      approvalRate,
+      valueGrowthRate: Math.round(valueGrowthRate),
+    };
+  }, [inventoryData, sellerData?.lastMonthValue]);
 
   const inventoryOverviewData = {
     card1: {
       id: "inv_card_1",
       title: "TOTAL VALUE",
-      value: "$412,890.00",
-      subtitle: "+12.4%",
-      trend: "up",
+      value: inventoryStats.totalValue,
+      subtitle: inventoryStats.valueGrowthRate,
+      trend:
+        inventoryStats.valueGrowthRate > 0
+          ? "up"
+          : inventoryStats.valueGrowthRate < 0
+            ? "down"
+            : "neutral",
     },
     card2: {
       id: "inv_card_2",
       title: "LOW STOCK ALERTS",
-      value: "18",
-      subtitle: "Immediate restock required",
-      trend: "down",
+      value: inventoryStats.lowStockCount,
+      subtitle:
+        inventoryStats.lowStockCount === 0
+          ? "Inventory optimally stocked"
+          : inventoryStats.lowStockCount / (inventoryData.length || 1) > 0.2
+            ? "Critical restock required"
+            : "Restock recommended soon",
+      trend:
+        inventoryStats.lowStockCount === 0
+          ? "up"
+          : inventoryStats.lowStockCount / (inventoryData.length || 1) > 0.2
+            ? "down"
+            : "neutral",
     },
     card3: {
       id: "inv_card_3",
       title: "ACTIVE SKUS",
-      value: "2,419",
-      subtitle: "98%",
-      trend: "neutral",
+      value: inventoryStats.activeSkusCount,
+      subtitle: inventoryStats.approvalRate,
+      trend:
+        inventoryStats.approvalRate >= 95
+          ? "positive"
+          : inventoryStats.approvalRate < 80
+            ? "negative"
+            : "neutral",
     },
     card4: {
       id: "inv_card_4",
@@ -69,16 +124,17 @@ function Inventory() {
       trend: "verified",
     },
   };
+
   const filteredInventoryData = inventoryData.filter((item) => {
-    if (localState.pending) return item.status === "Pending";
-    if (localState.flagged) return item.status === "Flagged";
+    if (tab === "PENDING") return item.status === "Pending";
+    if (tab === "FLAGGED") return item.status === "Flagged";
     return true;
   });
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
-  }, [localState]);
+  }, [tab]);
 
   const totalPages = Math.ceil(filteredInventoryData.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -121,7 +177,7 @@ function Inventory() {
     }
   };
 
-  if (!state.inventory) return null;
+  if (!(state.screen === "INVENTORY")) return null;
 
   return (
     <div className="w-full h-screen bg-slate-50 px-5 py-6 flex flex-col overflow-hidden">
@@ -228,27 +284,28 @@ function Inventory() {
             <div className="flex items-center justify-between w-full px-7 py-1 text-slate-600">
               <div className="flex items-center justify-around gap-3 tracking-wider">
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.all_items ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => dispatch({ type: "ALL_ITEMS" })} // Fixed typo here (ALL_ITEMS)
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "ALL_ITEM" ? "bg-blue-100 text-blue-800" : ""}`}
+                  onClick={() => setTab("ALL_ITEM")}
                 >
                   All Items
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.pending ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => dispatch({ type: "PENDING" })}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "PENDING" ? "bg-blue-100 text-blue-800" : ""}`}
+                  onClick={() => setTab("PENDING")}
                 >
                   Pending
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${localState.flagged ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => dispatch({ type: "FLAGGED" })}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "FLAGGED" ? "bg-blue-100 text-blue-800" : ""}`}
+                  onClick={() => setTab("FLAGGED")}
                 >
                   Flagged
                 </span>
               </div>
-              <div className="flex items-center justify-around gap-3">
+              <div className="relative flex items-center justify-around gap-3">
                 <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdFilterList />
+                  <Filter_sort page={'inventory'}/>
                 </span>
                 <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdOutlineSaveAlt />

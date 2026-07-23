@@ -1,31 +1,43 @@
 import { useReducer, createContext, useContext, useEffect } from "react";
 
 const initialState = {
-  wallet: true,
-  inventory: false,
-  orders: false,
+  screen: "WALLET",
+  isFilter: "ALL",
+  sortBy: "DEFAULT",
+  categoryBy: "ALL",
 };
 
 const initializeState = (defaultState) => {
   try {
-    const storedState = sessionStorage.getItem("merchantUIState");
-    return storedState ? JSON.parse(storedState) : defaultState;
+    const storedScreen = localStorage.getItem("merchantScreen");
+    return storedScreen
+      ? { ...defaultState, screen: storedScreen }
+      : defaultState;
   } catch (error) {
     console.error("Failed to parse stored merchant UI state", error);
     return defaultState;
   }
 };
 
-function tabSwitcher(state, action) {
+function merchantReducer(state, action) {
   switch (action.type) {
-    case "WALLET":
-      return initialState;
-    case "INVENTORY":
-      return { ...initialState, wallet: false, inventory: true };
-    case "ORDERS":
-      return { ...initialState, wallet: false, orders: true };
+    case "SET_SCREEN":
+      return { ...initialState, screen: action.payload };
+    case "SET_FILTER":
+      return { ...state, isFilter: action.payload };
+    case "SET_SORT":
+      return { ...state, sortBy: action.payload };
+    case "SET_CATEGORY":
+      return { ...state, categoryBy: action.payload };
+    case "RESET_FILTERS":
+      return {
+        ...state,
+        isFilter: initialState.isFilter,
+        sortBy: initialState.sortBy,
+        categoryBy: initialState.categoryBy,
+      };
     default:
-      return initialState;
+      return state;
   }
 }
 
@@ -33,14 +45,14 @@ const MerchantContext = createContext(null);
 
 export function MerchantProvider({ children, merchantData }) {
   const [state, dispatch] = useReducer(
-    tabSwitcher,
+    merchantReducer,
     initialState,
     initializeState,
   );
 
   useEffect(() => {
-    sessionStorage.setItem("merchantUIState", JSON.stringify(state));
-  }, [state]);
+    localStorage.setItem("merchantScreen", state.screen);
+  }, [state.screen]);
 
   return (
     <MerchantContext.Provider value={{ state, dispatch, merchantData }}>

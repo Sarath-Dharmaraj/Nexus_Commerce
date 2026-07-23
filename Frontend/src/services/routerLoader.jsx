@@ -33,8 +33,8 @@ export const merchantLoader = async () => {
       api.get("/products/merchant"),
     ]);
     return {
-      sellerProfile: sellerResponse,
-      inventory: inventoryResponse,
+      sellerProfile: sellerResponse.data.data,
+      inventory: inventoryResponse.data.data,
     };
   } catch (error) {
     console.error(error);

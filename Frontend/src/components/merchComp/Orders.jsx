@@ -93,7 +93,7 @@ function Orders() {
   };
   const handlePageClick = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (!state.orders) return null;
+  if (!(state.screen === "ORDERS")) return null;
 
   return (
     <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden">

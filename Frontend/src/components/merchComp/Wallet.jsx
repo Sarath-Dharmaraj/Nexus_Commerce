@@ -120,7 +120,7 @@ function Wallet() {
     }
   };
 
-  if (!state.wallet) return null;
+  if (!(state.screen === "WALLET")) return null;
 
   return (
     <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden">
