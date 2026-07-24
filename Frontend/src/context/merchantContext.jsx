@@ -2,8 +2,8 @@ import { useReducer, createContext, useContext, useEffect } from "react";
 
 const initialState = {
   screen: "WALLET",
-  isFilter: "ALL",
-  sortBy: "DEFAULT",
+  isFilter: false,
+  sortBy: "NONE",
   categoryBy: "ALL",
 };
 
@@ -24,15 +24,22 @@ function merchantReducer(state, action) {
     case "SET_SCREEN":
       return { ...initialState, screen: action.payload };
     case "SET_FILTER":
-      return { ...state, isFilter: action.payload };
-    case "SET_SORT":
-      return { ...state, sortBy: action.payload };
-    case "SET_CATEGORY":
-      return { ...state, categoryBy: action.payload };
-    case "RESET_FILTERS":
       return {
         ...state,
-        isFilter: initialState.isFilter,
+        isFilter:
+          action.payload !== undefined ? action.payload : !state.isFilter,
+      };
+    case "SET_SORT_FILTER":
+      return {
+        ...state,
+        isFilter: true,
+        sortBy: action.payload.sortBy,
+        categoryBy: action.payload.categoryBy,
+      };
+    case "RESET_ALL":
+      return {
+        ...state,
+        isFilter: false,
         sortBy: initialState.sortBy,
         categoryBy: initialState.categoryBy,
       };

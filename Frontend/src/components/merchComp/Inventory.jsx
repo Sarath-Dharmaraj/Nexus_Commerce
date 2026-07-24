@@ -9,12 +9,13 @@ import {
 
 import { useMerchant } from "../../context/merchantContext";
 import { useState, useEffect, useMemo } from "react";
-import Filter_sort from "./Filter_sort";
+import FilterSort from "./FilterSort";
 
 function Inventory() {
   // hook set ups
   const {
     state,
+    dispatch,
     merchantData: { sellerProfile: sellerData, inventory: inventoryData },
   } = useMerchant();
   const [tab, setTab] = useState("ALL_ITEM");
@@ -74,6 +75,7 @@ function Inventory() {
     };
   }, [inventoryData, sellerData?.lastMonthValue]);
 
+  // cards
   const inventoryOverviewData = {
     card1: {
       id: "inv_card_1",
@@ -131,6 +133,23 @@ function Inventory() {
     return true;
   });
 
+  const processedData = useMemo(() => {
+    let data = [...filteredInventoryData];
+
+    if (state.categoryBy !== "ALL") {
+      data = data.filter((item) => item.category === state.categoryBy);
+    }
+
+    if (state.sortBy === "PRICE_ASC") data.sort((a, b) => a.price - b.price);
+    if (state.sortBy === "PRICE_DESC") data.sort((a, b) => b.price - a.price);
+    if (state.sortBy === "STOCK_ASC")
+      data.sort((a, b) => a.stockLevel - b.stockLevel);
+    if (state.sortBy === "STOCK_DESC")
+      data.sort((a, b) => b.stockLevel - a.stockLevel);
+
+    return data;
+  }, [filteredInventoryData, state.sortBy, state.categoryBy]);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
@@ -140,10 +159,7 @@ function Inventory() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = filteredInventoryData.slice(
-    indexOfFirstItem,
-    indexOfLastItem,
-  );
+  const currentItems = processedData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -285,28 +301,43 @@ function Inventory() {
               <div className="flex items-center justify-around gap-3 tracking-wider">
                 <span
                   className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "ALL_ITEM" ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => setTab("ALL_ITEM")}
+                  onClick={() => {
+                    setTab("ALL_ITEM");
+                    dispatch({ type: "RESET_ALL" });
+                  }}
                 >
                   All Items
                 </span>
                 <span
                   className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "PENDING" ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => setTab("PENDING")}
+                  onClick={() => {
+                    setTab("PENDING");
+                    dispatch({ type: "RESET_ALL" });
+                  }}
                 >
                   Pending
                 </span>
                 <span
                   className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "FLAGGED" ? "bg-blue-100 text-blue-800" : ""}`}
-                  onClick={() => setTab("FLAGGED")}
+                  onClick={() => {
+                    setTab("FLAGGED");
+                    dispatch({ type: "RESET_ALL" });
+                  }}
                 >
                   Flagged
                 </span>
               </div>
               <div className="relative flex items-center justify-around gap-3">
-                <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
+                <span
+                  id="filter-trigger-btn"
+                  className={`p-2 my-2 rounded-md border border-slate-400 transition-colors cursor-pointer ${state.isFilter ? "bg-black text-white" : " hover:bg-slate-100"}`}
+                  onClick={() =>
+                    dispatch({ type: "SET_FILTER", payload: !state.isFilter })
+                  }
+                >
                   <MdFilterList />
-                  <Filter_sort page={'inventory'}/>
                 </span>
+                <FilterSort page={"inventory"} />
                 <span className="p-2 my-2 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdOutlineSaveAlt />
                 </span>
