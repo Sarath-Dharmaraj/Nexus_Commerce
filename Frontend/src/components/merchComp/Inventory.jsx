@@ -5,10 +5,13 @@ import {
   MdCheckCircleOutline,
   MdOutlineSaveAlt,
   MdFilterList,
+  MdEdit,
+  MdDelete,
 } from "react-icons/md";
 
 import { useMerchant } from "../../context/merchantContext";
 import { useState, useEffect, useMemo } from "react";
+import { Form } from "react-router-dom";
 import FilterSort from "./FilterSort";
 
 function Inventory() {
@@ -18,9 +21,16 @@ function Inventory() {
     dispatch,
     merchantData: { sellerProfile: sellerData, inventory: inventoryData },
   } = useMerchant();
+  const [isSkuId, setSkuId] = useState(false);
   const [tab, setTab] = useState("ALL_ITEM");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+
+  useEffect(() => {
+    const closeMenu = () => setSkuId(null);
+    document.addEventListener("click", closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
+  }, []);
 
   // Card data calculation
   const inventoryStats = useMemo(() => {
@@ -403,7 +413,57 @@ function Inventory() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold tracking-widest">
-                        ...
+                        <span
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSkuId(
+                              isSkuId === item.skuId ? null : item.skuId,
+                            );
+                          }}
+                          className="relative "
+                        >
+                          ...
+                          {isSkuId === item.skuId && (
+                            <div
+                              onClick={(e) => e.stopPropagation()}
+                              className="absolute z-50 right-1/3 flex flex-col items-center justify-around gap-2 p-2 bg-white text-xl text-slate-800 border rounded-md border-slate-400"
+                            >
+                              <div className="text-[10px] tracking-wider text-slate-600 px-1">
+                                <span>
+                                  Sku Id:{" "}
+                                  <span className="font-black">
+                                    {item.skuId}
+                                  </span>
+                                </span>
+                              </div>
+                              <div className="w-full flex items-center justify-around gap-2 p-2 bg-white text-xl text-slate-800 border rounded-md border-slate-400">
+                                <span className="flex items-center justify-center border rounded-md p-1 border-slate-200 hover:bg-slate-50 cursor-pointer">
+                                  <MdEdit />
+                                </span>
+
+                                <Form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="intent"
+                                    value="delete_product"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="skuId"
+                                    value={item.skuId}
+                                  />
+
+                                  <button
+                                    type="submit"
+                                    className="flex items-center justify-center border rounded-md p-1 text-red-600 border-red-100 hover:bg-red-50"
+                                  >
+                                    <MdDelete />
+                                  </button>
+                                </Form>
+                              </div>
+                            </div>
+                          )}
+                        </span>
                       </td>
                     </tr>
                   ))}

@@ -174,6 +174,17 @@ export const merchantAction = async ({ request }) => {
         };
       }
 
+      case "delete_product": {
+        const skuId = formData.get("skuId");
+        await api.delete(`/products/${skuId}`);
+        console.log("Product deleted successfully");
+        return {
+          success: true,
+          intent,
+          message: "Product deleted successfully",
+        };
+      }
+
       default:
         throw new Response("Invalid Intent", { status: 400 });
     }

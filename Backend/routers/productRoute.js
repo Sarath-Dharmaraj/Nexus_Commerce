@@ -4,6 +4,7 @@ import { asyncHandler } from "../middleware/errorMiddleware.js";
 import {
   postProduct,
   getMerchanInventory,
+  deleteProduct,
 } from "../controllers/productController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
 import { get } from "mongoose";
@@ -23,5 +24,6 @@ productRouter.use(isSeller);
 // routes for merchant
 productRouter.post("/", multiImageUpload, asyncHandler(postProduct));
 productRouter.get("/merchant", asyncHandler(getMerchanInventory));
+productRouter.delete("/:skuId", asyncHandler(deleteProduct));
 
 export default productRouter;

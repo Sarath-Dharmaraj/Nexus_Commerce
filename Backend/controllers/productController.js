@@ -69,3 +69,25 @@ export const getMerchanInventory = async (req, res) => {
     data: inventory,
   });
 };
+
+// delete product for merchant
+export const deleteProduct = async (req, res) => {
+  const { skuId } = req.params;
+
+  const result = await Product.deleteOne({
+    merchantId: req.user.id,
+    skuId: skuId,
+  });
+
+  if (result.deletedCount === 0) {
+    res.status(404);
+    throw new Error(
+      "Product not found or you are not authorized to delete it.",
+    );
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `Product ${skuId} has been successfully deleted.`,
+  });
+};

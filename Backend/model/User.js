@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-userSchema.index({ systemRole: 1 });
+userSchema.index({ systemRoles: 1 });
 userSchema.index({ isAdmin: 1 }, { sparse: true });
 
 userSchema.pre("save", async function () {
