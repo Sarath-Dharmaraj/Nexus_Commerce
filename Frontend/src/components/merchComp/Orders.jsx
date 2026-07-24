@@ -6,10 +6,11 @@ import {
   MdFilterList,
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
-import { useState } from "react";
+import FilterSort from "./FilterSort";
+import { useState, useMemo } from "react";
 
 function Orders() {
-  const { state } = useMerchant();
+  const { state, dispatch } = useMerchant();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -35,36 +36,54 @@ function Orders() {
     },
   };
 
-  const ordersTableData = [
-    {
-      orderId: "#NXS-82910",
-      date: "Oct 24, 2023",
-      customer: { name: "Jane Doe", initials: "JD" },
-      total: "$249.00",
-      status: "FULFILLED",
-    },
-    {
-      orderId: "#NXS-82911",
-      date: "Oct 24, 2023",
-      customer: { name: "Marcus Sterling", initials: "MS" },
-      total: "$1,120.50",
-      status: "PENDING",
-    },
-    {
-      orderId: "#NXS-82912",
-      date: "Oct 23, 2023",
-      customer: { name: "Aria Laurent", initials: "AL" },
-      total: "$89.00",
-      status: "CANCELLED",
-    },
-    {
-      orderId: "#NXS-82913",
-      date: "Oct 23, 2023",
-      customer: { name: "Robert King", initials: "RK" },
-      total: "$3,400.00",
-      status: "FULFILLED",
-    },
-  ];
+  const ordersTableData = useMemo(
+    () => [
+      {
+        orderId: "#NXS-82910",
+        date: "Oct 24, 2023",
+        customer: { name: "Jane Doe", initials: "JD" },
+        total: "249.00",
+        status: "FULFILLED",
+      },
+      {
+        orderId: "#NXS-82911",
+        date: "Oct 24, 2023",
+        customer: { name: "Marcus Sterling", initials: "MS" },
+        total: "1,120.50",
+        status: "PENDING",
+      },
+      {
+        orderId: "#NXS-82912",
+        date: "Oct 23, 2023",
+        customer: { name: "Aria Laurent", initials: "AL" },
+        total: "89.00",
+        status: "CANCELLED",
+      },
+      {
+        orderId: "#NXS-82913",
+        date: "Oct 23, 2023",
+        customer: { name: "Robert King", initials: "RK" },
+        total: "3,400.00",
+        status: "FULFILLED",
+      },
+    ],
+    [],
+  );
+
+  const processedData = useMemo(() => {
+    let data = [...ordersTableData];
+
+    if (state.categoryBy !== "ALL") {
+      data = data.filter((item) => item.status === state.categoryBy);
+    }
+
+    if (state.sortBy === "PRICE_ASC") data.sort((a, b) => a.total - b.total);
+    if (state.sortBy === "PRICE_DESC") data.sort((a, b) => b.total - a.total);
+    if (state.sortBy === "DATE_ASC") data.sort((a, b) => a.date - b.date);
+    if (state.sortBy === "DATE_DESC") data.sort((a, b) => b.date - a.date);
+
+    return data;
+  }, [ordersTableData, state.sortBy, state.categoryBy]);
 
   const StatusColorSwitch = (status) => {
     switch (status) {
@@ -83,7 +102,7 @@ function Orders() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-  const currentItems = ordersTableData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = processedData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -182,10 +201,17 @@ function Orders() {
                   Payment History
                 </span>
               </div>
-              <div className="flex items-center justify-around gap-3">
-                <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
+              <div className="relative flex items-center justify-around gap-3">
+                <span
+                  id="filter-trigger-btn"
+                  className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer"
+                  onClick={() =>
+                    dispatch({ type: "SET_FILTER", payload: !state.isFilter })
+                  }
+                >
                   <MdFilterList className="text-xl" /> <span>Filter</span>
                 </span>
+                <FilterSort page={"orders"} />
                 <span className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer">
                   <MdOutlineSaveAlt className="text-xl" /> <span>Export</span>
                 </span>
@@ -222,7 +248,7 @@ function Orders() {
                           {item.customer.name}
                         </td>
                         <td className="px-4 py-3 font-black text-black">
-                          {item.total}
+                          ${item.total}
                         </td>
                         <td className="px-4 py-3">
                           <span

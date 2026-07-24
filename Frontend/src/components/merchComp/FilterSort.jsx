@@ -81,8 +81,8 @@ function FilterSort({ page }) {
       groupLabel: "Sort by Date",
       actionType: "sortBy",
       options: [
-        { label: "Date: Newest First", value: "DATE_DESC" },
-        { label: "Date: Oldest First", value: "DATE_ASC" },
+        { label: "Newest First", value: "DATE_DESC" },
+        { label: "Oldest First", value: "DATE_ASC" },
       ],
     },
     {
@@ -90,8 +90,8 @@ function FilterSort({ page }) {
       groupLabel: "Sort by Amount",
       actionType: "sortBy",
       options: [
-        { label: "Amount: Low to High", value: "PRICE_ASC" },
-        { label: "Amount: High to Low", value: "PRICE_DESC" },
+        { label: "Low to High", value: "PRICE_ASC" },
+        { label: "High to Low", value: "PRICE_DESC" },
       ],
     },
     {
@@ -99,7 +99,7 @@ function FilterSort({ page }) {
       groupLabel: "Filter by Status",
       actionType: "categoryBy",
       options: [
-        { label: "FULFILLED", value: "FULFILLED" },
+        { label: "Fulfilled", value: "FULFILLED" },
         { label: "Pending", value: "PENDING" },
         { label: "Cancelled", value: "CANCELLED" },
       ],
