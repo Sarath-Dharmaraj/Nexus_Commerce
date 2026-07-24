@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Product from "../model/Product.js";
+import User from "../model/User.js";
 import generateSKu from "../utilit/skuGenerator.js";
 
 // post products
@@ -39,7 +40,20 @@ export const postProduct = async (req, res) => {
     searchTags,
   });
 
-  res.status(201).json({
+  // updating value for current month
+  const inventory = await Product.find({ merchantId: req.user.id });
+  const currentTotalValue = inventory.reduce(
+    (sum, item) => sum + item.price * item.stockLevel,
+    0,
+  );
+
+  const user = await User.findById(req.user.id);
+  if (currentTotalValue > user.sellerProfile.currentMonthPeak) {
+    user.sellerProfile.currentMonthPeak = currentTotalValue;
+    await user.save();
+  }
+
+  return res.status(201).json({
     success: true,
     data: newProduct,
   });
@@ -48,10 +62,10 @@ export const postProduct = async (req, res) => {
 // Get products for merchant
 export const getMerchanInventory = async (req, res) => {
   const inventory = await Product.find({ merchantId: req.user.id });
-  
+
   return res.status(200).json({
     success: true,
-    messagee: `Merchant ${req.user.id}'s Inventory extracted`,
+    message: `Merchant ${req.user.id}'s Inventory extracted`,
     data: inventory,
   });
 };
