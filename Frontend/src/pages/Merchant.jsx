@@ -6,6 +6,7 @@ import Sidebar from "../components/merchComp/Sidebar";
 import Wallet from "../components/merchComp/Wallet";
 
 import { MerchantProvider } from "../context/merchantContext";
+import AddProducts from "../components/merchComp/AddProducts";
 
 function MerchantLayout() {
   return (
@@ -17,6 +18,7 @@ function MerchantLayout() {
           <Wallet />
           <Inventory />
           <Orders />
+          <AddProducts />
         </div>
       </div>
     </div>

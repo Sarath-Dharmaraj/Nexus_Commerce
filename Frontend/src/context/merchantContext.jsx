@@ -5,6 +5,8 @@ const initialState = {
   isFilter: false,
   sortBy: "NONE",
   categoryBy: "ALL",
+  isEdit: false,
+  data: null,
 };
 
 const initializeState = (defaultState) => {

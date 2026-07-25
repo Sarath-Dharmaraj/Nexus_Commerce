@@ -378,7 +378,7 @@ function Inventory() {
                         <img
                           src={item.imageUrl}
                           alt="img"
-                          className="h-10 mx-auto"
+                          className="h-10 w-12 object-cover rounded-md mx-auto border border-slate-200"
                         />
                       </td>
                       <td className="text-left px-4 py-3">
@@ -412,7 +412,7 @@ function Inventory() {
                           • {item.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold tracking-widest">
+                      <td className="px-4 py-3 text-right cursor-pointer font-bold tracking-widest">
                         <span
                           onClick={(e) => {
                             e.stopPropagation();
@@ -420,28 +420,33 @@ function Inventory() {
                               isSkuId === item.skuId ? null : item.skuId,
                             );
                           }}
-                          className="relative "
+                          className={`relative px-2 py-1 border rounded-md ${isSkuId === item.skuId ? "bg-slate-200 border-slate-300 text-slate-800" : "border-transparent text-slate-400 hover:text-slate-600"}`}
                         >
                           ...
                           {isSkuId === item.skuId && (
                             <div
                               onClick={(e) => e.stopPropagation()}
-                              className="absolute z-50 right-1/3 flex flex-col items-center justify-around gap-2 p-2 bg-white text-xl text-slate-800 border rounded-md border-slate-400"
+                              className="absolute z-50 right-full top-0 mr-2 w-56 flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-lg tracking-normal cursor-default"
                             >
-                              <div className="text-[10px] tracking-wider text-slate-600 px-1">
-                                <span>
-                                  Sku Id:{" "}
-                                  <span className="font-black">
-                                    {item.skuId}
-                                  </span>
+                              <div className="text-[10px] text-slate-500 font-medium px-2 pb-2 border-b border-slate-100 mb-2 text-left">
+                                SKU: {item.skuId} | Category:{" "}
+                                <span className="capitalize">
+                                  {item.category}
                                 </span>
                               </div>
-                              <div className="w-full flex items-center justify-around gap-2 p-2 bg-white text-xl text-slate-800 border rounded-md border-slate-400">
-                                <span className="flex items-center justify-center border rounded-md p-1 border-slate-200 hover:bg-slate-50 cursor-pointer">
-                                  <MdEdit />
-                                </span>
 
-                                <Form method="post">
+                              <div className="flex flex-col gap-1 w-full">
+                                <button
+                                  className="w-full flex items-center gap-3 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+                                  onClick={() => {
+                                    console.log("Edit clicked for", item.skuId);
+                                  }}
+                                >
+                                  <MdEdit size={18} />
+                                  <span>Edit SKU</span>
+                                </button>
+
+                                <Form method="DELETE" className="w-full m-0 p-0">
                                   <input
                                     type="hidden"
                                     name="intent"
@@ -455,9 +460,10 @@ function Inventory() {
 
                                   <button
                                     type="submit"
-                                    className="flex items-center justify-center border rounded-md p-1 text-red-600 border-red-100 hover:bg-red-50"
+                                    className="w-full flex items-center gap-3 px-3 py-2 bg-white hover:bg-red-50 text-red-600 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
                                   >
-                                    <MdDelete />
+                                    <MdDelete size={18} />
+                                    <span>Delete SKU</span>
                                   </button>
                                 </Form>
                               </div>

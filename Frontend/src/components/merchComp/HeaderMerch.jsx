@@ -1,6 +1,8 @@
 import { MdOutlineSearch, MdHome, MdLocalGroceryStore } from "react-icons/md";
+import { useMerchant } from "../../context/merchantContext";
 
 function HeaderMerch() {
+  const { dispatch } = useMerchant();
   return (
     <div className="w-full py-2 bg-slate-50 px-10 border-b border-slate-200">
       <div className="flex items-center justify-between gap-4">
@@ -29,7 +31,12 @@ function HeaderMerch() {
         {/* vertical line */}
         <div className="hidden md:block w-px h-8 bg-slate-300 mx-4"></div>
         {/* add items */}
-        <div className="text-lg text-white tracking-tight capitalize bg-black px-5 py-1 rounded-lg cursor-pointer">
+        <div
+          className="text-lg text-white tracking-tight capitalize bg-black px-5 py-1 rounded-lg cursor-pointer"
+          onClick={() =>
+            dispatch({ type: "SET_SCREEN", payload: "Add_product" })
+          }
+        >
           + add product
         </div>
       </div>
