@@ -1,9 +1,23 @@
-import { Form } from "react-router-dom";
-import { useState } from "react";
+import { Form, useActionData } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useMerchant } from "../../context/merchantContext";
+import SuccessAlert from "./SuccessScrean";
 
 function AddProducts() {
-  const { state } = useMerchant();
+  const { state, dispatch } = useMerchant();
+  const [isOpen, setOpen] = useState(false);
+
+  const actionData = useActionData();
+
+  const close = () => {
+    dispatch({ type: "SET_SCREEN", payload: "WALLET" });
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (actionData?.success) setOpen(true);
+  }, [actionData]);
 
   const labelClass = "text-sm font-semibold text-slate-800";
   const inputClass =
@@ -65,10 +79,11 @@ function AddProducts() {
     e.target.files = dataTransfer.files;
   };
 
-  if (state.screen !== "Add_product") return null;
+  if (state.screen !== "ADD_PRODUCT") return null;
 
   return (
-    <div className="w-full h-full bg-slate-50 px-8 py-5 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-none">
+    <div className="relative w-full h-full bg-slate-50 px-8 py-5 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-none">
+      {isOpen && <SuccessAlert onClose={close} message={actionData?.message} />}
       <div className="w-full max-w-5xl mx-auto flex flex-col gap-2">
         <div className="text-slate-800 font-bold text-3xl ">
           {!state.isEdit ? "Add New SKU" : "Edit SKU"}
@@ -79,6 +94,11 @@ function AddProducts() {
           encType="multipart/form-data"
           className="flex flex-col gap-2"
         >
+          <input
+            type="hidden"
+            name="intent"
+            value={!state.isEdit ? "quick_add_product" : "edit_product"}
+          />
           <div className="w-full flex flex-col">
             <label htmlFor="skuTitle" className={labelClass}>
               SKU Title
@@ -112,7 +132,7 @@ function AddProducts() {
                 )}
                 <input
                   type="file"
-                  name="imageUrl"
+                  name="mainImage"
                   accept="image/*"
                   className="hidden"
                   onChange={handleMainImageChange}
@@ -156,7 +176,9 @@ function AddProducts() {
 
           <div className={headerClass}>Product Configuration</div>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="w-full flex flex-col">
+            <div
+              className={`w-full flex flex-col ${state.isEdit ? "block" : "hidden"}`}
+            >
               <label htmlFor="skuId" className={labelClass}>
                 SKU ID (Unique)
               </label>

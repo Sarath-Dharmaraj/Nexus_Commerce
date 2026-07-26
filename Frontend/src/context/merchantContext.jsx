@@ -45,6 +45,14 @@ function merchantReducer(state, action) {
         sortBy: initialState.sortBy,
         categoryBy: initialState.categoryBy,
       };
+      case 'SET_EDIT': {
+        return {
+          ...initialState,
+          screen: 'ADD_PRODUCT',
+          isEdit: true,
+          data: action.payload
+        }
+      }
     default:
       return state;
   }

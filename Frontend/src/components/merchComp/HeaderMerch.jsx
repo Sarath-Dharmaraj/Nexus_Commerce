@@ -34,7 +34,7 @@ function HeaderMerch() {
         <div
           className="text-lg text-white tracking-tight capitalize bg-black px-5 py-1 rounded-lg cursor-pointer"
           onClick={() =>
-            dispatch({ type: "SET_SCREEN", payload: "Add_product" })
+            dispatch({ type: "SET_SCREEN", payload: "ADD_PRODUCT" })
           }
         >
           + add product

@@ -5,6 +5,7 @@ import {
   postProduct,
   getMerchanInventory,
   deleteProduct,
+  updateMerchantInventory,
 } from "../controllers/productController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
 import { get } from "mongoose";
@@ -24,6 +25,7 @@ productRouter.use(isSeller);
 // routes for merchant
 productRouter.post("/", multiImageUpload, asyncHandler(postProduct));
 productRouter.get("/merchant", asyncHandler(getMerchanInventory));
+productRouter.put("/", multiImageUpload, asyncHandler(updateMerchantInventory));
 productRouter.delete("/:skuId", asyncHandler(deleteProduct));
 
 export default productRouter;

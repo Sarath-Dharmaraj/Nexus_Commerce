@@ -439,14 +439,20 @@ function Inventory() {
                                 <button
                                   className="w-full flex items-center gap-3 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
                                   onClick={() => {
-                                    console.log("Edit clicked for", item.skuId);
+                                    dispatch({
+                                      type: "SET_EDIT",
+                                      payload: item,
+                                    });
                                   }}
                                 >
                                   <MdEdit size={18} />
                                   <span>Edit SKU</span>
                                 </button>
 
-                                <Form method="DELETE" className="w-full m-0 p-0">
+                                <Form
+                                  method="DELETE"
+                                  className="w-full m-0 p-0"
+                                >
                                   <input
                                     type="hidden"
                                     name="intent"

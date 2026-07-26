@@ -169,8 +169,8 @@ export const merchantAction = async ({ request }) => {
         console.log("Product added successfully");
         return {
           success: true,
-          intent,
-          message: "Product added successfully!",
+          intent: "quick_add_product",
+          message: "Product added to catalog successfully!",
         };
       }
 

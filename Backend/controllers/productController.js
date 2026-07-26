@@ -70,6 +70,53 @@ export const getMerchanInventory = async (req, res) => {
   });
 };
 
+// edit the product
+export const updateMerchantInventory = async (req, res) => {
+  const { skuId, ...payload } = req.body;
+
+  if (req.files) {
+    if (req.files["mainImage"]) {
+      payload.imageUrl = req.files["mainImage"][0].path;
+    }
+    if (req.files["additionalImages"]) {
+      payload.additionalImages = req.files["additionalImages"].map(
+        (file) => file.path,
+      );
+    }
+  }
+
+  const updatedProduct = await Product.findOneAndUpdate(
+    {
+      merchantId: req.user.id,
+      skuId: skuId,
+    },
+    { $set: payload },
+    { new: true, runValidators: true },
+  );
+
+  if (!updatedProduct) {
+    res.status(404);
+    throw new Error("Product not found or you are not authorized to edit it.");
+  }
+
+  const inventory = await Product.find({ merchantId: req.user.id });
+  const currentTotalValue = inventory.reduce(
+    (sum, item) => sum + item.price * item.stockLevel,
+    0,
+  );
+
+  const user = await User.findById(req.user.id);
+  if (currentTotalValue > user.sellerProfile.currentMonthPeak) {
+    user.sellerProfile.currentMonthPeak = currentTotalValue;
+    await user.save();
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `Product ${skuId} updated successfully`,
+    data: updatedProduct,
+  });
+};
 // delete product for merchant
 export const deleteProduct = async (req, res) => {
   const { skuId } = req.params;
