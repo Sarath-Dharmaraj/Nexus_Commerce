@@ -6,8 +6,37 @@ import SuccessAlert from "./SuccessScrean";
 function AddProducts() {
   const { state, dispatch } = useMerchant();
   const [isOpen, setOpen] = useState(false);
-
   const actionData = useActionData();
+
+  // existing data for editing inventory product
+  const [tags, setTags] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [mainPreview, setMainPreview] = useState(null);
+  const [additionalPreviews, setAdditionalPreviews] = useState([]);
+  const [additionalFiles, setAdditionalFiles] = useState([]);
+
+  useEffect(() => {
+    if (state.screen === "ADD_PRODUCT") {
+      if (state.isEdit && state.data) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setTags(state.data.searchTags || []);
+        setMainPreview(state.data.imageUrl || null);
+        setAdditionalPreviews(state.data.additionalImages || []);
+      } else {
+        setTags([]);
+        setMainPreview(null);
+        setAdditionalPreviews([]);
+        setAdditionalFiles([]);
+        setInputValue("");
+      }
+    } else {
+      setTags([]);
+      setMainPreview(null);
+      setAdditionalPreviews([]);
+      setAdditionalFiles([]);
+      setInputValue("");
+    }
+  }, [state.screen, state.isEdit, state.data]);
 
   const close = () => {
     dispatch({ type: "SET_SCREEN", payload: "WALLET" });
@@ -23,22 +52,6 @@ function AddProducts() {
   const inputClass =
     "w-full bg-white border rounded-md border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 px-3 py-1 outline-none transition-all text-sm text-slate-700 placeholder-slate-400";
   const headerClass = "text-lg font-bold text-slate-800";
-
-  const [tags, setTags] = useState(
-    state.isEdit && state.data?.searchTags ? state.data.searchTags : [],
-  );
-  const [inputValue, setInputValue] = useState("");
-
-  const [mainPreview, setMainPreview] = useState(
-    state.isEdit && state.data?.imageUrl ? state.data.imageUrl : null,
-  );
-  const [additionalPreviews, setAdditionalPreviews] = useState(
-    state.isEdit && state.data?.additionalImages
-      ? state.data.additionalImages
-      : [],
-  );
-
-  const [additionalFiles, setAdditionalFiles] = useState([]);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {

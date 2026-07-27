@@ -174,6 +174,19 @@ export const merchantAction = async ({ request }) => {
         };
       }
 
+      case "edit_product": {
+        await api.put("/products/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log("SKU details have been successfully updated.");
+        return {
+          success: true,
+          intent: "quick_add_product",
+          message: "SKU details have been successfully updated.",
+        };
+      }
+
       case "delete_product": {
         const skuId = formData.get("skuId");
         await api.delete(`/products/${skuId}`);
