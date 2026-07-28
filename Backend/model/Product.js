@@ -55,6 +55,8 @@ const productSchema = new mongoose.Schema(
       enum: ["Pending", "Approved", "Flagged"],
       default: "Pending",
     },
+    averageRating: { type: Number, default: 0 },
+    totalReviews: { type: Number, default: 0 },
   },
   { timestamps: true },
 );

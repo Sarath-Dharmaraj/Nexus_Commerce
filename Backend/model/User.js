@@ -56,6 +56,25 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    cart: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+          min: 1,
+        },
+      },
+    ],
     sellerProfile: {
       isApproved: { type: Boolean, default: false },
       merchantLevel: { type: String, default: "Standard" },
