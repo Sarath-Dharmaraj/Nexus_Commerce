@@ -6,6 +6,7 @@ import dotenv from "dotenv/config";
 
 import router from "./routers/router.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
+import "./utilit/feedGenerator.js";
 
 const app = express();
 

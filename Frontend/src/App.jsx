@@ -17,6 +17,7 @@ import {
   gatewayLoader,
   ProtectedLoader,
   merchantLoader,
+  homeFeedLoader,
 } from "./services/routerLoader";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         {
           path: "/home",
           element: <Home />,
+          loader: homeFeedLoader,
         },
         {
           path: "/profile",

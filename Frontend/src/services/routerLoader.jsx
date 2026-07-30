@@ -38,6 +38,18 @@ export const merchantLoader = async () => {
     };
   } catch (error) {
     console.error(error);
+    return redirect("/login");
+  }
+};
+
+//loader for home feed
+export const homeFeedLoader = async () => {
+  try {
+    const response = await api.get("/home/");
+    console.log("Data received successfully");
+    return response.data.data;
+  } catch (error) {
+    console.error("error data", error);
     return redirect("/profile");
   }
 };
