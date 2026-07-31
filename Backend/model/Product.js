@@ -8,6 +8,10 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    brand: {
+      type: String,
+      required: true,
+    },
     skuTitle: {
       type: String,
       required: true,
