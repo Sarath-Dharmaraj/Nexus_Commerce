@@ -1,4 +1,4 @@
-function ProfileFooter() {
+function Footer() {
   return (
     <div className="col-span-5 row-span-1 px-4 py-5 flex flex-col md:flex-row items-center justify-around gap-4 md:gap-0 bg-white border rounded-2xl border-slate-200 shadow-sm">
       <div className="flex flex-col items-start justify-around tracking-tight">
@@ -21,4 +21,4 @@ function ProfileFooter() {
   );
 }
 
-export default ProfileFooter;
+export default Footer;

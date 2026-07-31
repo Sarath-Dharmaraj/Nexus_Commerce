@@ -4,6 +4,7 @@ import {
   MdOutlineFavoriteBorder,
   MdShoppingCartCheckout,
 } from "react-icons/md";
+import Footer from "../components/profile&homeComp/Footer";
 
 export default function Home() {
   const data = useLoaderData();
@@ -84,6 +85,7 @@ export default function Home() {
             </div>
           ))}
         </div>
+        <Footer />
       </div>
     </div>
   );

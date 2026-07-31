@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import ProtectedLayout from "./components/ProtectedLayout";
+import ProtectedLayout from "./components/profile&homeComp/ProtectedLayout";
 import Merchant from "./pages/Merchant";
 
 import {

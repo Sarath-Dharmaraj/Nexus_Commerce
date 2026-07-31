@@ -4,7 +4,7 @@ import { ProfileProvider } from "../context/profileContext";
 
 import ProfileAddress from "../components/profileComp/ProfileAddress";
 import ProfileCard from "../components/profileComp/ProfileCard";
-import ProfileFooter from "../components/profileComp/ProfileFooter";
+import Footer from "../components/profile&homeComp/Footer";
 import ProfileOverview from "../components/profileComp/ProfileOverview";
 import RecentOrders from "../components/profileComp/ProfileRecentOrders";
 import SubmissionAlert from "../components/profileComp/SubmissionAlert";
@@ -24,7 +24,7 @@ function ProfileLayout() {
         <RecentOrders />
         <ProfileCard />
         <ProfileAddress />
-        <ProfileFooter />
+        <Footer />
       </div>
     </div>
   );
