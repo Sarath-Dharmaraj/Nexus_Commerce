@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import ProtectedLayout from "./components/profile&homeComp/ProtectedLayout";
 import Merchant from "./pages/Merchant";
+import ProductCard from "./pages/ProductCard";
 
 import {
   signupAction,
@@ -37,7 +38,7 @@ function App() {
       action: signupAction,
     },
     {
-      id: ProtectedLayout,
+      id: "ProtectedLayout",
       element: <ProtectedLayout />,
       loader: ProtectedLoader,
       children: [
@@ -50,6 +51,10 @@ function App() {
           path: "/profile",
           element: <Profile />,
           action: profileAction,
+        },
+        {
+          path: "/product/:productId",
+          element: <ProductCard />,
         },
       ],
     },
