@@ -30,7 +30,7 @@ export const merchantLoader = async () => {
   try {
     const [sellerResponse, inventoryResponse] = await Promise.all([
       api.get("/user/seller-profile"),
-      api.get("/products/merchant"),
+      api.get("/merchant"),
     ]);
     return {
       sellerProfile: sellerResponse.data.data,
@@ -46,10 +46,21 @@ export const merchantLoader = async () => {
 export const homeFeedLoader = async () => {
   try {
     const response = await api.get("/home/");
-    console.log("Data received successfully");
+    console.log("Home feed Data received successfully");
     return response.data.data;
   } catch (error) {
     console.error("error data", error);
     return redirect("/profile");
   }
+};
+
+// product loader
+
+export const productLoader = async () => {
+  const id = window.location.pathname.split("/").pop();
+  console.log(id);
+  const response = await api.get(`/product/${id}`);
+  console.log(response);
+
+  return response.data.product;
 };

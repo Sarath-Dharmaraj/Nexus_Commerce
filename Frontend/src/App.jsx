@@ -19,6 +19,7 @@ import {
   ProtectedLoader,
   merchantLoader,
   homeFeedLoader,
+  productLoader,
 } from "./services/routerLoader";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         },
         {
           path: "/product/:productId",
+          loader: productLoader,
           element: <ProductCard />,
         },
       ],

@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import {
   MdOutlineStar,
   MdOutlineFavoriteBorder,
@@ -7,7 +7,9 @@ import {
 import Footer from "../components/profile&homeComp/Footer";
 
 export default function Home() {
+  // hooks
   const data = useLoaderData();
+  const nav = useNavigate();
 
   return (
     <div className="px-8 py-6 flex flex-col justify-around gap-5">
@@ -44,6 +46,7 @@ export default function Home() {
                 {section.products.map((item, itemKey) => (
                   <div
                     key={itemKey}
+                    onClick={() => nav(`/product/${item._id}`)}
                     className="w-64 shrink-0 h-80 flex flex-col border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
                   >
                     <div className="h-48 w-full bg-slate-100 relative overflow-hidden shrink-0 flex items-center justify-center">
