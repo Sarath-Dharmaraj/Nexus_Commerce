@@ -18,9 +18,9 @@ function Navbar() {
 
         <div
           className={`flex flex-1 items-center justify-between px-2 md:px-4 lg:px-8 ${
-            location.pathname === "/home"
-              ? "md:flex-row-reverse"
-              : "md:flex-row"
+            location.pathname === "/merchant"
+              ? "md:flex-row"
+              : "md:flex-row-reverse"
           }`}
         >
           <nav className="hidden md:flex items-center text-sm lg:text-base text-slate-600 capitalize gap-4 md:gap-2 lg:gap-8 shrink-0">
