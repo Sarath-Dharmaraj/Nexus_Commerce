@@ -21,7 +21,7 @@ app.use(
 );
 
 mongoose
-  .connect("mongodb://localhost:27017/nexus_commerce")
+  .connect(process.env.MONGO_DB_URL)
   .then(() => console.log("MongoDB is successfully connected"))
   .catch((error) => console.error("Error while connecting MongoDB:", error));
 
