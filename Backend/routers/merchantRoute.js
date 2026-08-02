@@ -6,11 +6,11 @@ import {
   getMerchanInventory,
   deleteProduct,
   updateMerchantInventory,
-} from "../controllers/productController.js";
+} from "../controllers/merchantController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
-import { get } from "mongoose";
+
 // router setup
-const productRouter = Router();
+const merchantRouter = Router();
 
 // cloudinary setup
 const multiImageUpload = uploadProductImg.fields([
@@ -19,13 +19,17 @@ const multiImageUpload = uploadProductImg.fields([
 ]);
 
 // authorization & authentication
-productRouter.use(verifyCookie);
-productRouter.use(isSeller);
+merchantRouter.use(verifyCookie);
+merchantRouter.use(isSeller);
 
 // routes for merchant
-productRouter.post("/", multiImageUpload, asyncHandler(postProduct));
-productRouter.get("/merchant", asyncHandler(getMerchanInventory));
-productRouter.put("/", multiImageUpload, asyncHandler(updateMerchantInventory));
-productRouter.delete("/:skuId", asyncHandler(deleteProduct));
+merchantRouter.post("/", multiImageUpload, asyncHandler(postProduct));
+merchantRouter.get("/", asyncHandler(getMerchanInventory));
+merchantRouter.put(
+  "/",
+  multiImageUpload,
+  asyncHandler(updateMerchantInventory),
+);
+merchantRouter.delete("/:skuId", asyncHandler(deleteProduct));
 
-export default productRouter;
+export default merchantRouter;
