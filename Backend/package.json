@@ -29,5 +29,8 @@
     "multer": "^2.2.0",
     "multer-storage-cloudinary": "^4.0.0",
     "node-cron": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.11.97"
   }
 }
