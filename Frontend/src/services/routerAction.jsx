@@ -162,7 +162,7 @@ export const merchantAction = async ({ request }) => {
   try {
     switch (intent) {
       case "quick_add_product": {
-        await api.post("/products/", formData, {
+        await api.post("/merchant/", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -175,7 +175,7 @@ export const merchantAction = async ({ request }) => {
       }
 
       case "edit_product": {
-        await api.put("/products/", formData, {
+        await api.put("/merchant/", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
@@ -189,7 +189,7 @@ export const merchantAction = async ({ request }) => {
 
       case "delete_product": {
         const skuId = formData.get("skuId");
-        await api.delete(`/products/${skuId}`);
+        await api.delete(`/merchant/${skuId}`);
         console.log("Product deleted successfully");
         return {
           success: true,
