@@ -1,12 +1,16 @@
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMerchant } from "../../context/merchantContext";
 import SuccessAlert from "./SuccessScrean";
 
+// component beginning
 function AddProducts() {
   const { state, dispatch } = useMerchant();
   const [isOpen, setOpen] = useState(false);
   const actionData = useActionData();
+  const navigation = useNavigation();
+  console.log(navigation);
+  const isSubmitting = navigation.state !== "idle";
 
   // existing data for editing inventory product
   const [tags, setTags] = useState([]);
@@ -319,7 +323,14 @@ function AddProducts() {
               type="submit"
               className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 mt-4 rounded-md font-semibold transition-colors shadow-sm"
             >
-              + {state.isEdit ? "Update Catalog" : "Add to Catalog"}
+              +{" "}
+              {state.isEdit
+                ? isSubmitting
+                  ? "Updating Catalog..."
+                  : "Update Catalog"
+                : isSubmitting
+                  ? "Adding to Catalog"
+                  : "Add to Catalog"}
             </button>
           </div>
         </Form>

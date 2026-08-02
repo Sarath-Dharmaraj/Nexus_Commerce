@@ -14,6 +14,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Form } from "react-router-dom";
 import FilterSort from "./FilterSort";
 
+// Function beginning
 function Inventory() {
   // hook set ups
   const {
@@ -21,9 +22,11 @@ function Inventory() {
     dispatch,
     merchantData: { sellerProfile: sellerData, inventory: inventoryData },
   } = useMerchant();
+
   const [isSkuId, setSkuId] = useState(false);
   const [tab, setTab] = useState("ALL_ITEM");
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 4;
 
   useEffect(() => {
