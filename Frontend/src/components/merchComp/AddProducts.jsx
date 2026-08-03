@@ -9,7 +9,6 @@ function AddProducts() {
   const [isOpen, setOpen] = useState(false);
   const actionData = useActionData();
   const navigation = useNavigation();
-  console.log(navigation);
   const isSubmitting = navigation.state !== "idle";
 
   // existing data for editing inventory product
@@ -116,19 +115,38 @@ function AddProducts() {
             name="intent"
             value={!state.isEdit ? "quick_add_product" : "edit_product"}
           />
-          <div className="w-full flex flex-col">
-            <label htmlFor="skuTitle" className={labelClass}>
-              SKU Title
-            </label>
-            <input
-              type="text"
-              name="skuTitle"
-              id="skuTitle"
-              className={inputClass}
-              placeholder="e.g., Premium Gadget"
-              defaultValue={state.isEdit ? state.data?.skuTitle : ""}
-              required
-            />
+
+          {/* UPDATED: SKU Title and Brand grouped together in a grid */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="w-full flex flex-col">
+              <label htmlFor="skuTitle" className={labelClass}>
+                SKU Title
+              </label>
+              <input
+                type="text"
+                name="skuTitle"
+                id="skuTitle"
+                className={inputClass}
+                placeholder="e.g., Premium Gadget"
+                defaultValue={state.isEdit ? state.data?.skuTitle : ""}
+                required
+              />
+            </div>
+
+            <div className="w-full flex flex-col">
+              <label htmlFor="brand" className={labelClass}>
+                Brand
+              </label>
+              <input
+                type="text"
+                name="brand"
+                id="brand"
+                className={inputClass}
+                placeholder="e.g., Nexus Electronics"
+                defaultValue={state.isEdit ? state.data?.brand : ""}
+                required
+              />
+            </div>
           </div>
 
           <div className={headerClass}>Media Catalog</div>
@@ -147,6 +165,7 @@ function AddProducts() {
                     +
                   </span>
                 )}
+                {/* DELIBERATELY EXCLUDED required here so users can update without re-uploading an image */}
                 <input
                   type="file"
                   name="mainImage"
@@ -179,6 +198,7 @@ function AddProducts() {
                     )}
                   </div>
                 ))}
+                {/* DELIBERATELY EXCLUDED required */}
                 <input
                   type="file"
                   name="additionalImages"
@@ -209,6 +229,7 @@ function AddProducts() {
                 readOnly={state.isEdit}
               />
             </div>
+
             <div className="w-full flex flex-col">
               <label htmlFor="category" className={labelClass}>
                 Category
@@ -216,9 +237,11 @@ function AddProducts() {
               <select
                 name="category"
                 className={inputClass}
-                defaultValue={state.isEdit ? state.data?.category : "default"}
+                // Updated default value trick to work natively with 'required' attribute
+                defaultValue={state.isEdit ? state.data?.category : ""}
+                required
               >
-                <option value="default" disabled className="text-slate-400">
+                <option value="" disabled className="text-slate-400">
                   Select Category...
                 </option>
                 <option value="electronic">Electronic</option>
@@ -228,13 +251,65 @@ function AddProducts() {
                 <option value="health_beauty">Health & Beauty</option>
               </select>
             </div>
+
+            <div className="w-full flex flex-col">
+              <label htmlFor="warranty" className={labelClass}>
+                Warranty
+              </label>
+              <input
+                type="text"
+                name="warranty"
+                id="warranty"
+                className={inputClass}
+                placeholder="e.g., 1 Year Manufacturer Warranty"
+                defaultValue={state.isEdit ? state.data?.warranty : ""}
+                required
+              />
+            </div>
+          </div>
+
+          <div className={headerClass}>Product Details</div>
+          <div className="w-full flex flex-col">
+            <label htmlFor="description" className={labelClass}>
+              Description
+            </label>
+            <textarea
+              name="description"
+              id="description"
+              rows="4"
+              className={`${inputClass} resize-none py-2`}
+              placeholder="Enter a detailed product description..."
+              defaultValue={state.isEdit ? state.data?.description : ""}
+              required
+            ></textarea>
           </div>
 
           <div className={headerClass}>Pricing & Inventory</div>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="w-full flex flex-col relative">
+              <label htmlFor="mrp" className={labelClass}>
+                MRP (USD)
+              </label>
+              <div className="relative w-full">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                  $
+                </span>
+                <input
+                  type="number"
+                  step="0.01"
+                  name="mrp"
+                  id="mrp"
+                  className={`${inputClass} pl-8`}
+                  placeholder="0.00"
+                  defaultValue={state.isEdit ? state.data?.mrp : ""}
+                  required
+                />
+              </div>
+            </div>
+
             <div className="w-full flex flex-col relative">
               <label htmlFor="price" className={labelClass}>
-                Price (USD)
+                Selling Price (USD)
               </label>
               <div className="relative w-full">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
@@ -252,6 +327,7 @@ function AddProducts() {
                 />
               </div>
             </div>
+
             <div className="w-full flex flex-col">
               <label htmlFor="stockLevel" className={labelClass}>
                 Initial Stock Level
@@ -318,10 +394,10 @@ function AddProducts() {
             ))}
           </div>
 
-          <div className="w-full flex justify-end items-center gap-4 border-t mt-2 border-slate-200">
+          <div className="w-full flex justify-end items-center gap-4 border-t mt-2 border-slate-200 pt-4">
             <button
               type="submit"
-              className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 mt-4 rounded-md font-semibold transition-colors shadow-sm"
+              className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-2 rounded-md font-semibold transition-colors shadow-sm"
             >
               +{" "}
               {state.isEdit
