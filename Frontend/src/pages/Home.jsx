@@ -4,7 +4,7 @@ import {
   MdOutlineFavoriteBorder,
   MdShoppingCartCheckout,
 } from "react-icons/md";
-import Footer from "../components/profile&homeComp/Footer";
+import Footer from "../components/protectedPageComp/Footer";
 
 export default function Home() {
   // hooks
