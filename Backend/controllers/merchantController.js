@@ -5,7 +5,17 @@ import generateSKu from "../utilit/skuGenerator.js";
 
 // post products
 export const postProduct = async (req, res) => {
-  const { skuTitle, price, stockLevel, category, searchTags } = req.body;
+  const {
+    skuTitle,
+    price,
+    stockLevel,
+    brand,
+    category,
+    searchTags,
+    warranty,
+    mrp,
+    description,
+  } = req.body;
 
   let imageUrl =
     "https://res.cloudinary.com/delqw275i/image/upload/v1782365389/samples/radial_02.png";
@@ -32,12 +42,16 @@ export const postProduct = async (req, res) => {
     merchantId: req.user.id,
     skuTitle,
     skuId: generatedSkuId,
+    brand,
     price,
     stockLevel,
     category,
     imageUrl,
     additionalImages,
     searchTags,
+    warranty,
+    mrp,
+    description,
   });
 
   // updating value for current month

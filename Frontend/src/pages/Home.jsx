@@ -46,7 +46,9 @@ export default function Home() {
                 {section.products.map((item, itemKey) => (
                   <div
                     key={itemKey}
-                    onClick={() => nav(`/product/${item._id}`)}
+                    onClick={() => {
+                      nav(`/product/${item._id}`);
+                    }}
                     className="w-64 shrink-0 h-80 flex flex-col border border-slate-200 rounded-md overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
                   >
                     <div className="h-48 w-full bg-slate-100 relative overflow-hidden shrink-0 flex items-center justify-center">
