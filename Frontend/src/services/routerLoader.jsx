@@ -56,11 +56,9 @@ export const homeFeedLoader = async () => {
 
 // product loader
 
-export const productLoader = async () => {
-  const id = window.location.pathname.split("/").pop();
-  console.log(id);
-  const response = await api.get(`/product/${id}`);
-  console.log(response);
+export const productLoader = async ({ params }) => {
+  const { productId } = params;
+  const response = await api.get(`/product/${productId}`);
 
   return response.data.product;
 };

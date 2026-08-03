@@ -190,7 +190,6 @@ export const merchantAction = async ({ request }) => {
       case "delete_product": {
         const skuId = formData.get("skuId");
         await api.delete(`/merchant/${skuId}`);
-        console.log("Product deleted successfully");
         return {
           success: true,
           intent,
