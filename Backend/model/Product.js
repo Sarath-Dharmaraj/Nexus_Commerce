@@ -21,8 +21,20 @@ const productSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
+    mrp: {
+      type: Number,
+      required: true,
+    },
     price: {
       type: Number,
+      required: true,
+    },
+    warranty: {
+      type: String,
       required: true,
     },
     stockLevel: {

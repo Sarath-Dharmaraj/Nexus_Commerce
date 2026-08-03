@@ -7,6 +7,6 @@ import { getProductData } from "../controllers/productController.js";
 // router setup
 const productRouter = Router();
 
-productRouter.get("/:id", asyncHandler(getProductData));
+productRouter.get("/:productId", asyncHandler(getProductData));
 
 export default productRouter;
