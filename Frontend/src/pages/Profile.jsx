@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 
 import { ProfileProvider } from "../context/profileContext";
 
@@ -31,7 +31,7 @@ function ProfileLayout() {
 }
 
 function Profile() {
-  const userData = useOutletContext();
+  const userData = useLoaderData();
   return (
     <ProfileProvider userData={userData}>
       <ProfileLayout />

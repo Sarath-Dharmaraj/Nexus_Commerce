@@ -1,13 +1,12 @@
-import { useLoaderData, Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
+import { Outlet } from "react-router-dom";
+import Navbar from "../src/components/protectedPageComp/Navbar";
 
 function ProtectedLayout() {
-  const user = useLoaderData();
   return (
     <div className="relative font-hanken tracking-widest w-full h-screen overflow-hidden flex flex-col">
-      <Navbar user={user} />
+      <Navbar />
       <main className="flex-1 overflow-y-auto">
-        <Outlet context={user} />
+        <Outlet />
       </main>
     </div>
   );

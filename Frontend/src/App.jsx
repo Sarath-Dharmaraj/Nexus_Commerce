@@ -1,10 +1,15 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import ProtectedLayout from "./components/protectedPageComp/ProtectedLayout";
+import ProtectedLayout from "../layouts/ProtectedLayout";
+import RootLayout from "../layouts/RootLayout";
 import Merchant from "./pages/Merchant";
 import ProductCard from "./pages/ProductCard";
 
@@ -16,7 +21,7 @@ import {
 } from "./services/routerAction";
 import {
   gatewayLoader,
-  ProtectedLoader,
+  profileLoader,
   merchantLoader,
   homeFeedLoader,
   productLoader,
@@ -25,46 +30,50 @@ import {
 function App() {
   const router = createBrowserRouter([
     {
-      loader: gatewayLoader,
       path: "/",
-    },
-    {
-      path: "/login",
-      element: <Login />,
-      action: loginAction,
-    },
-    {
-      path: "/signup",
-      element: <Signup />,
-      action: signupAction,
-    },
-    {
-      id: "ProtectedLayout",
-      element: <ProtectedLayout />,
-      loader: ProtectedLoader,
+      element: <RootLayout />,
+      loader: gatewayLoader,
       children: [
+        { index: true, element: <Navigate to="/home" replace /> },
         {
-          path: "/home",
-          element: <Home />,
-          loader: homeFeedLoader,
+          path: "/login",
+          element: <Login />,
+          action: loginAction,
         },
         {
-          path: "/profile",
-          element: <Profile />,
-          action: profileAction,
+          path: "/signup",
+          element: <Signup />,
+          action: signupAction,
         },
         {
-          path: "/product/:productId",
-          loader: productLoader,
-          element: <ProductCard />,
+          id: "ProtectedLayout",
+          element: <ProtectedLayout />,
+          children: [
+            {
+              path: "/home",
+              element: <Home />,
+              loader: homeFeedLoader,
+            },
+            {
+              path: "/profile",
+              element: <Profile />,
+              loader: profileLoader,
+              action: profileAction,
+            },
+            {
+              path: "/product/:productId",
+              loader: productLoader,
+              element: <ProductCard />,
+            },
+          ],
+        },
+        {
+          path: "/merchant",
+          element: <Merchant />,
+          loader: merchantLoader,
+          action: merchantAction,
         },
       ],
-    },
-    {
-      path: "/merchant",
-      element: <Merchant />,
-      loader: merchantLoader,
-      action: merchantAction,
     },
   ]);
 

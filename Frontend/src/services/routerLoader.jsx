@@ -5,17 +5,16 @@ import { redirect, replace } from "react-router-dom";
 
 export const gatewayLoader = async () => {
   try {
-    await api.get("/auth/me");
-    return replace("/profile");
-    // eslint-disable-next-line no-unused-vars
+    const response = await api.get("/auth/me");
+    return { user: response.data.user };
   } catch (error) {
     console.error(error);
-    return replace("/login");
+    return { user: null };
   }
 };
 
 //profile page
-export const ProtectedLoader = async () => {
+export const profileLoader = async () => {
   try {
     const response = await api.get("/user/data");
     return response.data.user;
@@ -54,11 +53,15 @@ export const homeFeedLoader = async () => {
   }
 };
 
-// product loader
+// product loader and review loader
 
 export const productLoader = async ({ params }) => {
   const { productId } = params;
-  const response = await api.get(`/product/${productId}`);
+  const productResponse = await api.get(`/product/${productId}`);
+  const reviewsResponse = await api.get(`/reviews/${productId}`);
 
-  return response.data.product;
+  return {
+    productData: productResponse.data.product,
+    reviewData: reviewsResponse.data.review,
+  };
 };

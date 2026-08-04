@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { verifyCookie } from "../middleware/gaurdAuth.js";
+import { asyncHandler } from "../middleware/errorMiddleware.js";
 import {
   verifyUserSession,
   registerUser,
@@ -9,7 +10,7 @@ import {
 
 const authRouter = Router();
 
-authRouter.get("/me", verifyCookie, verifyUserSession);
+authRouter.get("/me", verifyCookie, asyncHandler(verifyUserSession));
 authRouter.post("/signup", registerUser);
 authRouter.post("/login", userLogin);
 
