@@ -1,16 +1,26 @@
 import { MdStar } from "react-icons/md";
 
-function StarRating({ rating = 0 }) {
+function StarRating({ rating = 0, setStar = false }) {
   // Example: 4.5 out of 5 equals 90%
   const validRating = Number(rating);
   const fillPercentage = (validRating / 5) * 100;
+
+  function starRating(index) {
+    if (setStar) {
+      setStar(index);
+    }
+  }
 
   return (
     <div className="relative flex items-center w-max">
       {/* BACKGROUND LAYER: 5 Empty/Gray Stars */}
       <div className="flex items-center text-slate-200">
         {[1, 2, 3, 4, 5].map((index) => (
-          <MdStar key={`bg-${index}`} size={20} />
+          <MdStar
+            key={`bg-${index}`}
+            size={20}
+            onClick={() => starRating(index)}
+          />
         ))}
       </div>
 
@@ -21,7 +31,11 @@ function StarRating({ rating = 0 }) {
       >
         <div className="flex items-center text-yellow-500 w-max">
           {[1, 2, 3, 4, 5].map((index) => (
-            <MdStar key={`fg-${index}`} size={20} />
+            <MdStar
+              key={`fg-${index}`}
+              size={20}
+              onClick={() => starRating(index)}
+            />
           ))}
         </div>
       </div>

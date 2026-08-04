@@ -13,24 +13,26 @@ import {
 
 import StarRating from "../components/productComp/StartRating";
 import Footer from "../components/protectedPageComp/Footer";
+import ProductReviews from "../components/productComp/ProductReviews";
 
 function ProductCard() {
   const nav = useNavigate();
-  const data = useLoaderData();
+  const { productData, reviewData } = useLoaderData();
+  console.log(reviewData);
   const [imageWindow, setimageWindow] = useState();
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    if (data?.imageUrl) {
-      setimageWindow(data.imageUrl);
+    if (productData?.imageUrl) {
+      setimageWindow(productData.imageUrl);
     }
-  }, [data]);
+  }, [productData]);
 
   // quantity value updation function
   function handleInputChange(value, e) {
     switch (value) {
       case "INCREMENT": {
-        if (quantity < data.stockLevel) setQuantity((prev) => prev + 1);
+        if (quantity < productData.stockLevel) setQuantity((prev) => prev + 1);
         break;
       }
       case "DECREMENT": {
@@ -47,8 +49,8 @@ function ProductCard() {
 
         const val = parseInt(rawValue);
         if (!isNaN(val)) {
-          if (val > data.stockLevel) {
-            setQuantity(data.stockLevel);
+          if (val > productData.stockLevel) {
+            setQuantity(productData.stockLevel);
           } else {
             setQuantity(val);
           }
@@ -101,11 +103,11 @@ function ProductCard() {
           </span>
           <span>{">"}</span>
           <span className="hover:font-black hover:underline cursor-pointer transition-all">
-            {data?.category || "Electronics"}
+            {productData?.category || "Electronics"}
           </span>
           <span>{">"}</span>
           <span className="font-black cursor-pointer text-slate-900">
-            {data?.skuTitle || "Product Name"}
+            {productData?.skuTitle || "Product Name"}
           </span>
         </div>
 
@@ -113,12 +115,12 @@ function ProductCard() {
         <div className="w-full flex items-stretch justify-between gap-4 py-4">
           <div className="w-[20%] max-h-150 flex flex-col items-center justify-start gap-3 overflow-y-auto scrollbar-none">
             <img
-              src={data?.imageUrl}
+              src={productData?.imageUrl}
               alt="Main Thumbnail"
-              className={`w-[70%] cursor-pointer border-2 transition-colors rounded-sm ${imageWindow === data?.imageUrl ? "border-blue-500" : "border-transparent hover:border-slate-300"}`}
-              onClick={() => setImageOnClick(data?.imageUrl)}
+              className={`w-[70%] cursor-pointer border-2 transition-colors rounded-sm ${imageWindow === productData?.imageUrl ? "border-blue-500" : "border-transparent hover:border-slate-300"}`}
+              onClick={() => setImageOnClick(productData?.imageUrl)}
             />
-            {data?.additionalImages?.map((image, key) => (
+            {productData?.additionalImages?.map((image, key) => (
               <img
                 key={key}
                 src={image}
@@ -141,17 +143,17 @@ function ProductCard() {
           <div className="w-[30%] flex flex-col items-start justify-start gap-6 h-full">
             <div className="flex flex-col items-start justify-start gap-2">
               <h3 className="text-3xl font-black text-slate-800 leading-tight">
-                {data?.skuTitle}
+                {productData?.skuTitle}
               </h3>
               <span className="tracking-tighter text-sm text-slate-500 line-clamp-3">
-                {data?.description}
+                {productData?.description}
               </span>
             </div>
 
             <div className="w-full flex flex-col items-start justify-start gap-1">
               <span className="text-sm text-slate-400 font-bold line-through tracking-widest">
                 $
-                {Number(data?.mrp || 0).toLocaleString("en-US", {
+                {Number(productData?.mrp || 0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -160,7 +162,7 @@ function ProductCard() {
                 <div className="flex items-center justify-between">
                   <span className="text-3xl text-slate-900 font-black tracking-widest">
                     $
-                    {Number(data?.price || 0).toLocaleString("en-US", {
+                    {Number(productData?.price || 0).toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -168,7 +170,7 @@ function ProductCard() {
                   <span className="self-end text-blue-500 text-xs pl-2">
                     saved $
                     {Number(
-                      (data?.mrp || 0) - (data?.price || 0),
+                      (productData?.mrp || 0) - (productData?.price || 0),
                     ).toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -176,8 +178,8 @@ function ProductCard() {
                     {"  "}(
                     {
                       ~~(
-                        (((data?.mrp || 0) - (data?.price || 0)) /
-                          (data?.mrp || 1)) *
+                        (((productData?.mrp || 0) - (productData?.price || 0)) /
+                          (productData?.mrp || 1)) *
                         100
                       )
                     }
@@ -186,14 +188,14 @@ function ProductCard() {
                 </div>
                 <div className="flex flex-col items-end justify-around">
                   <div className="flex items-center gap-1">
-                    <StarRating rating={data?.averageRating} />
+                    <StarRating rating={productData?.averageRating} />
                     <span className="font-bold text-slate-700">
-                      {data?.averageRating || "0.0"}
+                      {productData?.averageRating || "0.0"}
                     </span>
                   </div>
                   <span className=" text-xs underline">
                     <span className="text-slate-800 font-black">
-                      {data?.totalReviews || 0}
+                      {productData?.totalReviews || 0}
                     </span>{" "}
                     reviews
                   </span>
@@ -266,8 +268,8 @@ function ProductCard() {
             </div>
           </div>
         </div>
+        <ProductReviews reviewData={reviewData} />
       </div>
-
       <Footer />
     </div>
   );
