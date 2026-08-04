@@ -58,10 +58,10 @@ export const homeFeedLoader = async () => {
 export const productLoader = async ({ params }) => {
   const { productId } = params;
   const productResponse = await api.get(`/product/${productId}`);
-  const reviewsResponse = await api.get(`/reviews/${productId}`);
+  const reviewsResponse = await api.get(`/reviews/${productId}?page=1`);
 
   return {
     productData: productResponse.data.product,
-    reviewData: reviewsResponse.data.review,
+    reviewData: reviewsResponse.data,
   };
 };

@@ -208,3 +208,33 @@ export const merchantAction = async ({ request }) => {
     return { success: false, error: errorMessage };
   }
 };
+
+// product action
+export const productAction = async ({ request, params }) => {
+  const { productId } = params;
+  const formData = await request.formData();
+
+  const intent = formData.get("intent");
+
+  switch (intent) {
+    case "add_review": {
+      const rating = Number(formData.get("rating"));
+      const comment = formData.get("comment");
+
+      try {
+        const response = await api.post(`/reviews/${productId}`, {
+          rating,
+          comment,
+        });
+        return { success: true, newReview: response.data.review };
+      } catch (error) {
+        return {
+          success: false,
+          errorMsg: error.response?.data?.message || "Failed to submit review.",
+        };
+      }
+    }
+    default:
+      throw new Response("Invalid Intent", { status: 400 });
+  }
+};

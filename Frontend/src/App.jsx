@@ -18,6 +18,7 @@ import {
   loginAction,
   profileAction,
   merchantAction,
+  productAction,
 } from "./services/routerAction";
 import {
   gatewayLoader,
@@ -63,6 +64,7 @@ function App() {
             {
               path: "/product/:productId",
               loader: productLoader,
+              action: productAction,
               element: <ProductCard />,
             },
           ],

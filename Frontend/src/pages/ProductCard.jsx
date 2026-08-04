@@ -18,7 +18,6 @@ import ProductReviews from "../components/productComp/ProductReviews";
 function ProductCard() {
   const nav = useNavigate();
   const { productData, reviewData } = useLoaderData();
-  console.log(reviewData);
   const [imageWindow, setimageWindow] = useState();
   const [quantity, setQuantity] = useState(1);
 

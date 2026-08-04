@@ -7,7 +7,6 @@ export default function RootLayout() {
   const { user: initialUser } = useLoaderData();
 
   const [user, setUser] = useState(initialUser);
-  console.log(user);
   return (
     <GlobalContext.Provider value={{ user, setUser }}>
       <Outlet />
