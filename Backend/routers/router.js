@@ -7,6 +7,7 @@ import userRouter from "./userRoute.js";
 import merchantRouter from "./merchantRoute.js";
 import homeFeedRouter from "./homeFeedRouter.js";
 import productRouter from "./productRouter.js";
+import reviewsRouter from "./reviewsRouter.js";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use("/user", userRouter);
 router.use("/merchant", merchantRouter);
 router.use("/home", homeFeedRouter);
 router.use("/product", productRouter);
+router.use("/reviews", reviewsRouter);
 
 export default router;

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -25,6 +25,6 @@ const reviewSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-reviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
+// reviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
 
 export default mongoose.model("Review", reviewSchema);
