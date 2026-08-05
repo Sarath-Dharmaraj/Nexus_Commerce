@@ -240,9 +240,9 @@ export const productAction = async ({ request, params }) => {
       let response;
       try {
         if (actionType === "add") {
-          response = await api.put(`/user/${productId}`);
+          response = await api.put(`/user/wishlist/${productId}`);
         } else if (actionType === "remove") {
-          response = await api.delete(`/user/${productId}`);
+          response = await api.delete(`/user/wishlist/${productId}`);
         } else break;
 
         return {
@@ -257,6 +257,19 @@ export const productAction = async ({ request, params }) => {
           errorMsg: error.response?.data?.message || "Action Failed.",
         };
       }
+    }
+    case "add_cart": {
+      const quantity = formData.get("quantity");
+      const response = await api.put(`/user/cart/${productId}`, {
+        quantity: quantity,
+      });
+
+      return {
+        success: true,
+        intent: intent,
+        message: response?.data?.message,
+        cart: response?.data?.cart,
+      };
     }
     default:
       throw new Response("Invalid Intent", { status: 400 });

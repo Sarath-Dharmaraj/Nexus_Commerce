@@ -59,7 +59,7 @@ export const productLoader = async ({ params }) => {
   const { productId } = params;
   const productResponse = await api.get(`/product/${productId}`);
   const reviewsResponse = await api.get(`/reviews/${productId}?page=1`);
-  const userResponse = await api.get(`/user/${productId}`);
+  const userResponse = await api.get(`/user/product/${productId}`);
 
   return {
     productData: productResponse.data.product,

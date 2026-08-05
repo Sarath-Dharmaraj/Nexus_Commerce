@@ -207,7 +207,11 @@ function ProductCard() {
               <span className="text-xs font-bold tracking-tight text-green-600 uppercase">
                 In Stock & ready to ship
               </span>
-              <div className="flex items-center justify-between gap-3 w-full">
+              <fetcher.Form
+                method="put"
+                className="flex items-center justify-between gap-3 w-full"
+              >
+                <input type="hidden" name="intent" value="add_cart" />
                 <div className="w-[40%] flex items-center justify-between border rounded-sm border-slate-300 font-bold text-slate-700 bg-white overflow-hidden">
                   <button
                     type="button"
@@ -218,8 +222,8 @@ function ProductCard() {
                   </button>
                   <input
                     type="number"
-                    name="requiredStock"
-                    id="requiredStock"
+                    name="quantity"
+                    id="quantity"
                     value={quantity}
                     onChange={(e) => handleInputChange("INPUT", e)}
                     onBlur={() => {
@@ -237,11 +241,14 @@ function ProductCard() {
                     +
                   </button>
                 </div>
-                <button className="inline-flex items-center justify-center gap-1 w-[60%] px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold rounded-sm uppercase tracking-wider text-sm">
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-1 w-[60%] px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold rounded-sm uppercase tracking-wider text-sm"
+                >
                   <MdShoppingCartCheckout />
                   <span> Add to Cart </span>
                 </button>
-              </div>
+              </fetcher.Form>
               <fetcher.Form method="post" className="w-full">
                 <input type="hidden" name="intent" value="toggle_wishlist" />
                 <input
@@ -254,7 +261,7 @@ function ProductCard() {
                   className="inline-flex items-center justify-center gap-1 w-full py-2 border border-slate-300 hover:bg-slate-50 transition-colors rounded-sm font-bold text-sm tracking-wider uppercase text-slate-600"
                 >
                   <MdFavorite
-                    className={`${wishlist ? "text-pink-500" : ""}`}
+                    className={`text-lg ${wishlist ? "text-pink-500" : ""}`}
                   />
                   <span>Add to wishlist</span>
                 </button>

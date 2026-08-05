@@ -19,6 +19,8 @@ import {
   getUserDataForProduct,
   addWishList,
   removeFromWishlist,
+  addCart,
+  removeCartItem,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
@@ -26,7 +28,7 @@ const userRouter = Router();
 
 // guest user route
 userRouter.get(
-  "/:productId",
+  "/product/:productId",
   softVerifyCookie,
   asyncHandler(getUserDataForProduct),
 );
@@ -43,8 +45,11 @@ userRouter.put("/payment-method/:id", putUserPaymentMethod);
 userRouter.delete("/address/:id", deleteUserAddress);
 userRouter.delete("/payment-method/:id", deleteUserPaymentMethod);
 
-userRouter.put("/:productId", asyncHandler(addWishList));
-userRouter.delete("/:productId", asyncHandler(removeFromWishlist));
+userRouter.put("/wishlist//:productId", asyncHandler(addWishList));
+userRouter.delete("/wishlist/:productId", asyncHandler(removeFromWishlist));
+
+userRouter.put("/cart/:productId", asyncHandler(addCart));
+userRouter.delete("/cart/:productId", asyncHandler(removeCartItem));
 
 // is Seller
 userRouter.use(isSeller);

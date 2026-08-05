@@ -235,6 +235,7 @@ export const getUserDataForProduct = async (req, res) => {
 
   if (req.user && req.user.id) {
     const user = await User.findById(req.user.id).select("wishlist cart");
+
     if (user) {
       isWishlist = user.wishlist.some((id) => id.toString() === productId);
 
@@ -282,8 +283,14 @@ export const addWishList = async (req, res) => {
   });
 };
 
+// remove wishlist
 export const removeFromWishlist = async (req, res) => {
   const { productId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400);
+    throw new Error("Invalid product ID format.");
+  }
 
   const user = await User.findByIdAndUpdate(
     req.user.id,
@@ -295,5 +302,76 @@ export const removeFromWishlist = async (req, res) => {
     success: true,
     message: "Product removed from wishlist",
     wishlist: user.wishlist,
+  });
+};
+
+// add to cart
+export const addCart = async (req, res) => {
+  const { productId } = req.params;
+  const quantity = parseInt(req.body.quantity) || 1;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400);
+    throw new Error("Invalid product ID format.");
+  }
+
+  if (quantity < 1) {
+    res.status(400);
+    throw new Error("Quantity must be at least 1.");
+  }
+
+  const user = await User.findById(req.user.id);
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found.");
+  }
+
+  let approvedQuantity;
+  approvedQuantity =
+    quantity > product.stockLevel ? product.stockLevel : quantity;
+
+  const existingCartItem = user.cart.find(
+    (item) => item.productId.toString() === productId,
+  );
+
+  if (existingCartItem) existingCartItem.quantity = approvedQuantity;
+  else user.cart.push({ productId, quantity: approvedQuantity });
+
+  await user.save();
+
+  await user.populate("cart.productId");
+  return res.status(200).json({
+    success: true,
+    message: "Cart updated successfully",
+    cart: user.cart,
+  });
+};
+
+// delete cart item
+export const removeCartItem = async (req, res) => {
+  const { productId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400);
+    throw new Error("Invalid product ID format.");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { $pull: { cart: { productId: productId } } },
+    { returnDocument: "after" },
+  ).populate("cart.productId");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Item removed from cart successfully",
+    cart: user.cart,
   });
 };
