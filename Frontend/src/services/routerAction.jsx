@@ -275,3 +275,56 @@ export const productAction = async ({ request, params }) => {
       throw new Response("Invalid Intent", { status: 400 });
   }
 };
+
+export const slideAction = async ({ request }) => {
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+  const productId = formData.get("productId");
+
+  // --- WISHLIST TOGGLE ---
+  if (intent === "toggle_wishlist") {
+    const actionType = formData.get("actionType"); // "add" or "remove"
+
+    try {
+      let response;
+      if (actionType === "add") {
+        // Replace with your actual backend route path
+        response = await api.put(`/user/wishlist/${productId}`);
+      } else {
+        response = await api.delete(`/user/wishlist/${productId}`);
+      }
+
+      return {
+        success: true,
+        intent: "toggle_wishlist",
+        updatedWishlist: response.data.wishlist,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
+
+  // --- ADD TO CART ---
+  if (intent === "add_cart") {
+    const quantity = formData.get("quantity");
+    try {
+      const response = await api.put(`/user/cart/${productId}`, { quantity });
+
+      return {
+        success: true,
+        intent: "add_cart",
+        updatedCart: response.data.cart,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
+
+  return null;
+};

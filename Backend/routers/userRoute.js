@@ -21,6 +21,9 @@ import {
   removeFromWishlist,
   addCart,
   removeCartItem,
+  getwishlist,
+  getWishListForHome,
+  getCartProductIds,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
@@ -45,7 +48,17 @@ userRouter.put("/payment-method/:id", putUserPaymentMethod);
 userRouter.delete("/address/:id", deleteUserAddress);
 userRouter.delete("/payment-method/:id", deleteUserPaymentMethod);
 
-userRouter.put("/wishlist//:productId", asyncHandler(addWishList));
+// for wishlist page
+userRouter.get("/wishlist", asyncHandler(getwishlist));
+
+// for home page
+userRouter.get("/home/wishlist", asyncHandler(getWishListForHome));
+
+// for home and wishlist page 
+userRouter.get("/cart", asyncHandler(getCartProductIds))
+
+// for product page
+userRouter.put("/wishlist/:productId", asyncHandler(addWishList));
 userRouter.delete("/wishlist/:productId", asyncHandler(removeFromWishlist));
 
 userRouter.put("/cart/:productId", asyncHandler(addCart));

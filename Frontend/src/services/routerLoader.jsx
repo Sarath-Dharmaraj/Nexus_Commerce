@@ -44,27 +44,53 @@ export const merchantLoader = async () => {
 //loader for home feed
 export const homeFeedLoader = async () => {
   try {
-    const response = await api.get("/home/");
-    console.log("Home feed Data received successfully");
-    return response.data.data;
+    const homeResponse = await api.get("/home/");
+    const wishlistResponse = await api.get("/user/home/wishlist");
+    const cartResponse = await api.get("/user/cart");
+    return {
+      feedData: homeResponse.data.data,
+      wishlist: wishlistResponse.data.wishlist,
+      cart: cartResponse.data.cart,
+    };
   } catch (error) {
     console.error("error data", error);
-    return redirect("/profile");
+    return redirect("/login");
   }
 };
 
 // product loader and review loader
 
 export const productLoader = async ({ params }) => {
-  const { productId } = params;
-  const productResponse = await api.get(`/product/${productId}`);
-  const reviewsResponse = await api.get(`/reviews/${productId}?page=1`);
-  const userResponse = await api.get(`/user/product/${productId}`);
+  try {
+    const { productId } = params;
+    const productResponse = await api.get(`/product/${productId}`);
+    const reviewsResponse = await api.get(`/reviews/${productId}?page=1`);
+    const userResponse = await api.get(`/user/product/${productId}`);
 
-  return {
-    productData: productResponse.data.product,
-    reviewData: reviewsResponse.data,
-    wishlist: userResponse.data.wishlist,
-    cartQuantity: userResponse.data.cartQuantity,
-  };
+    return {
+      productData: productResponse.data.product,
+      reviewData: reviewsResponse.data,
+      wishlist: userResponse.data.wishlist,
+      cartQuantity: userResponse.data.cartQuantity,
+    };
+  } catch (error) {
+    console.error("error data", error);
+    return redirect("/login");
+  }
+};
+
+// loader for wishlist page
+export const wishlistLoader = async () => {
+  try {
+    const response = await api.get("/user/wishlist");
+    const cartResponse = await api.get("/user/cart");
+    return {
+      success: true,
+      wishlist: response.data.wishlist,
+      cart: cartResponse.data.cart,
+    };
+  } catch (error) {
+    console.error("error data", error);
+    return redirect("/login");
+  }
 };

@@ -225,42 +225,6 @@ export const getSellerData = async (req, res) => {
   });
 };
 
-// getting wishlist and cart data for product page
-export const getUserDataForProduct = async (req, res) => {
-  const { productId } = req.params;
-
-  let isWishlist = false;
-  let cartQuantity = 0;
-  const product = await Product.findById(productId).select("stockLevel");
-
-  if (req.user && req.user.id) {
-    const user = await User.findById(req.user.id).select("wishlist cart");
-
-    if (user) {
-      isWishlist = user.wishlist.some((id) => id.toString() === productId);
-
-      const existingCartItem = user.cart.find(
-        (item) => item.productId.toString() === productId,
-      );
-
-      if (existingCartItem) {
-        cartQuantity = existingCartItem.quantity;
-
-        if (cartQuantity > product.stockLevel) {
-          cartQuantity = product.stockLevel;
-        }
-      }
-    }
-  }
-
-  return res.status(200).json({
-    success: true,
-    message: `Product ${productId} has been found and returned`,
-    wishlist: isWishlist,
-    cartQuantity: cartQuantity,
-  });
-};
-
 // route to add wishList product
 export const addWishList = async (req, res) => {
   const { productId } = req.params;
@@ -372,6 +336,95 @@ export const removeCartItem = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "Item removed from cart successfully",
+    cart: user.cart,
+  });
+};
+
+// getting wishlist and cart data for product page
+export const getUserDataForProduct = async (req, res) => {
+  const { productId } = req.params;
+
+  let isWishlist = false;
+  let cartQuantity = 0;
+  const product = await Product.findById(productId).select("stockLevel");
+
+  if (req.user && req.user.id) {
+    const user = await User.findById(req.user.id).select("wishlist cart");
+
+    if (user) {
+      isWishlist = user.wishlist.some((id) => id.toString() === productId);
+
+      const existingCartItem = user.cart.find(
+        (item) => item.productId.toString() === productId,
+      );
+
+      if (existingCartItem) {
+        cartQuantity = existingCartItem.quantity;
+
+        if (cartQuantity > product.stockLevel) {
+          cartQuantity = product.stockLevel;
+        }
+      }
+    }
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `Product ${productId} has been found and returned`,
+    wishlist: isWishlist,
+    cartQuantity: cartQuantity,
+  });
+};
+
+// route to get wishlist data for wishlist page
+export const getwishlist = async (req, res) => {
+  const id = req.user.id;
+
+  const user = await User.findById(id).select("wishlist").populate({
+    path: "wishlist",
+    select: "_id skuId skuTitle price imageUrl category brand averageRating",
+  });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("Feeds not found");
+  }
+
+  return res.status(200).json({
+    success: true,
+    wishlist: user.wishlist,
+  });
+};
+
+// route to get wishlist for home page
+export const getWishListForHome = async (req, res) => {
+  const id = req.user.id;
+
+  const user = await User.findById(id).select("-_id wishlist");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("Feeds not found");
+  }
+
+  return res.status(200).json({
+    success: true,
+    wishlist: user.wishlist,
+  });
+};
+
+// getting product id for cart verification
+export const getCartProductIds = async (req, res) => {
+  const user = await User.findById(req.user.id).select("cart.productId");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Cart product IDs retrieved successfully",
     cart: user.cart,
   });
 };

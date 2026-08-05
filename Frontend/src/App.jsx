@@ -19,6 +19,7 @@ import {
   profileAction,
   merchantAction,
   productAction,
+  slideAction,
 } from "./services/routerAction";
 import {
   gatewayLoader,
@@ -26,7 +27,9 @@ import {
   merchantLoader,
   homeFeedLoader,
   productLoader,
+  wishlistLoader,
 } from "./services/routerLoader";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   const router = createBrowserRouter([
@@ -54,6 +57,7 @@ function App() {
               path: "/home",
               element: <Home />,
               loader: homeFeedLoader,
+              action: slideAction,
             },
             {
               path: "/profile",
@@ -66,6 +70,12 @@ function App() {
               loader: productLoader,
               action: productAction,
               element: <ProductCard />,
+            },
+            {
+              path: "/wishlist",
+              element: <Wishlist />,
+              loader: wishlistLoader,
+              action: slideAction,
             },
           ],
         },

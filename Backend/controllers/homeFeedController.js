@@ -6,8 +6,6 @@ export const getHomepageFeeds = async (req, res) => {
     select: "_id skuId skuTitle price imageUrl category brand averageRating",
   });
 
-  console.log(feeds);
-
   if (!feeds) {
     res.status(404);
     throw new Error("Feeds not found");
