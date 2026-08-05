@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+
+import Product from "../model/Product.js";
 import User from "../model/User.js";
 
 const cleanedPayload = (body) => {
@@ -25,7 +28,7 @@ export const putUserData = async (req, res) => {
     if (req.file) payload.profileImage = req.file.path;
 
     const updatedUser = await User.findByIdAndUpdate(req.user.id, payload, {
-      new: true,
+      returnDocument: "after",
     });
     if (!updatedUser)
       return res.status(404).json({ success: false, error: "User not found" });
@@ -219,5 +222,78 @@ export const getSellerData = async (req, res) => {
     success: true,
     message: "seller profile fetched",
     data: user.sellerProfile,
+  });
+};
+
+// getting wishlist and cart data for product page
+export const getUserDataForProduct = async (req, res) => {
+  const { productId } = req.params;
+
+  let isWishlist = false;
+  let cartQuantity = 0;
+  const product = await Product.findById(productId).select("stockLevel");
+
+  if (req.user && req.user.id) {
+    const user = await User.findById(req.user.id).select("wishlist cart");
+    if (user) {
+      isWishlist = user.wishlist.some((id) => id.toString() === productId);
+
+      const existingCartItem = user.cart.find(
+        (item) => item.productId.toString() === productId,
+      );
+
+      if (existingCartItem) {
+        cartQuantity = existingCartItem.quantity;
+
+        if (cartQuantity > product.stockLevel) {
+          cartQuantity = product.stockLevel;
+        }
+      }
+    }
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: `Product ${productId} has been found and returned`,
+    wishlist: isWishlist,
+    cartQuantity: cartQuantity,
+  });
+};
+
+// route to add wishList product
+export const addWishList = async (req, res) => {
+  const { productId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400);
+    throw new Error("Invalid product ID format.");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { $addToSet: { wishlist: productId } },
+    { returnDocument: "after" },
+  ).populate("wishlist", "_id skuTitle");
+
+  return res.status(200).json({
+    success: true,
+    message: "Product added to wishlist",
+    wishlist: user.wishlist,
+  });
+};
+
+export const removeFromWishlist = async (req, res) => {
+  const { productId } = req.params;
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { $pull: { wishlist: productId } },
+    { returnDocument: "after" },
+  ).populate("wishlist", "_id skuTitle");
+
+  return res.status(200).json({
+    success: true,
+    message: "Product removed from wishlist",
+    wishlist: user.wishlist,
   });
 };

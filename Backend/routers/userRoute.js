@@ -1,7 +1,11 @@
 import { Router } from "express";
 
 import { uploadAvatar } from "../middleware/cloudinary.js";
-import { isSeller, verifyCookie } from "../middleware/gaurdAuth.js";
+import {
+  isSeller,
+  softVerifyCookie,
+  verifyCookie,
+} from "../middleware/gaurdAuth.js";
 import {
   getUserData,
   putUserData,
@@ -12,10 +16,20 @@ import {
   deleteUserAddress,
   deleteUserPaymentMethod,
   getSellerData,
+  getUserDataForProduct,
+  addWishList,
+  removeFromWishlist,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
 const userRouter = Router();
+
+// guest user route
+userRouter.get(
+  "/:productId",
+  softVerifyCookie,
+  asyncHandler(getUserDataForProduct),
+);
 
 userRouter.use(verifyCookie);
 // userRouter.use(asyncHandler);
@@ -28,6 +42,9 @@ userRouter.post("/payment-method", postUserPaymentMethod);
 userRouter.put("/payment-method/:id", putUserPaymentMethod);
 userRouter.delete("/address/:id", deleteUserAddress);
 userRouter.delete("/payment-method/:id", deleteUserPaymentMethod);
+
+userRouter.put("/:productId", asyncHandler(addWishList));
+userRouter.delete("/:productId", asyncHandler(removeFromWishlist));
 
 // is Seller
 userRouter.use(isSeller);

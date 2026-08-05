@@ -5,6 +5,12 @@ import Product from "../model/Product.js";
 // get review of a product throught query
 export const getReview = async (req, res) => {
   const productId = req.params.productId;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    res.status(400);
+    throw new Error("Invalid product ID format.");
+  }
+  
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
 

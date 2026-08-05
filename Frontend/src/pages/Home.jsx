@@ -1,7 +1,7 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import {
   MdOutlineStar,
-  MdOutlineFavoriteBorder,
+  MdFavorite,
   MdShoppingCartCheckout,
 } from "react-icons/md";
 import Footer from "../components/protectedPageComp/Footer";
@@ -59,7 +59,7 @@ export default function Home() {
                       />
                       <div className="absolute z-10 bg-white/90 backdrop-blur-sm top-2 right-2 flex items-center gap-2 text-lg px-2 py-1 rounded border border-slate-200 shadow-sm">
                         <MdShoppingCartCheckout className="hover:text-blue-600 transition-colors" />
-                        <MdOutlineFavoriteBorder className="hover:text-red-500 transition-colors" />
+                        <MdFavorite className="hover:text-red-500 transition-colors" />
                       </div>
                     </div>
 

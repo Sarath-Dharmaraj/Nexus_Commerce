@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useFetcher, useLoaderData, useNavigate } from "react-router-dom";
 
 import {
-  MdOutlineFavoriteBorder,
+  MdFavorite,
   MdShoppingCartCheckout,
   MdOutlineLocalShipping,
   MdLock,
@@ -17,9 +17,10 @@ import ProductReviews from "../components/productComp/ProductReviews";
 
 function ProductCard() {
   const nav = useNavigate();
-  const { productData, reviewData } = useLoaderData();
+  const fetcher = useFetcher();
+  const { productData, reviewData, wishlist, cartQuantity } = useLoaderData();
   const [imageWindow, setimageWindow] = useState();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(cartQuantity);
 
   useEffect(() => {
     if (productData?.imageUrl) {
@@ -241,10 +242,23 @@ function ProductCard() {
                   <span> Add to Cart </span>
                 </button>
               </div>
-              <button className="inline-flex items-center justify-center gap-1 w-full py-2 border border-slate-300 hover:bg-slate-50 transition-colors rounded-sm font-bold text-sm tracking-wider uppercase text-slate-600">
-                <MdOutlineFavoriteBorder />
-                <span>Add to wishlist</span>
-              </button>
+              <fetcher.Form method="post" className="w-full">
+                <input type="hidden" name="intent" value="toggle_wishlist" />
+                <input
+                  type="hidden"
+                  name="actionType"
+                  value={wishlist ? "remove" : "add"}
+                />
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-1 w-full py-2 border border-slate-300 hover:bg-slate-50 transition-colors rounded-sm font-bold text-sm tracking-wider uppercase text-slate-600"
+                >
+                  <MdFavorite
+                    className={`${wishlist ? "text-pink-500" : ""}`}
+                  />
+                  <span>Add to wishlist</span>
+                </button>
+              </fetcher.Form>
             </div>
 
             <div className="w-full mt-auto flex flex-col gap-4 pb-2">

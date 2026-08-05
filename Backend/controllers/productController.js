@@ -1,5 +1,6 @@
 // controller for the product/:id page
 import mongoose from "mongoose";
+import User from "../model/User.js";
 import Product from "../model/Product.js";
 import Review from "../model/Review.js";
 

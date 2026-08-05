@@ -234,6 +234,30 @@ export const productAction = async ({ request, params }) => {
         };
       }
     }
+
+    case "toggle_wishlist": {
+      const actionType = formData.get("actionType");
+      let response;
+      try {
+        if (actionType === "add") {
+          response = await api.put(`/user/${productId}`);
+        } else if (actionType === "remove") {
+          response = await api.delete(`/user/${productId}`);
+        } else break;
+
+        return {
+          success: true,
+          intent: intent,
+          message: response?.data?.message,
+          wishlist: response?.data?.wishlist,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          errorMsg: error.response?.data?.message || "Action Failed.",
+        };
+      }
+    }
     default:
       throw new Response("Invalid Intent", { status: 400 });
   }
