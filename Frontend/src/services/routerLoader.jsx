@@ -94,11 +94,10 @@ export const wishlistLoader = async () => {
     return redirect("/login");
   }
 };
-// cart page loader
+// cart dataloader
 export const cartLoader = async () => {
   try {
     const response = await api.get("/user/cart");
-    console.log(response);
     return {
       success: true,
       cart: response.data.cart,

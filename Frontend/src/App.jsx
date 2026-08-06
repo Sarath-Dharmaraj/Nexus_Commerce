@@ -32,6 +32,8 @@ import {
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
+import CheckoutLayout from "../layouts/CheckoutLayout";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const router = createBrowserRouter([
@@ -86,6 +88,12 @@ function App() {
               loader: cartLoader,
             },
           ],
+        },
+        {
+          id: "CheckoutLayout",
+          element: <CheckoutLayout />,
+          loader: cartLoader,
+          children: [{ path: "/checkout", element: <Checkout /> }],
         },
         {
           path: "/merchant",
