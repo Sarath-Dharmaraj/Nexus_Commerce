@@ -428,3 +428,51 @@ export const getCartProductIds = async (req, res) => {
     cart: user.cart,
   });
 };
+
+// route for wishlist page to add every product to cart
+export const addAllWishlistToCart = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+
+  if (user.wishlist.length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Your wishlist is empty.",
+    });
+  }
+
+  const wishlistProducts = await Product.find({
+    _id: { $in: user.wishlist },
+  });
+
+  wishlistProducts.forEach((product) => {
+    if (product.stockLevel < 1) return; 
+
+    const existingCartItem = user.cart.find(
+      (item) => item.productId.toString() === product._id.toString()
+    );
+
+    if (existingCartItem) {
+      if (existingCartItem.quantity < product.stockLevel) {
+        existingCartItem.quantity += 1;
+      }
+    } else {
+      user.cart.push({ productId: product._id, quantity: 1 });
+    }
+  });
+
+
+  await user.save();
+
+  await user.populate("cart.productId");
+
+  return res.status(200).json({
+    success: true,
+    message: "All available wishlist items added to cart successfully.",
+    cart: user.cart,
+  });
+};

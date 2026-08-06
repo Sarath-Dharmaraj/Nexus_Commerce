@@ -119,9 +119,6 @@ function SlideCard({ item, cart, wishlist }) {
   );
 }
 
-// ==========================================
-// PARENT COMPONENT: The Slider Container
-// ==========================================
 function ProductSlide({ products, cart = [], wishlist = true }) {
   return (
     <div className="flex gap-4 overflow-x-auto scrollbar-none pb-2">

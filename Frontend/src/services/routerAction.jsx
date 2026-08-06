@@ -326,5 +326,18 @@ export const slideAction = async ({ request }) => {
     }
   }
 
+  if (intent === "wishlist_to_cart") {
+    try {
+      const response = await api.post("/user/wishlist/product");
+
+      return { cart: response.data.cart };
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
+
   return null;
 };

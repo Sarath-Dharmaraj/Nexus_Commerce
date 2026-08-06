@@ -1,13 +1,14 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   MdOutlineAccountCircle,
-  MdOutlineHistory,
-  MdShoppingCart,
+  MdOutlineShoppingCart,
   MdOutlineSearch,
+  MdOutlineFavoriteBorder,
 } from "react-icons/md";
 
 function Navbar() {
   const location = useLocation();
+  const nav = useNavigate();
 
   return (
     <>
@@ -25,7 +26,7 @@ function Navbar() {
         >
           <nav className="hidden md:flex items-center text-sm lg:text-base text-slate-600 capitalize gap-4 md:gap-2 lg:gap-8 shrink-0">
             <a
-              href="#shop"
+              href="/home"
               className="hover:text-black cursor-pointer underline hover:no-underline"
             >
               shop
@@ -57,8 +58,11 @@ function Navbar() {
 
         <div className="flex items-center text-xl lg:text-2xl gap-3 lg:gap-6 shrink-0">
           <MdOutlineAccountCircle className="cursor-pointer hover:text-blue-500 transition-colors" />
-          <MdOutlineHistory className="cursor-pointer hover:text-blue-500 transition-colors" />
-          <MdShoppingCart className="cursor-pointer hover:text-blue-500 transition-colors" />
+          <MdOutlineFavoriteBorder
+            onClick={() => nav("/wishlist")}
+            className="cursor-pointer hover:text-blue-500 transition-colors"
+          />
+          <MdOutlineShoppingCart className="cursor-pointer hover:text-blue-500 transition-colors" />
         </div>
       </div>
     </>
