@@ -46,7 +46,7 @@ export const homeFeedLoader = async () => {
   try {
     const homeResponse = await api.get("/home/");
     const wishlistResponse = await api.get("/user/home/wishlist");
-    const cartResponse = await api.get("/user/cart");
+    const cartResponse = await api.get("/user/home-wishlist/cart");
     return {
       feedData: homeResponse.data.data,
       wishlist: wishlistResponse.data.wishlist,
@@ -83,7 +83,7 @@ export const productLoader = async ({ params }) => {
 export const wishlistLoader = async () => {
   try {
     const response = await api.get("/user/wishlist");
-    const cartResponse = await api.get("/user/cart");
+    const cartResponse = await api.get("/user/home-wishlist/cart");
     return {
       success: true,
       wishlist: response.data.wishlist,
@@ -92,5 +92,18 @@ export const wishlistLoader = async () => {
   } catch (error) {
     console.error("error data", error);
     return redirect("/login");
+  }
+};
+// cart page loader
+export const cartLoader = async () => {
+  try {
+    const response = await api.get("/user/cart");
+    console.log(response);
+    return {
+      success: true,
+      cart: response.data.cart,
+    };
+  } catch (error) {
+    return { success: false, error: error };
   }
 };

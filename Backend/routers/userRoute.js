@@ -25,6 +25,7 @@ import {
   getWishListForHome,
   getCartProductIds,
   addAllWishlistToCart,
+  getCart,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
@@ -57,7 +58,10 @@ userRouter.post("/wishlist/product", asyncHandler(addAllWishlistToCart));
 userRouter.get("/home/wishlist", asyncHandler(getWishListForHome));
 
 // for home and wishlist page
-userRouter.get("/cart", asyncHandler(getCartProductIds));
+userRouter.get("/home-wishlist/cart", asyncHandler(getCartProductIds));
+
+// for cart
+userRouter.get("/cart", asyncHandler(getCart));
 
 // for product page
 userRouter.put("/wishlist/:productId", asyncHandler(addWishList));
@@ -66,7 +70,7 @@ userRouter.delete("/wishlist/:productId", asyncHandler(removeFromWishlist));
 userRouter.put("/cart/:productId", asyncHandler(addCart));
 userRouter.delete("/cart/:productId", asyncHandler(removeCartItem));
 
-// is Seller
+// for merchant page
 userRouter.use(isSeller);
 
 userRouter.get("/seller-profile", asyncHandler(getSellerData));

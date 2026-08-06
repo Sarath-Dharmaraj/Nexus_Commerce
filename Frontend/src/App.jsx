@@ -28,8 +28,10 @@ import {
   homeFeedLoader,
   productLoader,
   wishlistLoader,
+  cartLoader,
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
 
 function App() {
   const router = createBrowserRouter([
@@ -76,6 +78,12 @@ function App() {
               element: <Wishlist />,
               loader: wishlistLoader,
               action: slideAction,
+            },
+            {
+              path: "/cart",
+              element: <Cart />,
+              action: slideAction,
+              loader: cartLoader,
             },
           ],
         },

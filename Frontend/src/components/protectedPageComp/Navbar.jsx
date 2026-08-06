@@ -62,7 +62,10 @@ function Navbar() {
             onClick={() => nav("/wishlist")}
             className="cursor-pointer hover:text-blue-500 transition-colors"
           />
-          <MdOutlineShoppingCart className="cursor-pointer hover:text-blue-500 transition-colors" />
+          <MdOutlineShoppingCart
+            onClick={() => nav("/cart")}
+            className="cursor-pointer hover:text-blue-500 transition-colors"
+          />
         </div>
       </div>
     </>

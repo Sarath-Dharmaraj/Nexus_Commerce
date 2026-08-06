@@ -432,7 +432,7 @@ export const getCartProductIds = async (req, res) => {
 // route for wishlist page to add every product to cart
 export const addAllWishlistToCart = async (req, res) => {
   const user = await User.findById(req.user.id);
-  
+
   if (!user) {
     res.status(404);
     throw new Error("User not found.");
@@ -450,21 +450,16 @@ export const addAllWishlistToCart = async (req, res) => {
   });
 
   wishlistProducts.forEach((product) => {
-    if (product.stockLevel < 1) return; 
+    if (product.stockLevel < 1) return;
 
     const existingCartItem = user.cart.find(
-      (item) => item.productId.toString() === product._id.toString()
+      (item) => item.productId.toString() === product._id.toString(),
     );
 
-    if (existingCartItem) {
-      if (existingCartItem.quantity < product.stockLevel) {
-        existingCartItem.quantity += 1;
-      }
-    } else {
+    if (!existingCartItem) {
       user.cart.push({ productId: product._id, quantity: 1 });
     }
   });
-
 
   await user.save();
 
@@ -474,5 +469,42 @@ export const addAllWishlistToCart = async (req, res) => {
     success: true,
     message: "All available wishlist items added to cart successfully.",
     cart: user.cart,
+  });
+};
+
+// route for cart page to get cart detaisl
+export const getCart = async (req, res) => {
+  const user = await User.findById(req.user.id).populate({
+    path: "cart.productId",
+    select: "skuTitle skuId imageUrl price stockLvel",
+  });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+
+  let cartChanged = false;
+
+  for (const item of user.cart) {
+    const product = item.productId;
+
+    if (!product) continue;
+
+    if (item.quantity > product.stockLevel) {
+      item.quantity = product.stockLevel;
+      cartChanged = true;
+    }
+  }
+
+  if (cartChanged) {
+    await user.save();
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "cart data extracted successsfully",
+    cart: user.cart,
+    changed: cartChanged,
   });
 };

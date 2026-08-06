@@ -281,14 +281,11 @@ export const slideAction = async ({ request }) => {
   const intent = formData.get("intent");
   const productId = formData.get("productId");
 
-  // --- WISHLIST TOGGLE ---
   if (intent === "toggle_wishlist") {
-    const actionType = formData.get("actionType"); // "add" or "remove"
-
+    const actionType = formData.get("actionType");
     try {
       let response;
       if (actionType === "add") {
-        // Replace with your actual backend route path
         response = await api.put(`/user/wishlist/${productId}`);
       } else {
         response = await api.delete(`/user/wishlist/${productId}`);
@@ -336,6 +333,25 @@ export const slideAction = async ({ request }) => {
         success: false,
         error: error,
       };
+    }
+  }
+
+  if (intent === "update_quantity") {
+    const quantity = formData.get("quantity");
+    try {
+      await api.put(`/user/cart/${productId}`, { quantity });
+      return { success: true, intent: "update_quantity" };
+    } catch (error) {
+      return { success: false, error: error };
+    }
+  }
+
+  if (intent === "remove_item") {
+    try {
+      await api.delete(`/user/cart/${productId}`);
+      return { success: true, intent: "remove_item" };
+    } catch (error) {
+      return { success: false, error: error };
     }
   }
 
