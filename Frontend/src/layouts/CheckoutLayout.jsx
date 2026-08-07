@@ -2,10 +2,9 @@ import { Outlet, useLoaderData } from "react-router-dom";
 import { MdStorefront, MdCheck, MdCircle } from "react-icons/md";
 import CartSummary from "../components/checkoutComp/CartSummary";
 import Footer from "../components/protectedPageComp/Footer";
+import { CheckoutProvider } from "../context/checkoutContext";
 
-function CheckoutLayout() {
-  const { cart } = useLoaderData();
-
+function Layout({ cart }) {
   return (
     <div className="w-full h-screen flex flex-col gap-4 bg-slate-100 font-hanken text-slate-600 tracking-tight overflow-hidden">
       <div className="w-full flex items-center justify-center gap-4 bg-white text-2xl text-slate-800 tracking-wider font-blaack py-5 border-b border-slate-200 shrink-0">
@@ -49,6 +48,7 @@ function CheckoutLayout() {
               <span>Payment</span>
             </div>
           </div>
+          {/* outlet */}
           <Outlet />
         </div>
 
@@ -56,6 +56,16 @@ function CheckoutLayout() {
       </div>
       <Footer />
     </div>
+  );
+}
+
+function CheckoutLayout() {
+  const { cart } = useLoaderData();
+
+  return (
+    <CheckoutProvider>
+      <Layout cart={cart} />
+    </CheckoutProvider>
   );
 }
 
