@@ -30,11 +30,13 @@ import {
   wishlistLoader,
   cartLoader,
   checkoutLoader,
+  paymentLoader,
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
 import CheckoutLayout from "./layouts/CheckoutLayout";
 import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
 
 function App() {
   const router = createBrowserRouter([
@@ -99,6 +101,11 @@ function App() {
               path: "/checkout",
               element: <Checkout />,
               loader: checkoutLoader,
+            },
+            {
+              path: "/checkout/payment",
+              element: <Payment />,
+              loader: paymentLoader,
             },
           ],
         },
