@@ -4,9 +4,12 @@ import { useEffect, useState, useMemo } from "react";
 import { MdMoreVert } from "react-icons/md";
 import useCheckout from "../context/checkoutContext";
 import CardList from "../components/profileComp/CardList";
+import { useGlobalAuth } from "../context/globalAuthContext";
 
 function Payment() {
+  const { user } = useGlobalAuth();
   const { state, dispatch } = useCheckout() || {};
+  console.log(user, state);
   const { card } = useLoaderData() || {};
 
   const [isListOpen, setIsListOpen] = useState(false);
