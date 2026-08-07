@@ -3,15 +3,42 @@ import { useProfile } from "../../context/profileContext";
 import { MdLocationPin, MdEdit, MdDelete } from "react-icons/md";
 import DeletionAlert from "./DeletionAlert";
 
-function AddressList() {
-  const { state, dispatch, userData } = useProfile();
+// Added props for Checkout Mode (addresses, setDefaultAddress, isOpen, onClose)
+function AddressList({ addresses, setDefaultAddress, isOpen, onClose }) {
+  const { state, dispatch, userData } = useProfile() || {};
 
   const [deleteConfig, setDeleteConfig] = useState({
     isOpen: false,
     itemId: null,
   });
 
-  if (!state.isAddressListOpen) return null;
+  // 1. Determine which mode we are in based on passed props
+  const isCheckoutMode = Boolean(addresses);
+
+  // 2. Control visibility depending on mode
+  const isListOpen = isCheckoutMode ? isOpen : state?.isAddressListOpen;
+
+  // 3. Determine data source
+  const displayAddresses = isCheckoutMode ? addresses : userData?.address;
+
+  if (!isListOpen) return null;
+
+  // Handler for closing the modal
+  const handleClose = () => {
+    if (isCheckoutMode && onClose) {
+      onClose();
+    } else {
+      dispatch?.({ type: "CLOSE_ALL" });
+    }
+  };
+
+  // Handler for selecting an address in Checkout mode
+  const handleCardClick = (item) => {
+    if (isCheckoutMode && setDefaultAddress) {
+      setDefaultAddress(item);
+      handleClose(); // Automatically close modal after selection
+    }
+  };
 
   return (
     <>
@@ -20,23 +47,28 @@ function AddressList() {
           <div className="flex items-center justify-between w-full px-4 border-b border-slate-200 pb-2 shrink-0">
             <span className="inline-flex items-center text-lg font-bold text-slate-800">
               <MdLocationPin className="mx-2 text-xl text-slate-500" />
-              Manage Addresses
+              {isCheckoutMode ? "Select Shipping Address" : "Manage Addresses"}
             </span>
             <span
               className="text-2xl text-slate-800 font-bold hover:text-black border border-transparent hover:border-slate-200 rounded-lg hover:bg-slate-100 px-2 cursor-pointer transition-colors"
-              onClick={() => dispatch({ type: "CLOSE_ALL" })}
+              onClick={handleClose}
             >
               ×
             </span>
           </div>
 
           <div className="flex flex-col w-full px-4 md:px-8 py-4 gap-3 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-slate-300">
-            {userData?.address?.map((item) => (
+            {displayAddresses?.map((item) => (
               <div
                 key={item._id}
-                className="flex justify-between items-center p-4 border border-slate-200 bg-white rounded-xl shadow-sm"
+                onClick={() => handleCardClick(item)}
+                className={`flex justify-between items-center p-4 border bg-white rounded-xl shadow-sm transition-colors ${
+                  isCheckoutMode
+                    ? "cursor-pointer border-slate-200 hover:border-blue-400 hover:shadow-md" // Clickable styles for checkout
+                    : "border-slate-200"
+                }`}
               >
-                <div className="flex flex-col text-sm text-slate-600">
+                <div className="flex flex-col text-sm text-slate-600 pointer-events-none">
                   <span className="font-bold text-slate-800">
                     {item.street} {item.suite && `, ${item.suite}`}
                   </span>
@@ -51,38 +83,44 @@ function AddressList() {
                   )}
                 </div>
 
-                {/* ACTION BUTTONS */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() =>
-                      dispatch({ type: "OPEN_ADD_ADDRESS", payload: item })
-                    }
-                    className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-blue-200"
-                    title="Edit Address"
-                  >
-                    <MdEdit className="text-xl" />
-                  </button>
+                {/* ACTION BUTTONS: Only render if we are in Profile Mode */}
+                {!isCheckoutMode && (
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        dispatch({ type: "OPEN_ADD_ADDRESS", payload: item });
+                      }}
+                      className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-blue-200"
+                      title="Edit Address"
+                    >
+                      <MdEdit className="text-xl" />
+                    </button>
 
-                  <button
-                    onClick={() =>
-                      setDeleteConfig({ isOpen: true, itemId: item._id })
-                    }
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-red-200"
-                    title="Delete Address"
-                  >
-                    <MdDelete className="text-xl" />
-                  </button>
-                </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteConfig({ isOpen: true, itemId: item._id });
+                      }}
+                      className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-red-200"
+                      title="Delete Address"
+                    >
+                      <MdDelete className="text-xl" />
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
 
-            {/* Add New Button */}
-            <button
-              onClick={() => dispatch({ type: "OPEN_ADD_ADDRESS" })}
-              className="w-full py-3 mt-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-bold hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer"
-            >
-              + Add New Address
-            </button>
+            {/* Add New Button: Only render if we are in Profile Mode */}
+            {!isCheckoutMode && (
+              <button
+                onClick={() => dispatch({ type: "OPEN_ADD_ADDRESS" })}
+                className="w-full py-3 mt-2 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 font-bold hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer"
+              >
+                + Add New Address
+              </button>
+            )}
           </div>
         </div>
       </div>

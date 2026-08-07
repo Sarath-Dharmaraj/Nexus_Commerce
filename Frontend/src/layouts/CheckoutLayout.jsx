@@ -15,7 +15,7 @@ function CheckoutLayout() {
         Nexus Commerce
       </div>
 
-      <div className="w-full flex-1 flex justify-between gap-1 px-12 py-1 overflow-hidden">
+      <div className="relative w-full flex-1 flex justify-between gap-1 px-12 py-1 overflow-hidden">
         <div className="flex flex-col items-start justify-between w-full">
           {/* checkout roadmap */}
           <div className="w-full flex justify-between">
