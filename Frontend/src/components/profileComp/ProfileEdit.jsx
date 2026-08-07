@@ -80,6 +80,17 @@ function ProfileEdit() {
                 className="w-full px-3 py-2 border rounded-lg border-slate-200 hover:border-slate-400 focus:border-blue-500 focus:outline-none text-sm font-medium bg-slate-50/50 transition-colors"
               />
             </div>
+            <div className="flex flex-col items-start w-full gap-1 text-sm font-semibold text-slate-700">
+              <label htmlFor="contact">Contact:</label>
+              <input
+                type="tel"
+                name="contact"
+                id="contact"
+                required
+                defaultValue={userData?.contact || ""}
+                className="w-full px-3 py-2 border rounded-lg border-slate-200 hover:border-slate-400 focus:border-blue-500 focus:outline-none text-sm font-medium bg-slate-50/50 transition-colors"
+              />
+            </div>
 
             <button
               type="submit"

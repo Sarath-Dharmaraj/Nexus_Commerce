@@ -8,8 +8,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import ProtectedLayout from "../layouts/ProtectedLayout";
-import RootLayout from "../layouts/RootLayout";
+import ProtectedLayout from "./layouts/ProtectedLayout";
+import RootLayout from "./layouts/RootLayout";
 import Merchant from "./pages/Merchant";
 import ProductCard from "./pages/ProductCard";
 
@@ -32,7 +32,7 @@ import {
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
-import CheckoutLayout from "../layouts/CheckoutLayout";
+import CheckoutLayout from "./layouts/CheckoutLayout";
 import Checkout from "./pages/Checkout";
 
 function App() {
