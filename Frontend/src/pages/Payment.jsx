@@ -29,7 +29,7 @@ function Payment() {
 
   useEffect(() => {
     if (defaultCard?._id) {
-      dispatch?.({ type: "SET_PAYMENT", payload: defaultCard._id });
+      dispatch?.({ type: "SET_PAYMENT", payload: defaultCard });
     }
   }, [defaultCard, dispatch]);
 

@@ -57,7 +57,10 @@ function Navbar() {
         </div>
 
         <div className="flex items-center text-xl lg:text-2xl gap-3 lg:gap-6 shrink-0">
-          <MdOutlineAccountCircle className="cursor-pointer hover:text-blue-500 transition-colors" />
+          <MdOutlineAccountCircle
+            onClick={() => nav("/profile")}
+            className="cursor-pointer hover:text-blue-500 transition-colors"
+          />
           <MdOutlineFavoriteBorder
             onClick={() => nav("/wishlist")}
             className="cursor-pointer hover:text-blue-500 transition-colors"

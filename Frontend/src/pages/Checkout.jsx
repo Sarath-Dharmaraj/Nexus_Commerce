@@ -27,7 +27,7 @@ function Checkout() {
 
   useEffect(() => {
     if (defaultAddress?._id) {
-      dispatch?.({ type: "SET_ADDRESS", payload: defaultAddress._id });
+      dispatch?.({ type: "SET_ADDRESS", payload: defaultAddress});
     }
   }, [defaultAddress, dispatch]);
 

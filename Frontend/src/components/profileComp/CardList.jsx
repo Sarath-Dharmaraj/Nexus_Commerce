@@ -1,14 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useProfile } from "../../context/profileContext";
 import { MdCreditCard, MdEdit, MdDelete } from "react-icons/md";
 import DeletionAlert from "./DeletionAlert";
 
-// Added props for Checkout Mode (cards, setDefaultCard, isOpen, onClose)
 function CardList({ cards, setDefaultCard, isOpen, onClose }) {
-  // 1. Context safety fallback
   const { state, dispatch, userData } = useProfile() || {};
 
-  // 2. Ref for closing when clicking outside the modal
   const modalRef = useRef(null);
 
   const [deleteConfig, setDeleteConfig] = useState({
@@ -16,25 +13,20 @@ function CardList({ cards, setDefaultCard, isOpen, onClose }) {
     itemId: null,
   });
 
-  // 3. Determine which mode we are in based on passed props
   const isCheckoutMode = Boolean(cards);
 
-  // 4. Control visibility depending on mode
   const isListOpen = isCheckoutMode ? isOpen : state?.isCardListOpen;
 
-  // 5. Determine data source
   const displayCards = isCheckoutMode ? cards : userData?.paymentMethod;
 
-  // Handler for closing the modal
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (isCheckoutMode && onClose) {
       onClose();
     } else {
       dispatch?.({ type: "CLOSE_ALL" });
     }
-  };
+  }, [isCheckoutMode, onClose, dispatch]);
 
-  // Outside click listener
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -51,13 +43,12 @@ function CardList({ cards, setDefaultCard, isOpen, onClose }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isListOpen, deleteConfig.isOpen, isCheckoutMode, onClose, dispatch]);
+  }, [isListOpen, deleteConfig.isOpen, handleClose]);
 
-  // Handler for selecting a card in Checkout mode
   const handleCardClick = (item) => {
     if (isCheckoutMode && setDefaultCard) {
       setDefaultCard(item);
-      handleClose(); // Automatically close modal after selection
+      handleClose(); // 
     }
   };
 

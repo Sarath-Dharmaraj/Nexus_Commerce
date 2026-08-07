@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -28,6 +28,26 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+
+    address: {
+      street: String,
+      suite: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      country: String,
+    },
+
+    payment: {
+      method: {
+        type: String,
+        required: true,
+      },
+      details: {
+        type: mongoose.Schema.Types.Mixed,
+      },
+    },
+
     merchantStatus: {
       type: String,
       enum: ["PENDING", "FULFILLED", "CANCELLED"],
