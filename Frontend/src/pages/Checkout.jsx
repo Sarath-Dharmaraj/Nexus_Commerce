@@ -1,20 +1,35 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useEffect, useState } from "react";
-import { useLoaderData, Form, Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLoaderData, Link } from "react-router-dom";
 
 import { MdMoreVert } from "react-icons/md";
 
 import AddressList from "../components/profileComp/AddressList";
+import useCheckout from "../context/checkoutContext";
 
 function Checkout() {
-  const { address } = useLoaderData();
+  const { address } = useLoaderData() || {};
+  const { dispatch } = useCheckout() || {};
 
-  const primeAddress = address?.find((a) => a.isPrimary) || address?.[0] || {};
+  const primeAddress = useMemo(
+    () => address?.find((a) => a.isPrimary) || address?.[0] || {},
+    [address],
+  );
 
-  const [defaultAddress, setDefaultAddress] = useState({});
+  const [defaultAddress, setDefaultAddress] = useState(primeAddress);
   const [isListOpen, setIsListOpen] = useState(false);
 
-  useEffect(() => setDefaultAddress(() => primeAddress), [primeAddress]);
+  useEffect(() => {
+    if (primeAddress._id && !defaultAddress._id) {
+      setDefaultAddress(primeAddress);
+    }
+  }, [primeAddress, defaultAddress._id]);
+
+  useEffect(() => {
+    if (defaultAddress?._id) {
+      dispatch?.({ type: "SET_ADDRESS", payload: defaultAddress._id });
+    }
+  }, [defaultAddress, dispatch]);
 
   const inputClass =
     "w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors bg-white text-slate-800 text-sm";
@@ -42,15 +57,18 @@ function Checkout() {
             </p>
           </div>
           <div
-            className="p-2 text-2xl border rounded-md border-slate-200"
+            className="p-2 text-2xl border rounded-md border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors"
             onClick={() => setIsListOpen(!isListOpen)}
           >
             <MdMoreVert />
           </div>
         </div>
 
-        <Form method="post" className="flex flex-col gap-6">
-          <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6">
+          <div
+            className="flex flex-col gap-5"
+            key={defaultAddress._id || "new"}
+          >
             <div>
               <label className={labelClass}>Address</label>
               <input
@@ -122,21 +140,15 @@ function Checkout() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-start">
             <Link
               to="/cart"
               className="text-blue-600 hover:text-blue-700 font-bold text-xs uppercase tracking-wider flex items-center gap-1 transition-colors"
             >
               &larr; Return to Cart
             </Link>
-            <button
-              type="submit"
-              className="px-8 py-3 bg-black hover:bg-slate-800 text-white font-bold rounded-md text-sm transition-colors shadow-sm"
-            >
-              Continue to Payment
-            </button>
           </div>
-        </Form>
+        </div>
       </div>
     </div>
   );

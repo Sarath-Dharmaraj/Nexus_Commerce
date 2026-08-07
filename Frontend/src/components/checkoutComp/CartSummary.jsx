@@ -37,6 +37,7 @@ function CartItemCard({ item }) {
 
 function CartSummary({ cart }) {
   const location = useLocation();
+  const nav = useNavigate();
 
   const subTotal =
     cart.reduce(
@@ -85,6 +86,7 @@ function CartSummary({ cart }) {
       <div className="w-full m-auto flex items-center justify-center">
         <button
           type="submit"
+          onClick={() => nav("/checkout/payment")}
           className="bg-black text-white px-6 py-2 rounded-sm hover:scale-105 cursor-pointer"
         >
           {location.pathname === "/checkout"
