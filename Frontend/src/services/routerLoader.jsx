@@ -119,3 +119,16 @@ export const checkoutLoader = async () => {
     };
   }
 };
+
+// getting card data for payment
+export const paymentLoader = async () => {
+  try {
+    const response = await api.get("/user/data/card");
+    return { success: true, card: response.data.card };
+  } catch (error) {
+    return {
+      success: false,
+      errorMessage: error.response.data.error,
+    };
+  }
+};

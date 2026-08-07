@@ -38,7 +38,7 @@ export const putUserData = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
-// address CRUD
+// address amd card CRUD
 
 export const getUserAddress = async (req, res) => {
   const user = await User.findById(req.user.id).select("address");
@@ -52,6 +52,19 @@ export const getUserAddress = async (req, res) => {
     success: true,
     message: "item retrived successfully",
     address: user.address,
+  });
+};
+
+export const getUserCard = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    res.status(404);
+    throw new Error("User data not found");
+  }
+
+  return res.status(200).json({
+    success: true,
+    card: user.paymentMethod,
   });
 };
 
