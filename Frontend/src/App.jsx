@@ -29,6 +29,7 @@ import {
   productLoader,
   wishlistLoader,
   cartLoader,
+  checkoutLoader,
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
@@ -93,7 +94,13 @@ function App() {
           id: "CheckoutLayout",
           element: <CheckoutLayout />,
           loader: cartLoader,
-          children: [{ path: "/checkout", element: <Checkout /> }],
+          children: [
+            {
+              path: "/checkout",
+              element: <Checkout />,
+              loader: checkoutLoader,
+            },
+          ],
         },
         {
           path: "/merchant",

@@ -106,3 +106,16 @@ export const cartLoader = async () => {
     return { success: false, error: error };
   }
 };
+
+// getting address data for checkout
+export const checkoutLoader = async () => {
+  try {
+    const response = await api.get("/user/data/address");
+    return { success: true, address: response.data.address };
+  } catch (error) {
+    return {
+      success: false,
+      errorMessage: error.response.data.error,
+    };
+  }
+};

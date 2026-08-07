@@ -38,6 +38,22 @@ export const putUserData = async (req, res) => {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
+// address CRUD
+
+export const getUserAddress = async (req, res) => {
+  const user = await User.findById(req.user.id).select("address");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("Data not found");
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "item retrived successfully",
+    address: user.address,
+  });
+};
 
 export const postUserAddress = async (req, res) => {
   try {

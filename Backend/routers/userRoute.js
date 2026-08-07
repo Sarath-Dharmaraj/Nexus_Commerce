@@ -26,6 +26,7 @@ import {
   getCartProductIds,
   addAllWishlistToCart,
   getCart,
+  getUserAddress,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
@@ -43,6 +44,7 @@ userRouter.use(verifyCookie);
 
 userRouter.get("/data", getUserData);
 userRouter.put("/data", uploadAvatar.single("profileImage"), putUserData);
+userRouter.get("/data/address", asyncHandler(getUserAddress));
 userRouter.post("/address", postUserAddress);
 userRouter.put("/address/:id", putUserAddress);
 userRouter.post("/payment-method", postUserPaymentMethod);
