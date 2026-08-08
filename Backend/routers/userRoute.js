@@ -28,7 +28,6 @@ import {
   getCart,
   getUserAddress,
   getUserCard,
-  postOrder,
 } from "../controllers/userController.js";
 import { asyncHandler } from "../middleware/errorMiddleware.js";
 
@@ -75,8 +74,6 @@ userRouter.delete("/wishlist/:productId", asyncHandler(removeFromWishlist));
 userRouter.put("/cart/:productId", asyncHandler(addCart));
 userRouter.delete("/cart/:productId", asyncHandler(removeCartItem));
 
-// user order
-userRouter.post("/order", asyncHandler(postOrder));
 // for merchant page
 userRouter.use(isSeller);
 

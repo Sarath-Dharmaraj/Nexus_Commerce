@@ -1,6 +1,6 @@
 // Sku ID generator function
 
-export default function generateSKu(skuTitle) {
+export function generateSKu(skuTitle) {
   const prefix = "NX";
 
   const random_number = Math.floor(1000 + Math.random() * 9000);
@@ -16,4 +16,13 @@ export default function generateSKu(skuTitle) {
   }
 
   return `${prefix}-${random_number}-${suffix}`;
+}
+
+// product id generator
+export function generateCode() {
+  const prefix = "#NXS";
+
+  const random_number = Math.floor(10000 + Math.random() * 90000);
+
+  return `${prefix}-${random_number}`;
 }

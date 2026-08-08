@@ -27,13 +27,16 @@ export const profileLoader = async () => {
 // Loader for merchant to extract Data
 export const merchantLoader = async () => {
   try {
-    const [sellerResponse, inventoryResponse] = await Promise.all([
-      api.get("/user/seller-profile"),
-      api.get("/merchant"),
-    ]);
+    const [sellerResponse, inventoryResponse, orderResponse] =
+      await Promise.all([
+        api.get("/user/seller-profile"),
+        api.get("/merchant"),
+        api.get("/order/merchant"),
+      ]);
     return {
       sellerProfile: sellerResponse.data.data,
       inventory: inventoryResponse.data.data,
+      order: orderResponse.data.orders,
     };
   } catch (error) {
     console.error(error);
