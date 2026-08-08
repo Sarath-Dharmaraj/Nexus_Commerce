@@ -365,7 +365,7 @@ export const orderAction = async ({ request }) => {
     const address = formData.get("address");
     const payment = formData.get("payment");
     console.log(address, payment);
-    const response = await api.post("/user/order", { address, payment });
+    const response = await api.post("/order", { address, payment });
 
     return {
       success: true,

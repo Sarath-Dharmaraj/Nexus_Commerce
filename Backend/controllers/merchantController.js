@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../model/Product.js";
 import User from "../model/User.js";
-import generateSKu from "../utilit/skuGenerator.js";
+import { generateSKu } from "../utilit/skuGenerator.js";
 
 // post products
 export const postProduct = async (req, res) => {
@@ -38,6 +38,7 @@ export const postProduct = async (req, res) => {
 
     if (!existingSKu) isVerified = true;
   }
+
   const newProduct = await Product.create({
     merchantId: req.user.id,
     skuTitle,
