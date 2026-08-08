@@ -1,15 +1,12 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { Link, useLoaderData, Form } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { MdMoreVert } from "react-icons/md";
 import useCheckout from "../context/checkoutContext";
 import CardList from "../components/profileComp/CardList";
-import { useGlobalAuth } from "../context/globalAuthContext";
 
 function Payment() {
-  const { user } = useGlobalAuth();
-  const { state, dispatch } = useCheckout() || {};
-  console.log(user, state);
+  const { dispatch } = useCheckout() || {};
   const { card } = useLoaderData() || {};
 
   const [isListOpen, setIsListOpen] = useState(false);
@@ -67,7 +64,7 @@ function Payment() {
           </div>
         </div>
 
-        <Form
+        <div
           key={defaultCard._id || "empty-card"}
           className="flex flex-col gap-6"
         >
@@ -116,7 +113,7 @@ function Payment() {
               &larr; Return to Shipping
             </Link>
           </div>
-        </Form>
+        </div>
       </div>
     </div>
   );

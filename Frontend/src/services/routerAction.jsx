@@ -357,3 +357,21 @@ export const slideAction = async ({ request }) => {
 
   return null;
 };
+
+// order action for payment page
+export const orderAction = async ({ request }) => {
+  try {
+    const formData = await request.formData();
+    const address = formData.get("address");
+    const payment = formData.get("payment");
+    console.log(address, payment);
+    const response = await api.post("/user/order", { address, payment });
+
+    return {
+      success: true,
+      response,
+    };
+  } catch (error) {
+    return { success: false, error: error };
+  }
+};

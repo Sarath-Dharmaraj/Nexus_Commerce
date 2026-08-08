@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { MdOutlineArrowForward } from "react-icons/md";
 
 import CartItemCard from "../components/checkoutComp/CartItemCard";
@@ -36,15 +36,15 @@ function OrderSummary({ totalPrice, items }) {
         </span>
       </div>
       <div className="flex items-center justify-around w-full">
-        <button
-          type="submit"
+        <Link
+          to="/checkout"
           className="px-4 py-2 bg-blue-600 text-white flex items-center justify-around gap-1 border rounded-md hover:scale-95"
         >
           Prodceed to checkout{" "}
           <span>
             <MdOutlineArrowForward />
           </span>
-        </button>
+        </Link>
       </div>
     </div>
   );

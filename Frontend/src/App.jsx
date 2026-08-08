@@ -20,6 +20,7 @@ import {
   merchantAction,
   productAction,
   slideAction,
+  orderAction,
 } from "./services/routerAction";
 import {
   gatewayLoader,
@@ -106,6 +107,7 @@ function App() {
               path: "/checkout/payment",
               element: <Payment />,
               loader: paymentLoader,
+              action: orderAction,
             },
           ],
         },
