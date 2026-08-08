@@ -10,65 +10,62 @@ import FilterSort from "./FilterSort";
 import { useState, useMemo } from "react";
 
 function Orders() {
-  const { state, dispatch } = useMerchant();
+  const { state, dispatch, merchantData } = useMerchant();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  const ordersOverviewCards = {
-    card1: {
-      title: "TOTAL ORDERS",
-      value: "1,284",
-      subtitle: "+12.5% vs last month",
-      trend: "up",
-    },
-    card2: {
-      title: "PENDING SHIPMENTS",
-      value: "42",
-      subtitle: "8 Overdue",
-      trend: "alert",
-    },
-    card3: {
-      title: "COMPLETED SALES",
-      value: "$48,290.00",
-      subtitle: "98.2% fulfillment rate",
-      trend: "verified",
-    },
-  };
+  const ordersOverviewCards = useMemo(() => {
+    const orders = merchantData?.order || [];
+    const pendingCount = orders.filter(
+      (o) => o.merchantStatus === "PENDING",
+    ).length;
+    const fulfilledOrders = orders.filter(
+      (o) => o.merchantStatus === "FULFILLED",
+    );
+    const totalSales = fulfilledOrders.reduce(
+      (sum, o) => sum + (o.totalAmount || 0),
+      0,
+    );
 
-  const ordersTableData = useMemo(
-    () => [
-      {
-        orderId: "#NXS-82910",
-        date: "Oct 24, 2023",
-        customer: { name: "Jane Doe", initials: "JD" },
-        total: "249.00",
-        status: "FULFILLED",
+    return {
+      card1: {
+        title: "TOTAL ORDERS",
+        value: orders.length.toLocaleString(),
+        subtitle: "All time",
+        trend: "up",
       },
-      {
-        orderId: "#NXS-82911",
-        date: "Oct 24, 2023",
-        customer: { name: "Marcus Sterling", initials: "MS" },
-        total: "1,120.50",
-        status: "PENDING",
+      card2: {
+        title: "PENDING SHIPMENTS",
+        value: pendingCount.toString(),
+        subtitle: "Requires action",
+        trend: "alert",
       },
-      {
-        orderId: "#NXS-82912",
-        date: "Oct 23, 2023",
-        customer: { name: "Aria Laurent", initials: "AL" },
-        total: "89.00",
-        status: "CANCELLED",
+      card3: {
+        title: "COMPLETED SALES",
+        value: `$${totalSales.toLocaleString("en-US", { minimumFractionDigits: 2 })}`,
+        subtitle: "Lifetime revenue",
+        trend: "verified",
       },
-      {
-        orderId: "#NXS-82913",
-        date: "Oct 23, 2023",
-        customer: { name: "Robert King", initials: "RK" },
-        total: "3,400.00",
-        status: "FULFILLED",
-      },
-    ],
-    [],
-  );
+    };
+  }, [merchantData?.order]);
+
+  const ordersTableData = useMemo(() => {
+    const orders = merchantData?.order || [];
+
+    return orders.map((order) => ({
+      orderId: order.orderId,
+      date: new Date(order.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      timestamp: new Date(order.createdAt).getTime(), // Added for accurate sorting
+      customer: { name: order.buyerName || "Unknown Buyer" },
+      total: order.totalAmount || 0,
+      status: order.merchantStatus || "PENDING",
+    }));
+  }, [merchantData?.order]);
 
   const processedData = useMemo(() => {
     let data = [...ordersTableData];
@@ -79,8 +76,10 @@ function Orders() {
 
     if (state.sortBy === "PRICE_ASC") data.sort((a, b) => a.total - b.total);
     if (state.sortBy === "PRICE_DESC") data.sort((a, b) => b.total - a.total);
-    if (state.sortBy === "DATE_ASC") data.sort((a, b) => a.date - b.date);
-    if (state.sortBy === "DATE_DESC") data.sort((a, b) => b.date - a.date);
+    if (state.sortBy === "DATE_ASC")
+      data.sort((a, b) => a.timestamp - b.timestamp);
+    if (state.sortBy === "DATE_DESC")
+      data.sort((a, b) => b.timestamp - a.timestamp);
 
     return data;
   }, [ordersTableData, state.sortBy, state.categoryBy]);
@@ -141,8 +140,7 @@ function Orders() {
                 </span>
                 <span className="text-green-600">
                   {ordersOverviewCards.card1.subtitle}
-                </span>{" "}
-                vs last month
+                </span>
               </p>
             </div>
           </div>
@@ -183,7 +181,6 @@ function Orders() {
                 <span className="text-black">
                   {ordersOverviewCards.card3.subtitle}
                 </span>
-                <span> approval rate</span>
               </p>
             </div>
           </div>
@@ -248,7 +245,10 @@ function Orders() {
                           {item.customer.name}
                         </td>
                         <td className="px-4 py-3 font-black text-black">
-                          ${item.total}
+                          $
+                          {Number(item.total).toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                          })}
                         </td>
                         <td className="px-4 py-3">
                           <span
@@ -265,10 +265,8 @@ function Orders() {
 
               <div className="flex items-center justify-between w-full px-6 py-4 border-t border-slate-200 bg-white text-xs text-slate-500 font-medium shrink-0">
                 <p>
-                  Showing
-                  {ordersTableData.length === 0
-                    ? 0
-                    : indexOfFirstItem + 1} to{" "}
+                  Showing{" "}
+                  {ordersTableData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
                   {Math.min(indexOfLastItem, ordersTableData.length)} of{" "}
                   {ordersTableData.length} entries
                 </p>
