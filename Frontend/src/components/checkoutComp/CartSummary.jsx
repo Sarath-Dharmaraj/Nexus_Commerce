@@ -1,5 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useFetcher, useLocation, useNavigate } from "react-router-dom";
 import { MdOutlineArticle } from "react-icons/md";
+import useCheckout from "../../context/checkoutContext";
 
 function CartItemCard({ item }) {
   const nav = useNavigate();
@@ -36,11 +37,22 @@ function CartItemCard({ item }) {
 }
 
 function CartSummary({ cart }) {
+  const { state } = useCheckout();
+  const fetcher = useFetcher();
   const location = useLocation();
   const nav = useNavigate();
+  console.log(state);
+  const submitData = () =>
+    fetcher.submit(
+      {
+        address: state.address,
+        payment: state.payment,
+      },
+      { method: "post", action: "/checkout/payment" },
+    );
 
   const subTotal =
-    cart.reduce(
+    cart?.reduce(
       (acc, item) => acc + (item.quantity * item.productId.price || 0),
       0,
     ) || 0;
@@ -86,7 +98,11 @@ function CartSummary({ cart }) {
       <div className="w-full m-auto flex items-center justify-center">
         <button
           type="submit"
-          onClick={() => nav("/checkout/payment")}
+          onClick={
+            location.pathname === "/checkout"
+              ? () => nav("/checkout/payment")
+              : () => submitData()
+          }
           className="bg-black text-white px-6 py-2 rounded-sm hover:scale-105 cursor-pointer"
         >
           {location.pathname === "/checkout"
