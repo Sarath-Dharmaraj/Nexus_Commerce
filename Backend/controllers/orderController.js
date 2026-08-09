@@ -47,7 +47,7 @@ export const postOrder = async (req, res) => {
       continue;
     }
 
-    //   order Code generation and verification
+    // order Code generation and verification
     let isVerified = false;
     let orderId;
     while (!isVerified) {
@@ -78,11 +78,19 @@ export const postOrder = async (req, res) => {
 
       if (order) {
         successCount++;
+        const totalItemPrice = approvedQuantity * price;
 
         await Product.findByIdAndUpdate(productId, {
           $inc: {
             stockLevel: -approvedQuantity,
             soldCount: approvedQuantity,
+          },
+        });
+
+        await User.findByIdAndUpdate(merchantId, {
+          $inc: {
+            "sellerProfile.walletBalance": totalItemPrice,
+            "sellerProfile.totalRevenueYtd": totalItemPrice,
           },
         });
       } else {
