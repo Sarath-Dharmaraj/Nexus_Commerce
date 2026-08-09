@@ -21,6 +21,7 @@ import {
   productAction,
   slideAction,
   orderAction,
+  settingsAction,
 } from "./services/routerAction";
 import {
   gatewayLoader,
@@ -38,6 +39,7 @@ import Cart from "./pages/Cart";
 import CheckoutLayout from "./layouts/CheckoutLayout";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
+import Settings from "./pages/Settings";
 
 function App() {
   const router = createBrowserRouter([
@@ -90,6 +92,12 @@ function App() {
               element: <Cart />,
               action: slideAction,
               loader: cartLoader,
+            },
+            {
+              path: "/settings",
+              element: <Settings />,
+              loader: profileLoader,
+              action: settingsAction,
             },
           ],
         },
