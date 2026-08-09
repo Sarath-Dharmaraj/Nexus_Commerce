@@ -90,3 +90,59 @@ export const userLogin = async (req, res) => {
     });
   }
 };
+
+// verify password
+export const verifyCurrentPassword = async (req, res) => {
+  const { currentPassword } = req.body;
+
+  const user = await User.findById(req.user.id).select("+passwordHash");
+
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+
+  if (!isMatch) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Incorrect password" });
+  }
+
+  return res.status(200).json({ success: true, message: "Password verified" });
+};
+
+export const updateSecurityData = async (req, res) => {
+  const { newEmail, newPassword } = req.body;
+
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found" });
+  }
+
+  let isModified = false;
+
+  if (newEmail && newEmail !== user.email) {
+    const existingEmail = await User.findOne({ email: newEmail });
+    if (existingEmail) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already in use" });
+    }
+    user.email = newEmail;
+    isModified = true;
+  }
+
+  if (newPassword) {
+    user.passwordHash = newPassword;
+    isModified = true;
+  }
+
+  if (isModified) {
+    await user.save();
+  }
+
+  return res
+    .status(200)
+    .json({ success: true, message: "Security settings updated" });
+};

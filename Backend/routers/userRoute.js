@@ -41,7 +41,6 @@ userRouter.get(
 );
 
 userRouter.use(verifyCookie);
-// userRouter.use(asyncHandler);
 
 userRouter.get("/data", getUserData);
 userRouter.put("/data", uploadAvatar.single("profileImage"), putUserData);

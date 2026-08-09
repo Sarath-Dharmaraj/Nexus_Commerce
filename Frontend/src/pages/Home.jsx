@@ -24,8 +24,8 @@ export default function Home() {
 
         {/* Sort and Filter */}
         <div className="w-full border-b border-slate-300 flex justify-end">
-          <span className="px-3 py-2 text-sm font-semibold text-slate-700 cursor-pointer hover:text-slate-900">
-            Sort & Filter
+          <span className="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900">
+            Explore Catalog
           </span>
         </div>
 

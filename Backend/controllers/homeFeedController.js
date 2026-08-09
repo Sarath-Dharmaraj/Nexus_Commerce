@@ -3,7 +3,8 @@ import HomepageFeed from "../model/HomeFeed.js";
 export const getHomepageFeeds = async (req, res) => {
   const feeds = await HomepageFeed.find().populate({
     path: "products",
-    select: "_id skuId skuTitle price imageUrl category brand averageRating",
+    select:
+      "_id skuId skuTitle price imageUrl category brand averageRating viewCount soldCount",
   });
 
   if (!feeds) {

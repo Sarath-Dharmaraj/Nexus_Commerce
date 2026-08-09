@@ -375,3 +375,53 @@ export const orderAction = async ({ request }) => {
     return { success: false, error: error };
   }
 };
+
+// setting action function
+export const settingsAction = async ({ request }) => {
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  try {
+    switch (intent) {
+      case "verify_password": {
+        const currentPassword = formData.get("currentPassword");
+
+        await api.post("/auth/password-verify", { currentPassword });
+
+        return {
+          success: true,
+          intent: "verify_password",
+          message: "Password verified successfully.",
+        };
+      }
+
+      case "update_security": {
+        const newEmail = formData.get("newEmail");
+        const newPassword = formData.get("newPassword");
+
+        const payload = {};
+        if (newEmail) payload.newEmail = newEmail;
+        if (newPassword) payload.newPassword = newPassword;
+
+        await api.put("/auth/email-password", payload);
+
+        return {
+          success: true,
+          intent: "update_security",
+          message: "Security settings have been updated!",
+        };
+      }
+
+      default:
+        return { success: false, message: "Invalid security intent." };
+    }
+  } catch (error) {
+    console.error("Security Action Error:", error);
+    return {
+      success: false,
+      intent: intent,
+      errorMsg:
+        error.response?.data?.message || "Failed to process security request.",
+    };
+  }
+};
