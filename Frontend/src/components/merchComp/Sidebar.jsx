@@ -68,7 +68,12 @@ function Sidebar() {
         <div className="flex-1"></div>
         <div className=" w-full flex flex-col gap-4">
           {/* withdraw botton */}
-          <div className="w-full text-lg text-white tracking-tight capitalize bg-black text-center py-2 rounded-lg cursor-pointer">
+          <div
+            onClick={() =>
+              dispatch({ type: "SET_POPUP", payload: "withdrawn" })
+            }
+            className="w-full text-lg text-white tracking-tight capitalize bg-black text-center py-2 rounded-lg cursor-pointer"
+          >
             <p>request withdrawal</p>
           </div>
           <span className="h-px  bg-slate-400"></span>

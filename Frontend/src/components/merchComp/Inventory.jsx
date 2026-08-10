@@ -226,7 +226,10 @@ function Inventory() {
               </p>
             </div>
             <p className="text-2xl self-end tracking-wider font-bold text-slate-800">
-              {inventoryOverviewData.card1.value}
+              {inventoryOverviewData.card1.value.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </p>
             <div className="self-end">
               <p className="text-xs tracking-wider text-slate-600">
@@ -251,7 +254,7 @@ function Inventory() {
               {inventoryOverviewData.card2.value}
             </p>
             <div className="self-end">
-              <p className="text-xs flex tracking-wider text-slate-600">
+              <p className="xl:text-xs md:text-[10px] flex tracking-wider text-slate-600">
                 <span className="inline-flex items-center gap-1 text-red-800 pr-1">
                   <MdReport />
                   <span className="text-red-600 whitespace-nowrap">
@@ -409,7 +412,11 @@ function Inventory() {
                         </span>
                       </td>
                       <td className="px-4 py-3 font-bold text-slate-800">
-                        {item.price}
+                        $
+                        {item.price.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </td>
                       <td className="px-4 py-3">
                         <span

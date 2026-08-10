@@ -1,112 +1,91 @@
 import { Form } from "react-router-dom";
-
+import { useMemo } from "react";
 import {
   MdAccountBalance,
   MdOutlineMoving,
+  MdTrendingDown,
   MdAccessTime,
   MdTimeline,
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
+
 function Wallet() {
-  const { state } = useMerchant();
+  const { state, merchantData } = useMerchant();
 
-  const financialOverviewData = {
-    card1: {
-      id: "card_1",
-      title: "ACTIVE BALANCE",
-      value: "$42,850.00",
-      subtitle: "+12.4%",
-      trend: "up",
-    },
-    card2: {
-      id: "card_2",
-      title: "PENDING PAYOUTS",
-      value: "$8,420.50",
-      subtitle: "2 Days",
-      trend: "neutral",
-    },
-    card3: {
-      id: "card_3",
-      title: "TOTAL REVENUE (Yth)",
-      value: "$1.2M",
-      progressValue: 80,
-    },
-  };
+  const financialOverviewData = useMemo(() => {
+    const seller = merchantData?.sellerProfile || {};
 
-  const payoutLedgerData = [
-    {
-      transactionId: "TXN-89241",
-      date: "Oct 24, 2023",
-      amount: "$4,250.00",
-      status: "Processing",
-    },
-    {
-      transactionId: "TXN-89232",
-      date: "Oct 20, 2023",
-      amount: "$12,100.50",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89223",
-      date: "Oct 15, 2023",
-      amount: "$850.00",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89214",
-      date: "Oct 10, 2023",
-      amount: "$3,400.00",
-      status: "Failed",
-    },
-    {
-      transactionId: "TXN-89241",
-      date: "Oct 24, 2023",
-      amount: "$4,250.00",
-      status: "Processing",
-    },
-    {
-      transactionId: "TXN-89232",
-      date: "Oct 20, 2023",
-      amount: "$12,100.50",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89223",
-      date: "Oct 15, 2023",
-      amount: "$850.00",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89214",
-      date: "Oct 10, 2023",
-      amount: "$3,400.00",
-      status: "Failed",
-    },
-    {
-      transactionId: "TXN-89241",
-      date: "Oct 24, 2023",
-      amount: "$4,250.00",
-      status: "Processing",
-    },
-    {
-      transactionId: "TXN-89232",
-      date: "Oct 20, 2023",
-      amount: "$12,100.50",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89223",
-      date: "Oct 15, 2023",
-      amount: "$850.00",
-      status: "Cleared",
-    },
-    {
-      transactionId: "TXN-89214",
-      date: "Oct 10, 2023",
-      amount: "$3,400.00",
-      status: "Failed",
-    },
-  ];
+    const activeBalance = seller.walletBalance || 0;
+    const lastMonth = seller.lastMonthValue || 0;
+    const pending = seller.pendingPayouts || 0;
+    const revenue = seller.totalRevenueYtd || 0;
+
+    let trendPercent = 0;
+    if (lastMonth > 0) {
+      trendPercent = ((activeBalance - lastMonth) / lastMonth) * 100;
+    } else if (activeBalance > 0) {
+      trendPercent = 100;
+    }
+
+    const isTrendUp = trendPercent >= 0;
+    const formattedTrend = `${isTrendUp ? "+" : ""}${trendPercent.toFixed(1)}%`;
+
+    let formattedRevenue = `$${revenue.toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+    if (revenue >= 1000000) {
+      formattedRevenue = `$${(revenue / 1000000).toFixed(1)}M`;
+    } else if (revenue >= 1000) {
+      formattedRevenue = `$${(revenue / 1000).toFixed(1)}K`;
+    }
+
+    const nextTier =
+      revenue < 10000 ? 10000 : revenue < 100000 ? 100000 : 10000000;
+    const progressValue =
+      revenue > 0 ? Math.min(100, Math.round((revenue / nextTier) * 100)) : 0;
+
+    return {
+      card1: {
+        id: "card_1",
+        title: "ACTIVE BALANCE",
+        value: `$${activeBalance.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        subtitle: formattedTrend,
+        isTrendUp: isTrendUp,
+      },
+      card2: {
+        id: "card_2",
+        title: "PENDING PAYOUTS",
+        value: `$${pending.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        subtitle: "2 Days",
+      },
+      card3: {
+        id: "card_3",
+        title: "TOTAL REVENUE (YTD)",
+        value: formattedRevenue,
+        progressValue: progressValue || 80,
+      },
+    };
+  }, [merchantData?.sellerProfile]);
+
+  // Safely process, format, and sort the ledger data
+  const payoutLedgerData = useMemo(() => {
+    const rawLedger = merchantData?.sellerProfile?.payoutLedger || [];
+
+    const sortedLedger = [...rawLedger].sort(
+      (a, b) => new Date(b.date) - new Date(a.date),
+    );
+
+    return sortedLedger.map((item) => ({
+      ...item,
+      formattedDate: new Date(item.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      formattedAmount: `$${Number(item.amount || 0).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+    }));
+  }, [merchantData?.sellerProfile?.payoutLedger]);
 
   const ledgerColorSwitcher = (status) => {
     switch (status) {
@@ -117,6 +96,7 @@ function Wallet() {
       case "Failed":
         return "text-red-700 bg-red-50 border-red-200";
       default:
+        return "text-slate-700 bg-slate-50 border-slate-200";
     }
   };
 
@@ -149,10 +129,22 @@ function Wallet() {
             </p>
             <div>
               <p className="text-xs tracking-wider text-slate-600">
-                <span className="inline-flex text-green-600 pr-1">
-                  <MdOutlineMoving />
+                <span
+                  className={`inline-flex pr-1 ${financialOverviewData.card1.isTrendUp ? "text-green-600" : "text-red-600"}`}
+                >
+                  {financialOverviewData.card1.isTrendUp ? (
+                    <MdOutlineMoving />
+                  ) : (
+                    <MdTrendingDown />
+                  )}
                 </span>
-                <span className="text-green-600">
+                <span
+                  className={
+                    financialOverviewData.card1.isTrendUp
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }
+                >
                   {financialOverviewData.card1.subtitle}
                 </span>{" "}
                 vs last month
@@ -235,30 +227,43 @@ function Wallet() {
                   </tr>
                 </thead>
                 <tbody>
-                  {payoutLedgerData.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-slate-200 transition-colors"
-                    >
-                      <td className="px-4 py-3 font-bold">
-                        {item.transactionId}
-                      </td>
-                      <td className="px-4 py-3 font-extralight">{item.date}</td>
-                      <td className="px-4 py-3 font-extrabold">
-                        {item.amount}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`px-3 py-1 font-semibold rounded-full ${ledgerColorSwitcher(item.status)}`}
-                        >
-                          {item.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold">
-                        -
+                  {payoutLedgerData.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="5"
+                        className="px-4 py-8 text-center text-sm text-slate-500"
+                      >
+                        No transactions found.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    payoutLedgerData.map((item, index) => (
+                      <tr
+                        key={item.transactionId || index}
+                        className="border-b border-slate-300 even:bg-slate-100 last:border-b-0 text-xs tracking-wide text-slate-800 bg-white hover:bg-slate-200 transition-colors"
+                      >
+                        <td className="px-4 py-3 font-bold">
+                          {item.transactionId}
+                        </td>
+                        <td className="px-4 py-3 font-extralight">
+                          {item.formattedDate}
+                        </td>
+                        <td className="px-4 py-3 font-extrabold">
+                          {item.formattedAmount}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`px-3 py-1 font-semibold rounded-full border ${ledgerColorSwitcher(item.status)}`}
+                          >
+                            {item.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right cursor-pointer hover:text-slate-500 font-bold">
+                          -
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
