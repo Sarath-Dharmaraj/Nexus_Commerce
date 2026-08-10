@@ -17,6 +17,7 @@ import FilterSort from "./FilterSort";
 // Function beginning
 function Inventory() {
   // hook set ups
+
   const {
     state,
     dispatch,

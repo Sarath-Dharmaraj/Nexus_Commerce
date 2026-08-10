@@ -135,3 +135,31 @@ export const paymentLoader = async () => {
     };
   }
 };
+
+// admin loader
+export const adminLoader = async () => {
+  try {
+    const [usersRes, sellersRes, payoutsRes, productsRes] = await Promise.all([
+      api.get("/admin/users"),
+      api.get("/admin/sellers/pending"),
+      api.get("/admin/payouts/pending"),
+      api.get("/admin/products/pending"),
+    ]);
+
+    return {
+      users: usersRes.data.users || [],
+      pendingSellers: sellersRes.data.sellers || [],
+      pendingPayouts: payoutsRes.data.payouts || [],
+      pendingProducts: productsRes.data.products || [],
+    };
+  } catch (error) {
+    console.error("Admin Loader Pipeline Crash:", error);
+    return {
+      users: [],
+      pendingSellers: [],
+      pendingPayouts: [],
+      pendingProducts: [],
+      error: error.response?.data?.message || "Failed to load admin data",
+    };
+  }
+};

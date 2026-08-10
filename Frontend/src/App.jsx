@@ -22,6 +22,7 @@ import {
   slideAction,
   orderAction,
   settingsAction,
+  adminAction,
 } from "./services/routerAction";
 import {
   gatewayLoader,
@@ -33,6 +34,7 @@ import {
   cartLoader,
   checkoutLoader,
   paymentLoader,
+  adminLoader,
 } from "./services/routerLoader";
 import Wishlist from "./pages/Wishlist";
 import Cart from "./pages/Cart";
@@ -40,6 +42,7 @@ import CheckoutLayout from "./layouts/CheckoutLayout";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
 import Settings from "./pages/Settings";
+import Admin from "./pages/Admin";
 
 function App() {
   const router = createBrowserRouter([
@@ -124,6 +127,12 @@ function App() {
           element: <Merchant />,
           loader: merchantLoader,
           action: merchantAction,
+        },
+        {
+          path: "/admin",
+          element: <Admin />,
+          loader: adminLoader,
+          action: adminAction,
         },
       ],
     },
