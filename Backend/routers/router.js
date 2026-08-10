@@ -9,6 +9,7 @@ import homeFeedRouter from "./homeFeedRouter.js";
 import productRouter from "./productRouter.js";
 import reviewsRouter from "./reviewsRouter.js";
 import orderRouter from "./orderRouter.js";
+import adminRouter from "./adminRouter.js";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use("/home", homeFeedRouter);
 router.use("/product", productRouter);
 router.use("/reviews", reviewsRouter);
 router.use("/order", orderRouter);
+router.use("/admin", adminRouter);
 
 export default router;
