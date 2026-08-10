@@ -7,13 +7,15 @@ import Wallet from "../components/merchComp/Wallet";
 
 import { MerchantProvider } from "../context/merchantContext";
 import AddProducts from "../components/merchComp/AddProducts";
+import Withdraw from "../components/merchComp/withdraw";
 
 function MerchantLayout() {
   return (
     <div className="w-screen h-screen font-hanken tracking-tight">
       <div className="flex h-screen">
         <Sidebar />
-        <div className="flex flex-col h-screen w-full">
+        <div className="relative flex flex-col h-screen w-full">
+          <Withdraw />
           <HeaderMerch />
           <Wallet />
           <Inventory />
