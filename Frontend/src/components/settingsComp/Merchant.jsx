@@ -110,7 +110,7 @@ function Merchant() {
               <div className="flex flex-col gap-4">
                 <div>
                   <span className={labelClass}>Account Number</span>
-                  <p className="font-mono font-bold text-slate-700 tracking-wider">
+                  <p className="text-sm font-mono font-bold text-slate-700 tracking-wider">
                     {maskAccountNumber(bankDetails.number)}
                   </p>
                 </div>

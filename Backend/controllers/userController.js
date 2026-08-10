@@ -12,7 +12,7 @@ const cleanedPayload = (body) => {
 export const getUserData = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
-      "-passwordHash -isAdmin -sellerProfile",
+      "-passwordHash -isAdmin",
     );
     if (!user)
       return res.status(404).json({ success: false, error: "User not found" });
@@ -28,17 +28,22 @@ export const putUserData = async (req, res) => {
     const payload = cleanedPayload(req.body);
     if (req.file) payload.profileImage = req.file.path;
 
-    const updatedUser = await User.findByIdAndUpdate(req.user.id, payload, {
-      returnDocument: "after",
-    });
-    if (!updatedUser)
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: payload },
+      { returnDocument: "after", runValidators: true },
+    );
+
+    if (!updatedUser) {
       return res.status(404).json({ success: false, error: "User not found" });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
 };
+
 // address amd card CRUD
 
 export const getUserAddress = async (req, res) => {

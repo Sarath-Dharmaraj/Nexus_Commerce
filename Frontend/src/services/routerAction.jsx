@@ -129,6 +129,18 @@ export const profileAction = async ({ request }) => {
         break;
       }
 
+      case "MERCHANT_BANK": {
+        const bankPayload = {
+          "sellerProfile.bankAccountDetails.number":
+            formData.get("accountNumber"),
+          "sellerProfile.bankAccountDetails.routingCode":
+            formData.get("routingCode"),
+        };
+
+        await api.put("/user/data", bankPayload);
+        break;
+      }
+
       default:
         return {
           success: false,
@@ -153,7 +165,7 @@ export const profileAction = async ({ request }) => {
   }
 };
 
-// Merchant page action - adding products
+// Merchant page action - adding products & wallet actions
 export const merchantAction = async ({ request }) => {
   const formData = await request.formData();
 
@@ -182,7 +194,7 @@ export const merchantAction = async ({ request }) => {
         console.log("SKU details have been successfully updated.");
         return {
           success: true,
-          intent: "quick_add_product",
+          intent: "edit_product",
           message: "SKU details have been successfully updated.",
         };
       }
@@ -197,13 +209,31 @@ export const merchantAction = async ({ request }) => {
         };
       }
 
+      case "request_withdrawal": {
+        const amount = formData.get("amount");
+
+        const response = await api.post("/merchant/ledger", { amount });
+
+        return {
+          success: true,
+          intent: "request_withdrawal",
+          message: response.data.message,
+          walletBalance: response.data.walletBalance,
+          pendingPayouts: response.data.pendingPayouts,
+          ledger: response.data.ledger,
+        };
+      }
+
       default:
         throw new Response("Invalid Intent", { status: 400 });
     }
   } catch (error) {
     console.error("Action Error", error);
 
-    const errorMessage = error.response?.data?.error || error.message;
+    const errorMessage =
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message;
 
     return { success: false, error: errorMessage };
   }
@@ -304,7 +334,6 @@ export const slideAction = async ({ request }) => {
     }
   }
 
-  // --- ADD TO CART ---
   if (intent === "add_cart") {
     const quantity = formData.get("quantity");
     try {
