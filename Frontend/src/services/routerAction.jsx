@@ -469,3 +469,62 @@ export const settingsAction = async ({ request }) => {
     };
   }
 };
+
+// admin action
+export const adminAction = async ({ request }) => {
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  try {
+    switch (intent) {
+      case "update_seller_approval": {
+        const userId = formData.get("userId");
+        const isApproved = formData.get("isApproved") === "true"; 
+
+        const response = await api.patch(`/admin/seller/${userId}`, { isApproved });
+        return { success: true, intent, message: response.data.message };
+      }
+
+      case "update_product_status": {
+        const productId = formData.get("productId");
+        const status = formData.get("status"); 
+        const response = await api.patch(`/admin/product/${productId}`, { status });
+        return { success: true, intent, message: response.data.message };
+      }
+
+      case "update_payout_status": {
+        const userId = formData.get("userId");
+        const transactionId = formData.get("transactionId");
+        const status = formData.get("status"); 
+
+        const response = await api.patch(`/admin/payout/${userId}/${transactionId}`, { status });
+        return { success: true, intent, message: response.data.message };
+      }
+
+      case "update_user_roles": {
+        const userId = formData.get("userId");
+        const payload = {};
+        
+        if (formData.has("membership")) {
+          payload.membership = formData.get("membership") === "true";
+        }
+        if (formData.has("isAdmin")) {
+          payload.isAdmin = formData.get("isAdmin") === "true";
+        }
+
+        const response = await api.patch(`/admin/user/${userId}`, payload);
+        return { success: true, intent, message: response.data.message };
+      }
+
+      default:
+        throw new Response("Invalid Admin Intent", { status: 400 });
+    }
+  } catch (error) {
+    console.error("Admin Action Error:", error);
+    return {
+      success: false,
+      intent,
+      errorMsg: error.response?.data?.message || error.message || "Admin action failed.",
+    };
+  }
+};
