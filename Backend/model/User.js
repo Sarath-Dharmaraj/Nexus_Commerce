@@ -97,7 +97,10 @@ const userSchema = new mongoose.Schema(
             enum: ["Processing", "Cleared", "Failed"],
             default: "Processing",
           },
-          date: Date,
+          date: {
+            type: Date,
+            default: Date.now,
+          },
         },
       ],
     },

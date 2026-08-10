@@ -6,6 +6,7 @@ import {
   getMerchanInventory,
   deleteProduct,
   updateMerchantInventory,
+  requestWithdrawal,
 } from "../controllers/merchantController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
 
@@ -31,5 +32,6 @@ merchantRouter.put(
   asyncHandler(updateMerchantInventory),
 );
 merchantRouter.delete("/:skuId", asyncHandler(deleteProduct));
+merchantRouter.post("/ledger", asyncHandler(requestWithdrawal));
 
 export default merchantRouter;

@@ -153,3 +153,77 @@ export const deleteProduct = async (req, res) => {
     message: `Product ${skuId} has been successfully deleted.`,
   });
 };
+
+// ledger for merchant
+export const requestWithdrawal = async (req, res) => {
+  const { amount } = req.body;
+  const withdrawAmount = Number(amount);
+
+  if (!withdrawAmount || withdrawAmount <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Please enter a valid withdrawal amount.",
+    });
+  }
+
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return res
+      .status(404)
+      .json({ success: false, message: "Merchant not found." });
+  }
+
+  const seller = user.sellerProfile;
+
+  if (
+    !seller.bankAccountDetails?.number ||
+    !seller.bankAccountDetails?.routingCode
+  ) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Bank account details missing. Please update them in settings before withdrawing.",
+    });
+  }
+
+  const random_number = Math.floor(10000 + Math.random() * 90000);
+  const transactionId = `TXN-${random_number}`;
+
+  const updatedUser = await User.findOneAndUpdate(
+    {
+      _id: req.user.id,
+      "sellerProfile.walletBalance": { $gte: withdrawAmount },
+    },
+    {
+      $inc: {
+        "sellerProfile.walletBalance": -withdrawAmount,
+        "sellerProfile.pendingPayouts": withdrawAmount,
+      },
+      $push: {
+        "sellerProfile.payoutLedger": {
+          transactionId,
+          amount: withdrawAmount,
+          status: "Processing",
+          date: new Date(),
+        },
+      },
+    },
+    { new: true },
+  );
+
+  if (!updatedUser) {
+    return res.status(400).json({
+      success: false,
+      message: "Insufficient active balance to complete this request.",
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "Withdrawal requested successfully.",
+    walletBalance: updatedUser.sellerProfile.walletBalance,
+    pendingPayouts: updatedUser.sellerProfile.pendingPayouts,
+    ledger: updatedUser.sellerProfile.payoutLedger,
+  });
+};
