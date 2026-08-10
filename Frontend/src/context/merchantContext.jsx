@@ -6,6 +6,7 @@ const initialState = {
   sortBy: "NONE",
   categoryBy: "ALL",
   isEdit: false,
+  popup: "NONE",
   data: null,
 };
 
@@ -45,14 +46,17 @@ function merchantReducer(state, action) {
         sortBy: initialState.sortBy,
         categoryBy: initialState.categoryBy,
       };
-      case 'SET_EDIT': {
-        return {
-          ...initialState,
-          screen: 'ADD_PRODUCT',
-          isEdit: true,
-          data: action.payload
-        }
-      }
+    case "SET_EDIT": {
+      return {
+        ...initialState,
+        screen: "ADD_PRODUCT",
+        isEdit: true,
+        data: action.payload,
+      };
+    }
+    case "SET_POPUP": {
+      return { ...initialState, screen: state.screen, popup: action.payload };
+    }
     default:
       return state;
   }
