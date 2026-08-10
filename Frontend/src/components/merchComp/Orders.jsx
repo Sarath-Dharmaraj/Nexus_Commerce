@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
 import FilterSort from "./FilterSort";
+import OrderCard from "./OrderCard"; // Import the new component
 import { useState, useMemo } from "react";
 
 function Orders() {
@@ -14,6 +15,9 @@ function Orders() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+
+  // New State for handling the order popup
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const ordersOverviewCards = useMemo(() => {
     const orders = merchantData?.order || [];
@@ -54,13 +58,14 @@ function Orders() {
     const orders = merchantData?.order || [];
 
     return orders.map((order) => ({
+      rawOrder: order, // Store the raw order to pass to the OrderCard
       orderId: order.orderId,
       date: new Date(order.createdAt).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
       }),
-      timestamp: new Date(order.createdAt).getTime(), // Added for accurate sorting
+      timestamp: new Date(order.createdAt).getTime(),
       customer: { name: order.buyerName || "Unknown Buyer" },
       total: order.totalAmount || 0,
       status: order.merchantStatus || "PENDING",
@@ -114,7 +119,14 @@ function Orders() {
   if (!(state.screen === "ORDERS")) return null;
 
   return (
-    <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden">
+    <div className="w-full h-screen bg-slate-50 px-5 py-8 flex flex-col overflow-hidden relative">
+      {selectedOrder && (
+        <OrderCard
+          order={selectedOrder}
+          onClose={() => setSelectedOrder(null)}
+        />
+      )}
+
       <div className="flex flex-col items-center gap-6 w-full px-5 py-5 h-full min-h-0">
         <div className="flex items-start w-full font-hanken tracking-tight text-slate-600 shrink-0">
           <p className="text-2xl font-bold text-slate-800 capitalize">
@@ -230,35 +242,49 @@ function Orders() {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentItems.map((item, index) => (
-                      <tr
-                        key={index}
-                        className="border-b border-slate-100 even:bg-slate-50/50 last:border-b-0 text-center text-sm tracking-wider text-slate-600 bg-white transition-colors"
-                      >
-                        <td className="text-blue-800 font-black">
-                          {item.orderId}
-                        </td>
-                        <td className="px-4 py-3 text-slate-600">
-                          {item.date}
-                        </td>
-                        <td className="px-4 py-3 text-slate-800">
-                          {item.customer.name}
-                        </td>
-                        <td className="px-4 py-3 font-black text-black">
-                          $
-                          {Number(item.total).toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                          })}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`px-3 py-1 font-semibold rounded-full ${StatusColorSwitch(item.status)}`}
-                          >
-                            {item.status}
-                          </span>
+                    {currentItems.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-4 py-8 text-center text-sm text-slate-500"
+                        >
+                          No orders found.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      currentItems.map((item, index) => (
+                        <tr
+                          key={item.orderId || index}
+                          className="border-b border-slate-100 even:bg-slate-50/50 last:border-b-0 text-center text-sm tracking-wider text-slate-600 bg-white transition-colors"
+                        >
+                          <td
+                            className="text-blue-800 font-black cursor-pointer hover:underline"
+                            onClick={() => setSelectedOrder(item.rawOrder)}
+                          >
+                            {item.orderId}
+                          </td>
+                          <td className="px-4 py-3 text-slate-600">
+                            {item.date}
+                          </td>
+                          <td className="px-4 py-3 text-slate-800">
+                            {item.customer.name}
+                          </td>
+                          <td className="px-4 py-3 font-black text-black">
+                            $
+                            {Number(item.total).toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                            })}
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`px-3 py-1 font-semibold border rounded-full ${StatusColorSwitch(item.status)}`}
+                            >
+                              {item.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>

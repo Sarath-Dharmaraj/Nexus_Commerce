@@ -150,3 +150,68 @@ export const getMerchantOrder = async (req, res) => {
     orders: formattedOrders,
   });
 };
+
+// updating merchant status:
+export const updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ["PENDING", "FULFILLED", "CANCELLED"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid status update requested.",
+    });
+  }
+
+  const order = await Order.findOne({
+    _id: orderId,
+    merchantId: req.user.id,
+  });
+
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: "Order not found or unauthorized.",
+    });
+  }
+
+  if (order.merchantStatus === status) {
+    return res.status(400).json({
+      success: false,
+      message: `Order is already marked as ${status}.`,
+    });
+  }
+
+  if (order.merchantStatus === "CANCELLED") {
+    return res.status(400).json({
+      success: false,
+      message: "A cancelled order cannot be reactivated.",
+    });
+  }
+
+  if (status === "CANCELLED") {
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: {
+        "sellerProfile.walletBalance": -order.totalAmount,
+        "sellerProfile.totalRevenueYtd": -order.totalAmount,
+      },
+    });
+
+    await Product.findByIdAndUpdate(order.items.productId, {
+      $inc: {
+        stockLevel: order.items.quantity,
+        soldCount: -order.items.quantity,
+      },
+    });
+  }
+
+  order.merchantStatus = status;
+  await order.save();
+
+  return res.status(200).json({
+    success: true,
+    message: `Order successfully updated to ${status}.`,
+    order,
+  });
+};

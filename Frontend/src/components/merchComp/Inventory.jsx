@@ -389,7 +389,7 @@ function Inventory() {
                       </td>
                       <td className="text-left px-4 py-3">
                         <p
-                          className="text-slate-800 font-bold capitalize truncate max-w-[200px] xl:max-w-[300px]"
+                          className="text-slate-800 font-bold capitalize truncate max-w-50 xl:max-w-75"
                           title={item.skuTitle}
                         >
                           {item.skuTitle}

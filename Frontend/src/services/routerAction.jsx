@@ -223,6 +223,21 @@ export const merchantAction = async ({ request }) => {
           ledger: response.data.ledger,
         };
       }
+      case "update_order_status": {
+        const orderId = formData.get("orderId");
+        const status = formData.get("status");
+
+        const response = await api.put(`/order/status/${orderId}`, {
+          status,
+        });
+
+        return {
+          success: true,
+          intent: "update_order_status",
+          message: response.data.message,
+          order: response.data.order,
+        };
+      }
 
       default:
         throw new Response("Invalid Intent", { status: 400 });
