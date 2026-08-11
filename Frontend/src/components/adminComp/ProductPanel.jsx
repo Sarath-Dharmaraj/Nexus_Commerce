@@ -79,7 +79,7 @@ function ProductPanel({ data }) {
                           </div>
                           <div className="flex flex-col">
                             <span
-                              className="font-bold text-slate-800 truncate max-w-[200px]"
+                              className="font-bold text-slate-800 truncate max-w-50"
                               title={product.skuTitle}
                             >
                               {product.skuTitle}

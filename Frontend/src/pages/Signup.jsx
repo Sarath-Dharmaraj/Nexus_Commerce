@@ -5,16 +5,19 @@ import {
   PiEyeSlash,
   PiStorefrontBold,
   PiArrowCircleRightBold,
-  PiGoogleLogoBold,
-  PiAppleLogoBold,
   PiWarningFill,
 } from "react-icons/pi";
+
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleAuth } from "../hooks/useGoogleAuth";
 
 function Signup() {
   const [isVisible, setVisible] = useState(false);
   const [isError, setError] = useState(false);
   const actionData = useActionData();
   const nav = useNavigate();
+
+  const { handleGoogleSuccess, handleGoogleError } = useGoogleAuth();
 
   useEffect(() => {
     if (actionData?.error) {
@@ -25,7 +28,6 @@ function Signup() {
 
   return (
     <div className="h-screen w-full tracking-wider bg-gray-200 flex items-center justify-center font-hanken p-4 md:p-8 md:pb-20 lg:pb-14 overflow-hidden">
-      {/* WARNING BANNER */}
       {isError && (
         <div className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 tracking-wider w-[90%] sm:w-full max-w-md p-2 border shadow-2xl rounded-lg  border-gray-500 flex flex-col gap-2 bg-white">
           <div className="flex items-center justify-between px-2">
@@ -207,20 +209,15 @@ function Signup() {
               <div className="h-px bg-gray-200 flex-1"></div>
             </div>
 
-            <div className="flex items-center justify-between gap-x-3 lg:gap-x-4">
-              <button
-                type="button"
-                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-red-600 hover:bg-gray-50 border hover:border-black rounded transition-colors"
-              >
-                <PiGoogleLogoBold className="text-base" /> Google
-              </button>
-
-              <button
-                type="button"
-                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-black hover:bg-white border hover:border-black rounded transition-colors"
-              >
-                <PiAppleLogoBold className="text-base" /> Apple
-              </button>
+            <div className="flex items-center justify-center w-full">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                shape="square" 
+                size="large"
+                width="300"
+                text="continue_with"
+              />
             </div>
           </div>
         </div>
