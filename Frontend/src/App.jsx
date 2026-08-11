@@ -138,7 +138,12 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <RouterProvider
+      router={router}
+      fallbackElement={<div>Loading Nexus Commerce...</div>}
+    />
+  );
 }
 
 export default App;

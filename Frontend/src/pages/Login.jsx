@@ -5,7 +5,6 @@ import {
   PiEyeSlash,
   PiArrowCircleRightBold,
   PiGoogleLogoBold,
-  PiAppleLogoBold,
   PiWarningFill,
 } from "react-icons/pi";
 function Signup() {
@@ -142,13 +141,6 @@ function Signup() {
                 className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-red-600 hover:bg-gray-50 border hover:border-black rounded transition-colors"
               >
                 <PiGoogleLogoBold className="text-base" /> Google
-              </button>
-
-              <button
-                type="button"
-                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-black hover:bg-white border hover:border-black rounded transition-colors"
-              >
-                <PiAppleLogoBold className="text-base" /> Apple
               </button>
             </div>
           </div>
