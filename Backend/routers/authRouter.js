@@ -8,6 +8,7 @@ import {
   userLogin,
   updateSecurityData,
   verifyCurrentPassword,
+  googleAuthLogin,
 } from "../controllers/authController.js";
 
 const authRouter = Router();
@@ -15,6 +16,8 @@ const authRouter = Router();
 authRouter.get("/me", verifyCookie, asyncHandler(verifyUserSession));
 authRouter.post("/signup", registerUser);
 authRouter.post("/login", userLogin);
+// google login
+authRouter.post("/google-login", asyncHandler(googleAuthLogin));
 
 // verifying the user
 authRouter.use(verifyCookie);

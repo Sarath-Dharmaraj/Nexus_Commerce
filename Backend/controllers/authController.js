@@ -1,3 +1,5 @@
+import { OAuth2Client } from "google-auth-library";
+
 import setCookieAuth from "../middleware/setCookieAuth.js";
 import bcrypt from "bcrypt";
 import User from "../model/User.js";
@@ -145,4 +147,50 @@ export const updateSecurityData = async (req, res) => {
   return res
     .status(200)
     .json({ success: true, message: "Security settings updated" });
+};
+
+export const googleAuthLogin = async (req, res) => {
+  const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  const { credential } = req.body;
+
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { email, name, picture } = ticket.getPayload();
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-16);
+
+      user = await User.create({
+        fullName: name,
+        email: email,
+        passwordHash: randomPassword,
+        profileImage: picture,
+        systemRoles: ["Customer"],
+      });
+    }
+
+    setCookieAuth(user, res);
+
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        systemRoles: user.systemRoles,
+      },
+    });
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return res.status(401).json({
+      success: false,
+      error: "Invalid Google Authentication Token",
+    });
+  }
 };
