@@ -5,16 +5,26 @@ import {
   MdStore,
   MdNotifications,
   MdSecurity,
+  MdDashboard,
+  MdAdminPanelSettings,
 } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 import { useGlobalAuth } from "../../context/globalAuthContext";
+import { useSettings } from "../../context/settingsContext";
 
 function Sidebar({ page, setPage }) {
   const { user } = useGlobalAuth();
-  const role = user.systemRoles;
+  const settingsData = useSettings() || {};
+  const navigate = useNavigate();
+
+  const role = user?.systemRoles || [];
+  const isSeller = role.includes("Seller");
+  const isApprovedSeller = settingsData?.sellerProfile?.isApproved;
+  const isAdmin = user?.isAdmin;
 
   const btnClass = (targetPage) =>
-    `w-fit md:w-full flex items-center gap-2 md:gap-3 text-sm font-normal capitalize hover:bg-blue-500 hover:text-white px-3 py-2 md:px-4 md:py-2.5 rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 ${
+    `w-fit md:w-full flex items-center gap-2 md:gap-3 text-sm font-medium capitalize hover:bg-blue-500 hover:text-white px-3 py-2 md:px-4 md:py-2.5 rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 ${
       page === targetPage ? "bg-blue-500 text-white" : "text-slate-600"
     }`;
 
@@ -24,7 +34,7 @@ function Sidebar({ page, setPage }) {
         Settings
       </span>
 
-      <div className="w-full flex flex-row md:flex-col items-center md:items-start gap-2 overflow-x-auto md:overflow-visible pb-2 md:pb-0 px-2 md:px-0 scrollbar-hide">
+      <div className="w-full flex flex-row md:flex-col items-center md:items-start gap-2 overflow-x-auto md:overflow-visible pb-2 md:px-0 scrollbar-none">
         <button
           className={btnClass("account")}
           onClick={() => setPage("account")}
@@ -75,26 +85,61 @@ function Sidebar({ page, setPage }) {
           <span>Notifications</span>
         </button>
 
-        {/* Desktop Divider */}
-        <div className="hidden md:block w-full h-px bg-slate-200 my-2 shrink-0"></div>
-        {/* Mobile Divider */}
-        <div className="md:hidden w-px h-6 bg-slate-200 mx-1 shrink-0"></div>
+        {/* --- SELLER SECTION --- */}
+        {isSeller && (
+          <>
+            <div className="hidden md:block w-full h-px bg-slate-200 my-2 shrink-0"></div>
+            <div className="md:hidden w-px h-6 bg-slate-200 mx-1 shrink-0"></div>
 
-        {role?.includes("Seller") && (
-          <div className="hidden md:block px-4 text-sm shrink-0">
-            Seller Content
-          </div>
+            <div className="hidden md:block px-4 text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mt-1">
+              Seller Content
+            </div>
+
+            {isApprovedSeller && (
+              <button
+                className="w-fit md:w-full flex items-center gap-2 md:gap-3 text-sm font-bold capitalize bg-slate-800 text-white hover:bg-black px-3 py-2 md:px-4 md:py-2.5 rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 shadow-sm"
+                onClick={() => navigate("/merchant")}
+              >
+                <span className="text-lg md:text-xl shrink-0">
+                  <MdDashboard />
+                </span>
+                <span>Merchant Dashboard</span>
+              </button>
+            )}
+
+            <button
+              className={btnClass("merchant")}
+              onClick={() => setPage("merchant")}
+            >
+              <span className="text-lg md:text-xl shrink-0">
+                <MdStore />
+              </span>
+              <span>Merchant Hub</span>
+            </button>
+          </>
         )}
 
-        <button
-          className={btnClass("merchant")}
-          onClick={() => setPage("merchant")}
-        >
-          <span className="text-lg md:text-xl shrink-0">
-            <MdStore />
-          </span>
-          <span>Merchant Hub</span>
-        </button>
+        {/* --- ADMIN SECTION --- */}
+        {isAdmin && (
+          <>
+            <div className="hidden md:block w-full h-px bg-slate-200 my-2 shrink-0"></div>
+            <div className="md:hidden w-px h-6 bg-slate-200 mx-1 shrink-0"></div>
+
+            <div className="hidden md:block px-4 text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mt-1">
+              System
+            </div>
+
+            <button
+              className="w-fit md:w-full flex items-center gap-2 md:gap-3 text-sm font-bold capitalize bg-blue-600 text-white hover:bg-blue-700 px-3 py-2 md:px-4 md:py-2.5 rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 shadow-sm"
+              onClick={() => navigate("/admin")}
+            >
+              <span className="text-lg md:text-xl shrink-0">
+                <MdAdminPanelSettings />
+              </span>
+              <span>Admin Panel</span>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

@@ -39,6 +39,28 @@ function Merchant() {
 
   const isSubmitting = fetcher.state !== "idle";
 
+  // Check if the user is a seller but hasn't been approved by an admin yet
+  const isPendingSeller =
+    user.systemRoles?.includes("Seller") && !seller.isApproved;
+
+  if (isPendingSeller) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center px-8 py-8 bg-slate-50">
+        <div className="max-w-md bg-white p-8 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center text-center">
+          <MdInfoOutline className="text-6xl text-amber-500 mb-4" />
+          <h2 className="text-2xl font-black text-slate-800 mb-2">
+            Application Under Review
+          </h2>
+          <p className="text-slate-500 text-sm leading-relaxed">
+            Your merchant application has been received and is currently waiting
+            for admin approval. Please check back later to access your Merchant
+            Hub.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full flex flex-col items-start px-8 py-8 relative">
       <div className="mb-6 w-full border-b border-slate-200 pb-4 flex justify-between items-end">
@@ -110,7 +132,7 @@ function Merchant() {
               <div className="flex flex-col gap-4">
                 <div>
                   <span className={labelClass}>Account Number</span>
-                  <p className="text-sm font-mono font-bold text-slate-700 tracking-wider">
+                  <p className="font-mono font-bold text-slate-700 tracking-wider">
                     {maskAccountNumber(bankDetails.number)}
                   </p>
                 </div>

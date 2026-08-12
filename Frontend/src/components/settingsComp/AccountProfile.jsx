@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useFetcher } from "react-router-dom";
 import { useSettings } from "../../context/settingsContext";
-import { MdPhotoCamera } from "react-icons/md";
+import { MdPhotoCamera, MdStorefront } from "react-icons/md";
 
 function AccountProfile() {
   const user = useSettings() || {};
@@ -29,6 +29,7 @@ function AccountProfile() {
     "block text-xs font-bold text-slate-600 tracking-wider mb-1.5 uppercase";
 
   const isSubmitting = fetcher.state !== "idle";
+  const isAlreadySeller = user.systemRoles?.includes("Seller");
 
   return (
     <div className="w-full h-full flex flex-col items-start px-4 sm:px-6 md:px-8 py-6 md:py-8">
@@ -127,6 +128,32 @@ function AccountProfile() {
               required
             />
           </div>
+
+          {/* New Merchant Opt-In Toggle */}
+          {!isAlreadySeller && (
+            <div className="flex items-center border rounded-md border-blue-200 bg-blue-50/50 py-3 px-4 mt-2">
+              <div className="flex items-center justify-between gap-x-3 w-fit">
+                <MdStorefront className="text-2xl md:text-3xl text-blue-600" />
+                <div>
+                  <p className="font-semibold text-sm text-gray-900">
+                    Apply for Merchant Account
+                  </p>
+                  <p className="text-xs text-gray-500 leading-tight mt-0.5">
+                    I want to start selling products on Nexus Commerce.
+                  </p>
+                </div>
+              </div>
+              <label className="flex items-center justify-end flex-1 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="applyMerchant"
+                  value="true"
+                  className="sr-only peer"
+                />
+                <div className="relative flex items-center w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          )}
 
           <div className="pt-4 border-t border-slate-200 mt-2 flex flex-col sm:flex-row justify-end">
             <button

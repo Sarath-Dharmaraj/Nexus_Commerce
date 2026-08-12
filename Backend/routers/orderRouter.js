@@ -4,6 +4,7 @@ import { asyncHandler } from "../middleware/errorMiddleware.js";
 import { isSeller, verifyCookie } from "../middleware/gaurdAuth.js";
 import {
   getMerchantOrder,
+  getUserOrders,
   postOrder,
   updateOrderStatus,
 } from "../controllers/orderController.js";
@@ -19,6 +20,7 @@ orderRouter.post("/", asyncHandler(postOrder));
 orderRouter.use(isSeller);
 
 orderRouter.get("/merchant", asyncHandler(getMerchantOrder));
+orderRouter.get("/user", asyncHandler(getUserOrders));
 orderRouter.put("/status/:orderId", asyncHandler(updateOrderStatus));
 
 export default orderRouter;

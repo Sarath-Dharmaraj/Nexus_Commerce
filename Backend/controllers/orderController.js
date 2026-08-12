@@ -215,3 +215,25 @@ export const updateOrderStatus = async (req, res) => {
     order,
   });
 };
+
+// user order data
+export const getUserOrders = async (req, res) => {
+  const userId = req.user.id;
+
+  const orders = await Order.find({ buyerId: userId })
+    .populate("items.productId", "skuTitle imageUrl price brand")
+    .sort({ createdAt: -1 });
+
+  if (!orders || orders.length === 0) {
+    return res.status(200).json({
+      success: true,
+      message: "No orders found.",
+      orders: [],
+    });
+  }
+
+  return res.status(200).json({
+    success: true,
+    orders,
+  });
+};

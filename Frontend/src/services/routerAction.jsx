@@ -409,12 +409,9 @@ export const orderAction = async ({ request }) => {
     const address = formData.get("address");
     const payment = formData.get("payment");
     console.log(address, payment);
-    const response = await api.post("/order", { address, payment });
+    await api.post("/order", { address, payment });
 
-    return {
-      success: true,
-      response,
-    };
+    return redirect("/cart");
   } catch (error) {
     return { success: false, error: error };
   }
@@ -479,32 +476,39 @@ export const adminAction = async ({ request }) => {
     switch (intent) {
       case "update_seller_approval": {
         const userId = formData.get("userId");
-        const isApproved = formData.get("isApproved") === "true"; 
+        const isApproved = formData.get("isApproved") === "true";
 
-        const response = await api.patch(`/admin/seller/${userId}`, { isApproved });
+        const response = await api.patch(`/admin/seller/${userId}`, {
+          isApproved,
+        });
         return { success: true, intent, message: response.data.message };
       }
 
       case "update_product_status": {
         const productId = formData.get("productId");
-        const status = formData.get("status"); 
-        const response = await api.patch(`/admin/product/${productId}`, { status });
+        const status = formData.get("status");
+        const response = await api.patch(`/admin/product/${productId}`, {
+          status,
+        });
         return { success: true, intent, message: response.data.message };
       }
 
       case "update_payout_status": {
         const userId = formData.get("userId");
         const transactionId = formData.get("transactionId");
-        const status = formData.get("status"); 
+        const status = formData.get("status");
 
-        const response = await api.patch(`/admin/payout/${userId}/${transactionId}`, { status });
+        const response = await api.patch(
+          `/admin/payout/${userId}/${transactionId}`,
+          { status },
+        );
         return { success: true, intent, message: response.data.message };
       }
 
       case "update_user_roles": {
         const userId = formData.get("userId");
         const payload = {};
-        
+
         if (formData.has("membership")) {
           payload.membership = formData.get("membership") === "true";
         }
@@ -524,7 +528,10 @@ export const adminAction = async ({ request }) => {
     return {
       success: false,
       intent,
-      errorMsg: error.response?.data?.message || error.message || "Admin action failed.",
+      errorMsg:
+        error.response?.data?.message ||
+        error.message ||
+        "Admin action failed.",
     };
   }
 };

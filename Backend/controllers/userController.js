@@ -28,9 +28,19 @@ export const putUserData = async (req, res) => {
     const payload = cleanedPayload(req.body);
     if (req.file) payload.profileImage = req.file.path;
 
+    delete payload.applyMerchant;
+
+    const updateOperation = {
+      $set: payload,
+    };
+
+    if (req.body.applyMerchant === "true") {
+      updateOperation.$addToSet = { systemRoles: "Seller" };
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { $set: payload },
+      updateOperation,
       { returnDocument: "after", runValidators: true },
     );
 
