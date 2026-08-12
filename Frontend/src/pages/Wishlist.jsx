@@ -10,10 +10,12 @@ function Wishlist() {
   const fetcher = useFetcher();
 
   return (
-    <div className="w-full h-full text-slate-600 font-hanken tracking-tight flex flex-col items-start px-12 py-8 gap-4 overflow-hidden">
-      <div className="flex flex-col items-start justify-around px-6 py-4 gap-2">
-        <h1 className="text-4xl text-slate-800 font-black">Saved Items</h1>
-        <span className="tracking-wider">
+    <div className="w-full h-full text-slate-600 font-hanken tracking-tight flex flex-col items-start px-2 md:px-8 lg:px-12 py-1 md:py-4 lg:py-8 gap-1 md:gap2 lg:gap-4 overflow-hidden">
+      <div className="flex flex-col items-start justify-around px-2 md:px-6 py-2 md:py-4 gap-1 md:gap-2 mt-5 md:mt-0">
+        <h1 className="text-2xl md:text-4xl text-slate-800 font-black">
+          Saved Items
+        </h1>
+        <span className="text-xs md:text-md tracking-wider">
           Review and manage your curated selections.
         </span>
       </div>
@@ -45,7 +47,7 @@ function Wishlist() {
           Add all to cart
         </button>
       </fetcher.Form>
-      <div className="w-full mt-auto">
+      <div className="w-full mt-auto ">
         <Footer />
       </div>
     </div>

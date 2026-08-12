@@ -75,34 +75,48 @@ function CartItemCard({ item }) {
 
   return (
     <div
-      className={`w-full flex items-center gap-4 px-4 py-3 border border-slate-200 rounded-md shadow-sm bg-white transition-opacity duration-300 ${isDeleting ? "opacity-30 scale-95" : "opacity-100"}`}
+      className={`w-full flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 px-4 py-4 sm:py-3 border border-slate-200 rounded-md shadow-sm bg-white transition-opacity duration-300 ${
+        isDeleting ? "opacity-30 scale-95" : "opacity-100"
+      }`}
     >
-      <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-slate-50 rounded-md flex items-center justify-center overflow-hidden border border-slate-100">
-        <img
-          src={product.imageUrl}
-          alt={product.skuTitle}
-          className="w-full h-full object-contain mix-blend-multiply"
-        />
+      <div className="flex items-start justify-between w-full sm:w-auto sm:flex-1 gap-3 sm:gap-4 min-w-0">
+        <div className="w-20 h-20 shrink-0 bg-slate-50 rounded-md flex items-center justify-center overflow-hidden border border-slate-100">
+          <img
+            src={product.imageUrl}
+            alt={product.skuTitle}
+            className="w-full h-full object-contain mix-blend-multiply p-1"
+          />
+        </div>
+
+        <div className="flex-1 flex flex-col items-start justify-center gap-1 min-w-0 pt-1 sm:pt-0">
+          <span className="font-bold text-slate-800 text-sm md:text-base line-clamp-2 sm:truncate w-full pr-1">
+            {product.skuTitle}
+          </span>
+          <span className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            SKU: {product.skuId}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="sm:hidden p-1.5 -mr-1.5 -mt-1.5 text-slate-400 hover:text-red-500 rounded-full transition-all disabled:opacity-50 shrink-0"
+        >
+          <MdOutlineDelete className="text-xl" />
+        </button>
       </div>
 
-      <div className="flex-1 flex flex-col items-start justify-center gap-1 min-w-0">
-        <span className="font-bold text-slate-800 text-sm md:text-base truncate w-full">
-          {product.skuTitle}
-        </span>
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          SKU: {product.skuId}
-        </span>
-      </div>
-
-      <div className="flex flex-col items-end justify-center gap-2 pr-2 sm:pr-4">
-        <span className="font-black text-slate-900 text-sm md:text-base">
+      {/* Bottom section on mobile: Price + Controls + Desktop Delete */}
+      <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 mt-2 sm:mt-0 sm:pl-4">
+        <span className="font-black text-slate-900 text-base md:text-lg">
           ${" "}
           {Number(product.price * quantity || 0).toLocaleString("en-US", {
             minimumFractionDigits: 2,
           })}
         </span>
 
-        <div className="flex items-center border rounded-sm border-slate-300 overflow-hidden bg-white">
+        <div className="flex items-center border rounded-sm border-slate-300 overflow-hidden bg-white shrink-0">
           <button
             type="button"
             onClick={() => handleInputChange("DECREMENT")}
@@ -127,17 +141,18 @@ function CartItemCard({ item }) {
             +
           </button>
         </div>
-      </div>
 
-      <button
-        type="button"
-        onClick={handleDelete}
-        disabled={isDeleting}
-        className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all disabled:opacity-50"
-      >
-        <MdOutlineDelete className="text-xl" />
-      </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="hidden sm:block p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all disabled:opacity-50 shrink-0"
+        >
+          <MdOutlineDelete className="text-xl" />
+        </button>
+      </div>
     </div>
   );
 }
+
 export default CartItemCard;

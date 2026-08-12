@@ -7,42 +7,45 @@ import Footer from "../components/protectedPageComp/Footer";
 
 function OrderSummary({ totalPrice, items }) {
   const sectionStyling =
-    "w-full flex items-center justify-around gap-2 text-slate-600 tracking-tighter font-light";
+    "w-full flex items-center justify-between gap-2 text-slate-600 tracking-tighter font-light text-sm md:text-base";
+
   return (
     <div className="w-full flex flex-col items-start justify-around gap-4">
-      <h3 className="font-bold text-slate-800 text-xl mb-4">Order Summary</h3>
+      <h3 className="font-bold text-slate-800 text-xl mb-2 md:mb-4">
+        Order Summary
+      </h3>
       <span className="h-px w-full border border-slate-200"> </span>
-      <div className="flex flex-col items-start justify-around gap-1">
+      <div className="w-full flex flex-col items-start justify-around gap-2">
         <div className={sectionStyling}>
-          <span className="flex-1">Subtotal ({items})</span>
+          <span>Subtotal ({items})</span>
           <span>
             ${totalPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
           </span>
         </div>
         <div className={sectionStyling}>
-          <span className="flex-1">Estimated Shipping</span>
-          <span>calculated on checkout</span>
+          <span>Estimated Shipping</span>
+          <span>Calculated at checkout</span>
         </div>
         <div className={sectionStyling}>
-          <span className="flex-1">Estimated Tax</span>
-          <span>calculated on checkout </span>
+          <span>Estimated Tax</span>
+          <span>Calculated at checkout</span>
         </div>
       </div>
-      <span className="h-px w-full border border-slate-200 mt-auto"></span>
+      <span className="h-px w-full border border-slate-200 mt-2 md:mt-auto"></span>
       <div className={sectionStyling}>
-        <span className="flex-1 font-bold text-slate-800 text-lg">Total: </span>
+        <span className="font-bold text-slate-800 text-lg">Total: </span>
         <span className="font-bold text-slate-800 text-lg">
           ${totalPrice.toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </span>
       </div>
-      <div className="flex items-center justify-around w-full">
+      <div className="flex items-center justify-around w-full mt-2">
         <Link
           to="/checkout"
-          className="px-4 py-2 bg-blue-600 text-white flex items-center justify-around gap-1 border rounded-md hover:scale-95"
+          className="w-full text-center px-4 py-3 md:py-2 bg-blue-600 text-white flex items-center justify-center gap-2 border rounded-md hover:scale-[0.98] transition-transform font-bold"
         >
-          Prodceed to checkout{" "}
+          Proceed to checkout
           <span>
-            <MdOutlineArrowForward />
+            <MdOutlineArrowForward className="text-lg" />
           </span>
         </Link>
       </div>
@@ -59,27 +62,31 @@ function Cart() {
     }, 0) || 0;
 
   return (
-    <div className="w-full h-full text-slate-600 font-hanken tracking-tight flex flex-col items-start md:px-12 py-8 gap-4 md:overflow-hidden">
-      <div className="flex flex-col items-start px-6 py-4 gap-2 h-full">
-        <h1 className="text-4xl text-slate-800 font-black">Shopping Cart</h1>
-        <span className="tracking-wider">
-          Review your items and proceed to secure checkout
-        </span>
-      </div>
-
-      <div className="w-full flex flex-col md:flex-row items-start justify-between gap-6 px-6">
-        <div className="w-full md:w-[70%] flex flex-col gap-3 md:overflow-auto md:max-h-90 scrollbar-thin scrollbar-thumb-blue-100 pb-4">
-          {cart?.map((item) => {
-            return <CartItemCard key={item._id} item={item} />;
-          })}
+    <div className="w-full min-h-screen text-slate-600 font-hanken tracking-tight flex flex-col bg-white">
+      <div className="flex-1 flex flex-col items-start md:px-8 lg:px-12 py-6 md:py-8 gap-6 md:gap-8">
+        <div className="flex flex-col items-start px-4 md:px-6 gap-1 md:gap-2 w-full">
+          <h1 className="text-3xl md:text-4xl text-slate-800 font-black">
+            Shopping Cart
+          </h1>
+          <span className="tracking-wider text-sm md:text-base">
+            Review your items and proceed to secure checkout
+          </span>
         </div>
 
-        <div className="w-full md:w-[30%] border rounded-md border-slate-200 bg-slate-50 min-h-75 p-6">
-          <OrderSummary totalPrice={subtotal} items={cart.length} />
+        <div className="w-full flex flex-col lg:flex-row items-start justify-between gap-8 px-4 md:px-6 pb-8">
+          <div className="w-full lg:w-[65%] xl:w-[70%] flex flex-col gap-3 md:gap-4">
+            {cart?.map((item) => {
+              return <CartItemCard key={item._id} item={item} />;
+            })}
+          </div>
+
+          <div className="w-full lg:w-[35%] xl:w-[30%] lg:sticky lg:top-8 border rounded-md border-slate-200 bg-slate-50 p-5 md:p-6 shadow-sm shrink-0">
+            <OrderSummary totalPrice={subtotal} items={cart.length} />
+          </div>
         </div>
       </div>
 
-      <div className="w-full mt-auto">
+      <div className="w-full shrink-0">
         <Footer />
       </div>
     </div>
