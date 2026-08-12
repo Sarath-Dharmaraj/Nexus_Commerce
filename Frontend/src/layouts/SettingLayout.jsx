@@ -10,11 +10,11 @@ function SettingLayout() {
   const [page, setPage] = useState("account");
 
   return (
-    <div className="w-full h-full flex items-center font-hanken text-slate-600 tracking-tight">
-      <div className="w-1/4 flex flex-col h-full">
+    <div className="w-full h-full flex flex-col md:flex-row items-start font-hanken text-slate-600 tracking-tight">
+      <div className="w-full md:w-1/4 lg:w-1/5 flex flex-col h-auto md:h-full shrink-0">
         <Sidebar page={page} setPage={setPage} />
       </div>
-      <div className="w-3/4 h-full items-start justify-start">
+      <div className="w-full md:w-3/4 lg:w-4/5 h-full overflow-y-auto items-start justify-start">
         {page === "account" && <AccountProfile />}
         {page === "security" && <SecurityLogin />}
         {page === "address" && <Addresses />}

@@ -63,15 +63,17 @@ function SecurityLogin() {
     isSubmitting && fetcher.formData?.get("intent") === "update_security";
 
   return (
-    <div className="w-full h-full flex flex-col items-start px-8 py-8">
-      <div className="mb-8 w-full border-b border-slate-200 pb-4">
-        <h2 className="text-2xl font-black text-slate-800">Security & Login</h2>
+    <div className="w-full h-full flex flex-col items-start px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="mb-6 md:mb-8 w-full border-b border-slate-200 pb-4">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800">
+          Security & Login
+        </h2>
         <p className="text-slate-500 text-sm mt-1">
           Update your email address or change your password securely.
         </p>
       </div>
 
-      <div className="w-full max-w-xl flex flex-col gap-8">
+      <div className="w-full max-w-xl flex flex-col gap-6 md:gap-8">
         {fetcher.data && !fetcher.data.success && (
           <div className="w-full p-3 bg-red-50 text-red-700 border border-red-200 rounded text-sm">
             {fetcher.data.errorMsg || fetcher.data.message}
@@ -85,7 +87,7 @@ function SecurityLogin() {
         )}
 
         <div
-          className={`p-6 border rounded-md transition-colors ${isVerified ? "bg-green-50/50 border-green-200" : "bg-slate-50 border-slate-200"}`}
+          className={`p-4 sm:p-6 border rounded-md transition-colors ${isVerified ? "bg-green-50/50 border-green-200" : "bg-slate-50 border-slate-200"}`}
         >
           {isVerified ? (
             <div className="flex items-center gap-3 text-green-700">
@@ -126,15 +128,15 @@ function SecurityLogin() {
                 </button>
               </div>
 
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-xs text-blue-600 font-semibold cursor-pointer hover:underline">
+              <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between mt-2 gap-4 sm:gap-0">
+                <span className="text-xs text-blue-600 font-semibold cursor-pointer hover:underline text-center sm:text-left">
                   Forgot Password?
                 </span>
 
                 <button
                   type="submit"
                   disabled={verifying}
-                  className="bg-slate-800 text-white px-6 py-2 rounded-sm hover:bg-black transition-colors font-bold text-sm disabled:bg-slate-400"
+                  className="w-full sm:w-auto bg-slate-800 text-white px-6 py-2 rounded-sm hover:bg-black transition-colors font-bold text-sm disabled:bg-slate-400"
                 >
                   {verifying ? "Verifying..." : "Verify Identity"}
                 </button>
@@ -156,7 +158,7 @@ function SecurityLogin() {
           <fetcher.Form
             method="POST"
             onSubmit={handleUpdateSubmit}
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-4 md:gap-5"
           >
             <input type="hidden" name="intent" value="update_security" />
 
@@ -235,11 +237,11 @@ function SecurityLogin() {
               )}
             </div>
 
-            <div className="pt-2 flex justify-end">
+            <div className="pt-2 flex flex-col sm:flex-row justify-end">
               <button
                 type="submit"
                 disabled={!isVerified || updating}
-                className={`px-8 py-2.5 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
+                className={`w-full sm:w-auto px-8 py-2.5 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
                   !isVerified || updating
                     ? "bg-slate-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 hover:shadow-md"

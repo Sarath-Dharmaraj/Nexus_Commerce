@@ -4,7 +4,6 @@ import { SettingsProvider } from "../context/settingsContext";
 
 function Settings() {
   const userData = useLoaderData();
-  console.log(userData);
   return (
     <SettingsProvider userData={userData}>
       <SettingLayout />

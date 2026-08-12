@@ -27,7 +27,7 @@ function Checkout() {
 
   useEffect(() => {
     if (defaultAddress?._id) {
-      dispatch?.({ type: "SET_ADDRESS", payload: defaultAddress});
+      dispatch?.({ type: "SET_ADDRESS", payload: defaultAddress });
     }
   }, [defaultAddress, dispatch]);
 
@@ -46,27 +46,27 @@ function Checkout() {
           onClose={() => setIsListOpen(false)}
         />
       )}
-      <div className="bg-white border border-slate-200 rounded-lg p-6 w-full shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-lg p-4 md:p-6 w-full shadow-sm">
         <div className="w-full flex items-center justify-between">
           <div className="mb-4">
-            <h2 className="text-3xl font-black text-slate-800 mb-2">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800 mb-1 md:mb-2">
               Shipping Information
             </h2>
-            <p className="text-slate-500 text-sm tracking-wide">
+            <p className="text-slate-500 text-xs md:text-sm tracking-wide">
               Enter your delivery details below.
             </p>
           </div>
           <div
-            className="p-2 text-2xl border rounded-md border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors"
+            className="p-1 md:p-2 text-xl md:text-2xl border rounded-md border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors"
             onClick={() => setIsListOpen(!isListOpen)}
           >
             <MdMoreVert />
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5 md:gap-6">
           <div
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-4 md:gap-5"
             key={defaultAddress._id || "new"}
           >
             <div>
@@ -93,7 +93,7 @@ function Checkout() {
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label className={labelClass}>City</label>
                 <input
@@ -116,7 +116,7 @@ function Checkout() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <label className={labelClass}>State / Province</label>
                 <input

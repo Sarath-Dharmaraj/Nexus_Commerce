@@ -46,18 +46,18 @@ function Payment() {
         />
       )}
 
-      <div className="bg-white border border-slate-200 rounded-lg p-6 w-full shadow-sm">
-        <div className="w-full flex items-center justify-between">
-          <div className="mb-4">
-            <h2 className="text-3xl font-black text-slate-800 mb-2">
+      <div className="bg-white border border-slate-200 rounded-lg p-4 md:p-6 w-full shadow-sm">
+        <div className="w-full flex items-start sm:items-center justify-between mb-4 md:mb-6 gap-2">
+          <div>
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-slate-800 mb-1 md:mb-2">
               Payment Information
             </h2>
-            <p className="text-slate-500 text-sm tracking-wide">
+            <p className="text-slate-500 text-xs md:text-sm tracking-wide">
               Review your payment details below.
             </p>
           </div>
           <div
-            className="p-2 text-2xl border rounded-md border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors"
+            className="p-1.5 md:p-2 text-xl md:text-2xl border rounded-md border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors shrink-0"
             onClick={() => setIsListOpen(true)}
           >
             <MdMoreVert />
@@ -66,9 +66,9 @@ function Payment() {
 
         <div
           key={defaultCard._id || "empty-card"}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-5 md:gap-6"
         >
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 md:gap-5">
             <div>
               <label className={labelClass}>Card Number (Last 4 Digits)</label>
               <input
@@ -81,7 +81,7 @@ function Payment() {
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
                 <label className={labelClass}>Expiry Date</label>
                 <input
@@ -105,10 +105,10 @@ function Payment() {
             </div>
           </div>
 
-          <div className="flex items-start">
+          <div className="flex items-start mt-2">
             <Link
               to="/checkout"
-              className="text-blue-600 hover:text-blue-700 font-bold text-xs uppercase tracking-wider flex items-center gap-1 transition-colors"
+              className="text-blue-600 hover:text-blue-700 font-bold text-xs md:text-sm uppercase tracking-wider flex items-center gap-1 transition-colors"
             >
               &larr; Return to Shipping
             </Link>

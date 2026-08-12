@@ -97,15 +97,15 @@ function ProductReviews({ reviewData }) {
             key={review._id}
             className="flex flex-col items-start justify-start w-full px-4 py-3 border rounded-md border-slate-200 bg-white"
           >
-            <div className="flex items-center justify-between w-full mb-2">
-              <div className="flex items-center gap-2 text-sm text-slate-700">
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-between w-full mb-2 gap-2 sm:gap-0">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 text-sm text-slate-700">
                 <img
                   src={review.userId.profileImage}
                   alt="profile"
-                  className="h-8 w-8 rounded-full object-cover border border-slate-200"
+                  className="h-8 w-8 rounded-full object-cover border border-slate-200 shrink-0"
                 />
                 <span className="font-bold">{review.userId.fullName}</span>
-                <MdCircle className="text-[5px] text-slate-400" />
+                <MdCircle className="text-[5px] text-slate-400 hidden sm:block" />
                 <div className="flex items-center mt-0.5">
                   <StarRating rating={review.rating} />
                 </div>
@@ -121,7 +121,7 @@ function ProductReviews({ reviewData }) {
         ))}
 
         {/* Action Buttons Container */}
-        <div className="flex items-center gap-5 mt-2">
+        <div className="flex flex-wrap items-center gap-3 md:gap-5 mt-2">
           {showAllReviews && reviews.length > 5 && (
             <button
               type="button"

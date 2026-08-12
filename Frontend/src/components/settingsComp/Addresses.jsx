@@ -4,7 +4,6 @@ import { useFetcher } from "react-router-dom";
 import { useSettings } from "../../context/settingsContext";
 import { MdEdit, MdDelete, MdAdd, MdStar, MdClose } from "react-icons/md";
 
-
 function AddressCard({ address, onEdit, fetcher }) {
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this address?")) {
@@ -26,7 +25,7 @@ function AddressCard({ address, onEdit, fetcher }) {
 
   return (
     <div
-      className={`relative flex flex-col items-start justify-between p-5 h-48 border rounded-md transition-all ${
+      className={`relative flex flex-col items-start justify-between p-4 md:p-5 h-48 border rounded-md transition-all ${
         address.isPrimary
           ? "border-blue-500 bg-blue-50/30 shadow-sm"
           : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
@@ -38,8 +37,8 @@ function AddressCard({ address, onEdit, fetcher }) {
         </span>
       )}
 
-      <div className="flex flex-col gap-1 text-sm text-slate-600 mt-2">
-        <span className="font-bold text-slate-800 text-base">
+      <div className="flex flex-col gap-1 text-xs md:text-sm text-slate-600 mt-2">
+        <span className="font-bold text-slate-800 text-sm md:text-base">
           {address.street} {address.suite ? `, ${address.suite}` : ""}
         </span>
         <span>
@@ -66,14 +65,13 @@ function AddressCard({ address, onEdit, fetcher }) {
   );
 }
 
-
 function Addresses() {
   const user = useSettings() || {};
   const addresses = user.address || [];
   const fetcher = useFetcher();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editData, setEditData] = useState(null); 
+  const [editData, setEditData] = useState(null);
 
   useEffect(() => {
     if (fetcher.state === "idle" && fetcher.data?.success) {
@@ -99,15 +97,17 @@ function Addresses() {
   const isSubmitting = fetcher.state !== "idle";
 
   return (
-    <div className="w-full h-full flex flex-col items-start px-8 py-8 relative">
+    <div className="w-full h-full flex flex-col items-start px-4 md:px-8 py-6 md:py-8 relative">
       <div className="mb-6 w-full border-b border-slate-200 pb-4">
-        <h2 className="text-2xl font-black text-slate-800">Saved Addresses</h2>
-        <p className="text-slate-500 text-sm mt-1">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800">
+          Saved Addresses
+        </h2>
+        <p className="text-slate-500 text-xs md:text-sm mt-1">
           Manage your shipping and billing addresses for faster checkout.
         </p>
       </div>
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
         <div
           onClick={() => openModal()}
           className="flex flex-col items-center justify-center p-5 h-48 border-2 border-dashed border-slate-300 rounded-md bg-slate-50 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50/30 transition-all cursor-pointer group"
@@ -127,10 +127,10 @@ function Addresses() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg rounded-md shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
-              <h3 className="text-lg font-bold text-slate-800">
+            <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-slate-200 bg-slate-50">
+              <h3 className="text-base md:text-lg font-bold text-slate-800">
                 {editData ? "Edit Address" : "Add New Address"}
               </h3>
               <button
@@ -144,7 +144,7 @@ function Addresses() {
             <fetcher.Form
               method="POST"
               action="/profile"
-              className="p-6 flex flex-col gap-4"
+              className="p-4 md:p-6 flex flex-col gap-4"
             >
               <input type="hidden" name="form_type" value="ADDRESS" />
               <input
@@ -156,8 +156,8 @@ function Addresses() {
                 <input type="hidden" name="item_id" value={editData._id} />
               )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="col-span-1 sm:col-span-2">
                   <label className={labelClass}>Street Address</label>
                   <input
                     type="text"
@@ -168,7 +168,7 @@ function Addresses() {
                   />
                 </div>
 
-                <div className="col-span-2 sm:col-span-1">
+                <div className="col-span-1">
                   <label className={labelClass}>Apt, Suite, Unit</label>
                   <input
                     type="text"
@@ -179,7 +179,7 @@ function Addresses() {
                   />
                 </div>
 
-                <div className="col-span-2 sm:col-span-1">
+                <div className="col-span-1">
                   <label className={labelClass}>City</label>
                   <input
                     type="text"
@@ -190,7 +190,7 @@ function Addresses() {
                   />
                 </div>
 
-                <div className="col-span-2 sm:col-span-1">
+                <div className="col-span-1">
                   <label className={labelClass}>State / Province</label>
                   <input
                     type="text"
@@ -201,7 +201,7 @@ function Addresses() {
                   />
                 </div>
 
-                <div className="col-span-2 sm:col-span-1">
+                <div className="col-span-1">
                   <label className={labelClass}>Zip / Postal Code</label>
                   <input
                     type="text"
@@ -212,7 +212,7 @@ function Addresses() {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className={labelClass}>Country</label>
                   <input
                     type="text"
@@ -234,24 +234,24 @@ function Addresses() {
                 />
                 <label
                   htmlFor="isPrimary"
-                  className="text-sm font-semibold text-slate-700 cursor-pointer"
+                  className="text-xs md:text-sm font-semibold text-slate-700 cursor-pointer"
                 >
                   Set as default shipping address
                 </label>
               </div>
 
-              <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-100">
+              <div className="flex justify-end gap-2 md:gap-3 mt-4 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-6 py-2 rounded-sm font-bold text-sm text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="px-4 md:px-6 py-2 rounded-sm font-bold text-xs md:text-sm text-slate-600 hover:bg-slate-100 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`px-8 py-2 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
+                  className={`px-6 md:px-8 py-2 rounded-sm text-white font-bold text-xs md:text-sm shadow-sm transition-all ${
                     isSubmitting
                       ? "bg-slate-400 cursor-not-allowed"
                       : "bg-black hover:bg-slate-800 hover:shadow-md"

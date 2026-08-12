@@ -34,7 +34,7 @@ function PaymentCard({ card, onEdit, fetcher }) {
 
   return (
     <div
-      className={`relative flex flex-col items-start justify-between px-5 py-2 h-48 border rounded-md transition-all ${
+      className={`relative flex flex-col items-start justify-between px-4 md:px-5 py-4 md:py-5 h-48 border rounded-md transition-all ${
         card.isDefault
           ? "border-blue-500 bg-blue-50/30 shadow-sm"
           : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
@@ -46,24 +46,24 @@ function PaymentCard({ card, onEdit, fetcher }) {
         </span>
       )}
 
-      <div className="flex flex-col gap- text-sm text-slate-600 mt-2 w-full">
+      <div className="flex flex-col gap-1 text-sm text-slate-600 mt-2 w-full">
         <div className="flex items-center justify-between w-full">
-          <span className="font-bold text-slate-800 text-lg capitalize flex items-center gap-2">
-            <MdCreditCard className="text-2xl text-slate-400" />
+          <span className="font-bold text-slate-800 text-base md:text-lg capitalize flex items-center gap-2">
+            <MdCreditCard className="text-xl md:text-2xl text-slate-400" />
             {card.cardType}
           </span>
         </div>
 
-        <div className="font-mono font-bold text-slate-700 text-base tracking-widest mt-2">
+        <div className="font-mono font-bold text-slate-700 text-sm md:text-base tracking-widest mt-2">
           •••• •••• •••• {card.lastFourDigit}
         </div>
 
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+        <span className="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1">
           Exp: {card.expireDate}
         </span>
       </div>
 
-      <div className="flex items-center gap-4 w-full mt-4 pt-4 border-t border-slate-100">
+      <div className="flex items-center gap-4 w-full mt-auto pt-4 border-t border-slate-100">
         <button
           onClick={() => onEdit(card)}
           className="text-xs font-bold text-blue-600 hover:text-blue-800 inline-flex items-center gap-1 transition-colors"
@@ -113,15 +113,17 @@ function Payments() {
   const isSubmitting = fetcher.state !== "idle";
 
   return (
-    <div className="w-full h-full flex flex-col items-start px-8 py-8 relative">
+    <div className="w-full h-full flex flex-col items-start px-4 md:px-8 py-6 md:py-8 relative">
       <div className="mb-6 w-full border-b border-slate-200 pb-4">
-        <h2 className="text-2xl font-black text-slate-800">Payment Methods</h2>
-        <p className="text-slate-500 text-sm mt-1">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800">
+          Payment Methods
+        </h2>
+        <p className="text-slate-500 text-xs md:text-sm mt-1">
           Manage your saved cards for a seamless checkout experience.
         </p>
       </div>
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
         <div
           onClick={() => openModal()}
           className="flex flex-col items-center justify-center p-5 h-48 border-2 border-dashed border-slate-300 rounded-md bg-slate-50 text-slate-500 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50/30 transition-all cursor-pointer group"
@@ -141,10 +143,10 @@ function Payments() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-md rounded-md shadow-2xl overflow-hidden flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
-              <h3 className="text-lg font-bold text-slate-800">
+            <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-slate-200 bg-slate-50">
+              <h3 className="text-base md:text-lg font-bold text-slate-800">
                 {editData ? "Edit Card" : "Add New Card"}
               </h3>
               <button
@@ -158,7 +160,7 @@ function Payments() {
             <fetcher.Form
               method="POST"
               action="/profile"
-              className="p-6 flex flex-col gap-5"
+              className="p-4 md:p-6 flex flex-col gap-4 md:gap-5"
             >
               <input type="hidden" name="form_type" value="CARDS" />
               <input
@@ -184,7 +186,7 @@ function Payments() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass}>Last 4 Digits</label>
                   <input
@@ -226,24 +228,24 @@ function Payments() {
                 />
                 <label
                   htmlFor="card_isDefault"
-                  className="text-sm font-semibold text-slate-700 cursor-pointer"
+                  className="text-xs md:text-sm font-semibold text-slate-700 cursor-pointer"
                 >
                   Set as default payment method
                 </label>
               </div>
 
-              <div className="flex justify-end gap-3 mt-2 pt-4 border-t border-slate-100">
+              <div className="flex justify-end gap-2 md:gap-3 mt-2 pt-4 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-6 py-2 rounded-sm font-bold text-sm text-slate-600 hover:bg-slate-100 transition-colors"
+                  className="px-4 md:px-6 py-2 rounded-sm font-bold text-xs md:text-sm text-slate-600 hover:bg-slate-100 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`px-8 py-2 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
+                  className={`px-6 md:px-8 py-2 rounded-sm text-white font-bold text-xs md:text-sm shadow-sm transition-all ${
                     isSubmitting
                       ? "bg-slate-400 cursor-not-allowed"
                       : "bg-black hover:bg-slate-800 hover:shadow-md"

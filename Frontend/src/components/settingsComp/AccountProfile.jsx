@@ -31,10 +31,9 @@ function AccountProfile() {
   const isSubmitting = fetcher.state !== "idle";
 
   return (
-    <div className="w-full h-full flex flex-col items-start px-8 py-8">
-      {/* Header Section */}
-      <div className="mb-8 w-full border-b border-slate-200 pb-4">
-        <h2 className="text-2xl font-black text-slate-800">
+    <div className="w-full h-full flex flex-col items-start px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="mb-6 md:mb-8 w-full border-b border-slate-200 pb-4">
+        <h2 className="text-xl md:text-2xl font-black text-slate-800">
           Account & Profile
         </h2>
         <p className="text-slate-500 text-sm mt-1">
@@ -46,11 +45,10 @@ function AccountProfile() {
         method="POST"
         action="/profile"
         encType="multipart/form-data"
-        className="w-full flex flex-col md:flex-row gap-12 max-w-4xl"
+        className="w-full flex flex-col md:flex-row gap-8 md:gap-12 max-w-4xl"
       >
         <input type="hidden" name="form_type" value="PROFILE_DATA" />
 
-        {/* Left Column: Avatar */}
         <div className="w-full md:w-1/3 flex flex-col items-center gap-4">
           <div
             className="relative group cursor-pointer"
@@ -59,11 +57,10 @@ function AccountProfile() {
             <img
               src={imagePreview}
               alt="profile"
-              className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
+              className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg"
             />
-            {/* Hover Overlay */}
             <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <MdPhotoCamera className="text-white text-3xl" />
+              <MdPhotoCamera className="text-white text-2xl md:text-3xl" />
             </div>
           </div>
 
@@ -85,8 +82,7 @@ function AccountProfile() {
           </button>
         </div>
 
-        {/* Right Column: Form Fields */}
-        <div className="w-full md:w-2/3 flex flex-col gap-6">
+        <div className="w-full md:w-2/3 flex flex-col gap-5 md:gap-6">
           <div>
             <label htmlFor="fullName" className={labelClass}>
               Full Name
@@ -132,12 +128,11 @@ function AccountProfile() {
             />
           </div>
 
-          {/* Submit Button */}
-          <div className="pt-4 border-t border-slate-200 mt-2 flex justify-end">
+          <div className="pt-4 border-t border-slate-200 mt-2 flex flex-col sm:flex-row justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`px-8 py-2.5 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
+              className={`w-full sm:w-auto px-8 py-2.5 rounded-sm text-white font-bold text-sm shadow-sm transition-all ${
                 isSubmitting
                   ? "bg-slate-400 cursor-not-allowed"
                   : "bg-black hover:bg-slate-800 hover:shadow-md"

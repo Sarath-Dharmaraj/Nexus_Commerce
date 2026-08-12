@@ -9,7 +9,7 @@ function CartItemCard({ item }) {
   return (
     <div
       onClick={() => nav(`/product/${product._id}`)}
-      className="w-full flex items-start gap-2 text-xs text-slate-600 font-bold font-hanken px-4 py-2 bg-slate-100 border rounded-xs border-slate-200 cursor-pointer"
+      className="w-full flex items-start gap-2 text-xs text-slate-600 font-bold font-hanken px-2 md:px-4 py-2 bg-slate-100 border rounded-xs border-slate-200 cursor-pointer"
     >
       <img
         src={product.imageUrl}
@@ -17,10 +17,10 @@ function CartItemCard({ item }) {
         className="w-8 h-8 inline-flex items-center justify-center"
       />
       <div className="flex-1 flex flex-col items-start justify-center">
-        <div>{product.skuTitle}</div>
+        <div className="line-clamp-1">{product.skuTitle}</div>
         <div>{product.skuId}</div>
       </div>
-      <div className="flex flex-col items-start justify-center text-slate-800">
+      <div className="flex flex-col items-end justify-center text-slate-800 shrink-0">
         <div>
           $
           {product.price.toLocaleString("en-US", {
@@ -59,8 +59,8 @@ function CartSummary({ cart }) {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
   return (
-    <div className="w-[30%] bg-white px-3 py-5 flex flex-col gap-3 border rounded-md border-slate-200 shadow-2xs overflow-hidden">
-      <div className="flex items-center  gap-2 text-lg font-bold text-slate-800 tracking-wider mb-4">
+    <div className="w-full lg:w-[30%] shrink-0 h-fit max-h-[60vh] lg:max-h-full bg-white px-3 md:px-4 py-4 md:py-5 flex flex-col gap-3 border rounded-md border-slate-200 shadow-2xs overflow-hidden mb-6 lg:mb-0">
+      <div className="flex items-center gap-2 text-base md:text-lg font-bold text-slate-800 tracking-wider mb-2 md:mb-4 shrink-0">
         <span>
           <MdOutlineArticle />{" "}
         </span>
@@ -71,8 +71,8 @@ function CartSummary({ cart }) {
           return <CartItemCard key={item._id} item={item} />;
         })}
       </div>
-      <div className="w-full h-px border border-slate-200"></div>
-      <div className="w-full flex flex-col items-start justify-between px-2 py-2 tracking-wider text-slate-600">
+      <div className="w-full h-px border border-slate-200 shrink-0"></div>
+      <div className="w-full flex flex-col items-start justify-between px-1 md:px-2 py-1 md:py-2 tracking-wider text-sm md:text-base text-slate-600 shrink-0">
         <div className="w-full flex items-start justify-between">
           <span className="flex-1 ">Subtotal ({totalItems} items): </span>
           <span className="text-slate-800 font-black">
@@ -86,16 +86,16 @@ function CartSummary({ cart }) {
           </span>
         </div>
       </div>
-      <div className="w-full h-px border border-slate-200"></div>
-      <div className="w-full flex items-start justify-between px-2 py-2 tracking-wider text-slate-600">
+      <div className="w-full h-px border border-slate-200 shrink-0"></div>
+      <div className="w-full flex items-start justify-between px-1 md:px-2 py-1 md:py-2 tracking-wider text-sm md:text-base text-slate-600 shrink-0">
         <span className="flex-1 ">Total: </span>
         <span className="text-slate-800 font-black">
           <span className="text-xs font-light">USD</span> $
           {subTotal.toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </span>
       </div>
-      <div className="w-full h-px border border-slate-200"></div>
-      <div className="w-full m-auto flex items-center justify-center">
+      <div className="w-full h-px border border-slate-200 shrink-0"></div>
+      <div className="w-full m-auto flex items-center justify-center shrink-0 pt-2">
         <button
           type="submit"
           onClick={
@@ -103,7 +103,7 @@ function CartSummary({ cart }) {
               ? () => nav("/checkout/payment")
               : () => submitData()
           }
-          className="bg-black text-white px-6 py-2 rounded-sm hover:scale-105 cursor-pointer"
+          className="bg-black text-white px-4 md:px-6 py-2.5 text-sm md:text-base w-full md:w-auto rounded-sm hover:scale-105 transition-transform cursor-pointer"
         >
           {location.pathname === "/checkout"
             ? "Continue to Payment"

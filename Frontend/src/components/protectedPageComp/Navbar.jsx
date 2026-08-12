@@ -4,6 +4,7 @@ import {
   MdOutlineShoppingCart,
   MdOutlineSearch,
   MdOutlineFavoriteBorder,
+  MdOutlineSettings,
 } from "react-icons/md";
 
 function Navbar() {
@@ -68,6 +69,10 @@ function Navbar() {
           />
           <MdOutlineShoppingCart
             onClick={() => nav("/cart")}
+            className="cursor-pointer hover:text-blue-500 transition-colors"
+          />
+          <MdOutlineSettings
+            onClick={() => nav("/settings")}
             className="cursor-pointer hover:text-blue-500 transition-colors"
           />
         </div>

@@ -11,7 +11,7 @@ import Withdraw from "../components/merchComp/withdraw";
 
 function MerchantLayout() {
   return (
-    <div className="w-screen h-screen font-hanken tracking-tight">
+    <div className="hidden lg:block w-screen h-screen font-hanken tracking-tight">
       <div className="flex h-screen">
         <Sidebar />
         <div className="relative flex flex-col h-screen w-full">

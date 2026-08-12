@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
   MdBadge,
   MdAccountBalanceWallet,
@@ -10,6 +12,7 @@ import { useMerchant } from "../../context/merchantContext";
 
 function Sidebar() {
   const { state, dispatch } = useMerchant();
+  const nav = useNavigate();
   return (
     <div className="hiddden md:static w-xs py-5 bg-blue-50 border-r border-slate-200 font-hanken">
       <div className="flex flex-col items-center gap-14 mx-5 py-2 h-full">
@@ -93,7 +96,10 @@ function Sidebar() {
           </div>
           {/* nav */}
           <div className="flex flex-col items-start justify-around gap-2 capitalize text-800 tracking-widest">
-            <span className="w-full inline-flex items-center gap-2 px-7 py-2 font-black text-slate-800 rounded-md hover:bg-slate-200 cursor-pointer">
+            <span
+              onClick={() => nav("/settings")}
+              className="w-full inline-flex items-center gap-2 px-7 py-2 font-black text-slate-800 rounded-md hover:bg-slate-200 cursor-pointer"
+            >
               <MdBrightness7 className="text-lg text-slate-500" />
               setting
             </span>
