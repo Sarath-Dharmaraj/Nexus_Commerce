@@ -1,17 +1,22 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { useState, useEffect } from "react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
+
 import {
   PiEyeLight,
   PiEyeSlash,
   PiArrowCircleRightBold,
-  PiGoogleLogoBold,
   PiWarningFill,
 } from "react-icons/pi";
+
+import { useGoogleAuth } from "../hooks/useGoogleAuth";
 function Signup() {
   const [isVisible, setVisible] = useState(false);
   const [isError, setError] = useState(false);
   const actionData = useActionData();
   const nav = useNavigate();
+
+  const { handleGoogleSuccess, handleGoogleError } = useGoogleAuth();
 
   useEffect(() => {
     if (actionData?.error) {
@@ -135,13 +140,15 @@ function Signup() {
               <div className="h-px bg-gray-200 flex-1"></div>
             </div>
 
-            <div className="flex items-center justify-between gap-x-3 lg:gap-x-4">
-              <button
-                type="button"
-                className="flex items-center justify-center flex-1 gap-x-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium text-white hover:text-black bg-red-600 hover:bg-gray-50 border hover:border-black rounded transition-colors"
-              >
-                <PiGoogleLogoBold className="text-base" /> Google
-              </button>
+            <div className="flex items-center justify-center w-full">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                shape="square"
+                size="large"
+                width="300"
+                text="continue_with"
+              />
             </div>
           </div>
           {/* Left Column: Hero Image Frame */}

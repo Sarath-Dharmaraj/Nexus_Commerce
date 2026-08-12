@@ -1,3 +1,4 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { useState, useEffect } from "react";
 import { Form, useActionData, useNavigate } from "react-router-dom";
 import {
@@ -8,7 +9,6 @@ import {
   PiWarningFill,
 } from "react-icons/pi";
 
-import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
 
 function Signup() {
