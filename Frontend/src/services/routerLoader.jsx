@@ -16,10 +16,20 @@ export const gatewayLoader = async () => {
 //profile page
 export const profileLoader = async () => {
   try {
-    const response = await api.get("/user/data");
-    return response.data.user;
+    const [userResponse, orderResponse] = await Promise.all([
+      api.get("/user/data"),
+      api.get("/order/user"),
+    ]);
+
+    const user = userResponse.data.user;
+
+    const orders = orderResponse.data.orders || [];
+
+    user.order = orders;
+
+    return user;
   } catch (error) {
-    console.error(error);
+    console.error("Profile Loader Error:", error);
     return replace("/login");
   }
 };
