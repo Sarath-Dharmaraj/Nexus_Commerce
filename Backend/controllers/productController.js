@@ -28,3 +28,59 @@ export const getProductData = async (req, res) => {
     product: product,
   });
 };
+
+//  search page
+export const searchProducts = async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(200).json({ success: true, products: [] });
+  }
+
+  try {
+    const pipeline = [
+      {
+        $search: {
+          index: "product",
+          text: {
+            query: query,
+            path: [
+              "skuTitle",
+              "brand",
+              "description",
+              "category",
+              "searchTags",
+            ],
+            fuzzy: {
+              maxEdits: 1,
+              prefixLength: 2,
+            },
+          },
+        },
+      },
+      {
+        $match: { status: "Approved" },
+      },
+      { $limit: 100 },
+      {
+        $project: {
+          skuTitle: 1,
+          brand: 1,
+          price: 1,
+          imageUrl: 1,
+          score: { $meta: "searchScore" },
+        },
+      },
+    ];
+
+    const products = await Product.aggregate(pipeline);
+
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.error("Atlas Search Error:", error);
+    return res.status(500).json({ success: false, message: "Search failed" });
+  }
+};

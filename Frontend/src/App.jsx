@@ -43,6 +43,7 @@ import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
 import Settings from "./pages/Settings";
 import Admin from "./pages/Admin";
+import Explore from "./pages/Explore";
 
 function App() {
   const router = createBrowserRouter([
@@ -101,6 +102,10 @@ function App() {
               element: <Settings />,
               loader: profileLoader,
               action: settingsAction,
+            },
+            {
+              path: "/explore",
+              element: <Explore />,
             },
           ],
         },
