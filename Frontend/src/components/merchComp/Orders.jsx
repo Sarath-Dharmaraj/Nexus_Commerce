@@ -1,14 +1,17 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
   MdOutlineMoving,
   MdReport,
   MdCheckCircleOutline,
   MdOutlineSaveAlt,
   MdFilterList,
+  MdOutlineSearch,
 } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
 import FilterSort from "./FilterSort";
-import OrderCard from "./OrderCard"; // Import the new component
-import { useState, useMemo } from "react";
+import OrderCard from "./OrderCard";
+import { useState, useEffect, useMemo } from "react";
+import api from "../../api/api";
 
 function Orders() {
   const { state, dispatch, merchantData } = useMerchant();
@@ -16,8 +19,45 @@ function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  // New State for handling the order popup
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = async (e) => {
+    if (e.key === "Enter") {
+      if (searchQuery.trim() === "") {
+        setIsSearchActive(false);
+        setSearchResults([]);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const res = await api.get(
+          `/merchant/search/order?query=${searchQuery}`,
+        );
+        if (res.data.success) {
+          setSearchResults(res.data.orders);
+          setIsSearchActive(true);
+          setCurrentPage(1);
+        }
+      } catch (error) {
+        console.error("Order Search Error:", error);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setIsSearchActive(false);
+      setSearchResults([]);
+      setCurrentPage(1);
+    }
+  }, [searchQuery]);
 
   const ordersOverviewCards = useMemo(() => {
     const orders = merchantData?.order || [];
@@ -58,7 +98,7 @@ function Orders() {
     const orders = merchantData?.order || [];
 
     return orders.map((order) => ({
-      rawOrder: order, // Store the raw order to pass to the OrderCard
+      rawOrder: order,
       orderId: order.orderId,
       date: new Date(order.createdAt).toLocaleDateString("en-US", {
         month: "short",
@@ -71,6 +111,23 @@ function Orders() {
       status: order.merchantStatus || "PENDING",
     }));
   }, [merchantData?.order]);
+
+  // Format search results exactly like the standard table data
+  const mappedSearchResults = useMemo(() => {
+    return searchResults.map((order) => ({
+      rawOrder: order,
+      orderId: order.orderId,
+      date: new Date(order.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      timestamp: new Date(order.createdAt).getTime(),
+      customer: { name: order.buyerName || "Unknown Buyer" },
+      total: order.totalAmount || 0,
+      status: order.merchantStatus || "PENDING",
+    }));
+  }, [searchResults]);
 
   const processedData = useMemo(() => {
     let data = [...ordersTableData];
@@ -89,6 +146,13 @@ function Orders() {
     return data;
   }, [ordersTableData, state.sortBy, state.categoryBy]);
 
+  // --- Pagination Logic (Uses Search Data if Active) ---
+  const activeData = isSearchActive ? mappedSearchResults : processedData;
+  const totalPages = Math.ceil(activeData.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = activeData.slice(indexOfFirstItem, indexOfLastItem);
+
   const StatusColorSwitch = (status) => {
     switch (status) {
       case "PENDING":
@@ -101,12 +165,6 @@ function Orders() {
         return "";
     }
   };
-
-  const totalPages = Math.ceil(ordersTableData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  const currentItems = processedData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -203,7 +261,12 @@ function Orders() {
           <div className="col-span-4 w-full flex flex-col h-full min-h-0 gap-4">
             <div className="flex items-center justify-between w-full text-slate-600 shrink-0">
               <div className="flex items-center justify-around gap-8 tracking-wider">
-                <span className="py-3 font-black text-black hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 cursor-pointer">
+                <span
+                  className={`py-3 font-black cursor-pointer border-b-2 hover:text-blue-700 hover:border-blue-700 ${!isSearchActive ? "text-blue-700 border-blue-700" : "text-black border-transparent"}`}
+                  onClick={() => {
+                    setSearchQuery("");
+                  }}
+                >
                   All Orders
                 </span>
                 <span className="py-3 font-black text-black hover:text-blue-700 border-b-2 border-transparent hover:border-blue-700 cursor-pointer">
@@ -211,6 +274,22 @@ function Orders() {
                 </span>
               </div>
               <div className="relative flex items-center justify-around gap-3">
+                {/* Search Bar */}
+                <div className="relative flex items-center">
+                  <MdOutlineSearch className="absolute left-3 text-lg text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder={
+                      isSearching ? "Searching..." : "Search Orders..."
+                    }
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearch}
+                    disabled={isSearching}
+                    className="w-48 md:w-56 pl-9 pr-3 py-2 text-sm font-medium text-slate-800 border border-slate-300 hover:border-blue-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none rounded-md transition-all disabled:opacity-50"
+                  />
+                </div>
+
                 <span
                   id="filter-trigger-btn"
                   className="inline-flex items-center gap-3 px-3 py-2 tracking-wider text-slate-800 rounded-md border border-slate-400 hover:bg-slate-100 cursor-pointer"
@@ -248,7 +327,9 @@ function Orders() {
                           colSpan="5"
                           className="px-4 py-8 text-center text-sm text-slate-500"
                         >
-                          No orders found.
+                          {isSearchActive
+                            ? "No matching orders found."
+                            : "No orders found."}
                         </td>
                       </tr>
                     ) : (
@@ -291,10 +372,10 @@ function Orders() {
 
               <div className="flex items-center justify-between w-full px-6 py-4 border-t border-slate-200 bg-white text-xs text-slate-500 font-medium shrink-0">
                 <p>
-                  Showing{" "}
-                  {ordersTableData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
-                  {Math.min(indexOfLastItem, ordersTableData.length)} of{" "}
-                  {ordersTableData.length} entries
+                  Showing {activeData.length === 0 ? 0 : indexOfFirstItem + 1}{" "}
+                  to {Math.min(indexOfLastItem, activeData.length)} of{" "}
+                  {activeData.length} entries{" "}
+                  {isSearchActive && "(filtered by search)"}
                 </p>
 
                 <div className="flex items-center border border-slate-200 rounded-md overflow-hidden">

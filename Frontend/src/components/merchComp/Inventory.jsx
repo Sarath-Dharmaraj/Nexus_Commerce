@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
   MdOutlineMoving,
   MdReport,
@@ -7,17 +8,16 @@ import {
   MdFilterList,
   MdEdit,
   MdDelete,
+  MdOutlineSearch,
 } from "react-icons/md";
 
 import { useMerchant } from "../../context/merchantContext";
 import { useState, useEffect, useMemo } from "react";
 import { Form } from "react-router-dom";
 import FilterSort from "./FilterSort";
+import api from "../../api/api";
 
-// Function beginning
 function Inventory() {
-  // hook set ups
-
   const {
     state,
     dispatch,
@@ -27,14 +27,51 @@ function Inventory() {
   const [isSkuId, setSkuId] = useState(false);
   const [tab, setTab] = useState("ALL_ITEM");
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 4;
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const closeMenu = () => setSkuId(null);
     document.addEventListener("click", closeMenu);
     return () => document.removeEventListener("click", closeMenu);
   }, []);
+
+  const handleSearch = async (e) => {
+    if (e.key === "Enter") {
+      if (searchQuery.trim() === "") {
+        setIsSearchActive(false);
+        setSearchResults([]);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const res = await api.get(
+          `/merchant/search/inventory?query=${searchQuery}`,
+        );
+        if (res.data.success) {
+          setSearchResults(res.data.products);
+          setIsSearchActive(true);
+          setCurrentPage(1);
+        }
+      } catch (error) {
+        console.error("Inventory Search Error:", error);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setIsSearchActive(false);
+      setSearchResults([]);
+      setCurrentPage(1);
+    }
+  }, [searchQuery]);
 
   // Card data calculation
   const inventoryStats = useMemo(() => {
@@ -57,7 +94,6 @@ function Inventory() {
 
     inventoryData.forEach((item) => {
       const itemPrice = item.price || item.unitPrice || 0;
-
       totalValue += itemPrice * item.stockLevel;
 
       if (item.stockLevel > 0 && item.stockLevel <= LOW_STOCK_THRESHOLD)
@@ -165,15 +201,14 @@ function Inventory() {
   }, [filteredInventoryData, state.sortBy, state.categoryBy]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
   }, [tab]);
 
-  const totalPages = Math.ceil(filteredInventoryData.length / itemsPerPage);
+  const activeData = isSearchActive ? searchResults : processedData;
+  const totalPages = Math.ceil(activeData.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  const currentItems = processedData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = activeData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -317,8 +352,9 @@ function Inventory() {
             <div className="flex items-center justify-between w-full px-7 py-1 text-slate-600">
               <div className="flex items-center justify-around gap-3 tracking-wider">
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "ALL_ITEM" ? "bg-blue-100 text-blue-800" : ""}`}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "ALL_ITEM" && !isSearchActive ? "bg-blue-100 text-blue-800" : ""}`}
                   onClick={() => {
+                    setSearchQuery("");
                     setTab("ALL_ITEM");
                     dispatch({ type: "RESET_ALL" });
                   }}
@@ -326,8 +362,9 @@ function Inventory() {
                   All Items
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "PENDING" ? "bg-blue-100 text-blue-800" : ""}`}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "PENDING" && !isSearchActive ? "bg-blue-100 text-blue-800" : ""}`}
                   onClick={() => {
+                    setSearchQuery("");
                     setTab("PENDING");
                     dispatch({ type: "RESET_ALL" });
                   }}
@@ -335,8 +372,9 @@ function Inventory() {
                   Pending
                 </span>
                 <span
-                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "FLAGGED" ? "bg-blue-100 text-blue-800" : ""}`}
+                  className={`px-4 py-1 my-2 rounded-lg hover:bg-blue-100 cursor-pointer ${tab === "FLAGGED" && !isSearchActive ? "bg-blue-100 text-blue-800" : ""}`}
                   onClick={() => {
+                    setSearchQuery("");
                     setTab("FLAGGED");
                     dispatch({ type: "RESET_ALL" });
                   }}
@@ -345,6 +383,22 @@ function Inventory() {
                 </span>
               </div>
               <div className="relative flex items-center justify-around gap-3">
+                {/* Search Bar */}
+                <div className="relative flex items-center">
+                  <MdOutlineSearch className="absolute left-3 text-lg text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder={
+                      isSearching ? "Searching..." : "Search SKUs..."
+                    }
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearch}
+                    disabled={isSearching}
+                    className="w-48 md:w-56 pl-9 pr-3 py-1.5 text-sm font-medium text-slate-800 border border-slate-300 hover:border-blue-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none rounded-md transition-all disabled:opacity-50"
+                  />
+                </div>
+
                 <span
                   id="filter-trigger-btn"
                   className={`p-2 my-2 rounded-md border border-slate-400 transition-colors cursor-pointer ${state.isFilter ? "bg-black text-white" : " hover:bg-slate-100"}`}
@@ -376,123 +430,136 @@ function Inventory() {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentItems.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="border-b border-slate-100 even:bg-slate-50/50 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white transition-colors"
-                    >
-                      <td className="px-4 py-3">
-                        <img
-                          src={item.imageUrl}
-                          alt="img"
-                          className="h-10 w-12 object-cover rounded-md mx-auto border border-slate-200"
-                        />
-                      </td>
-                      <td className="text-left px-4 py-3">
-                        <p
-                          className="text-slate-800 font-bold capitalize truncate max-w-50 xl:max-w-75"
-                          title={item.skuTitle}
-                        >
-                          {item.skuTitle}
-                        </p>
-                        <p className="text-xs text-slate-400 tracking-widest mt-0.5">
-                          {item.skuId}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="px-3 py-1 font-semibold rounded-full bg-blue-50 text-blue-500 text-xs tracking-widest">
-                          {item.category}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`font-semibold ${unitColorSwitch(item.stockStatus)}`}
-                        >
-                          {item.stockLevel}{" "}
-                          <span className="font-light text-xs">units</span>
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 font-bold text-slate-800">
-                        $
-                        {item.price.toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`px-3 py-1 text-xs font-bold rounded-full ${StatusColorSwitch(item.status)}`}
-                        >
-                          • {item.status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right cursor-pointer font-bold tracking-widest">
-                        <span
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSkuId(
-                              isSkuId === item.skuId ? null : item.skuId,
-                            );
-                          }}
-                          className={`relative px-2 py-1 border rounded-md ${isSkuId === item.skuId ? "bg-slate-200 border-slate-300 text-slate-800" : "border-transparent text-slate-400 hover:text-slate-600"}`}
-                        >
-                          ...
-                          {isSkuId === item.skuId && (
-                            <div
-                              onClick={(e) => e.stopPropagation()}
-                              className="absolute z-50 right-full top-0 mr-2 w-56 flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-lg tracking-normal cursor-default"
-                            >
-                              <div className="text-[10px] text-slate-500 font-medium px-2 pb-2 border-b border-slate-100 mb-2 text-left">
-                                SKU: {item.skuId} | Category:{" "}
-                                <span className="capitalize">
-                                  {item.category}
-                                </span>
-                              </div>
-
-                              <div className="flex flex-col gap-1 w-full">
-                                <button
-                                  className="w-full flex items-center gap-3 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
-                                  onClick={() => {
-                                    dispatch({
-                                      type: "SET_EDIT",
-                                      payload: item,
-                                    });
-                                  }}
-                                >
-                                  <MdEdit size={18} />
-                                  <span>Edit SKU</span>
-                                </button>
-
-                                <Form
-                                  method="DELETE"
-                                  className="w-full m-0 p-0"
-                                >
-                                  <input
-                                    type="hidden"
-                                    name="intent"
-                                    value="delete_product"
-                                  />
-                                  <input
-                                    type="hidden"
-                                    name="skuId"
-                                    value={item.skuId}
-                                  />
-
-                                  <button
-                                    type="submit"
-                                    className="w-full flex items-center gap-3 px-3 py-2 bg-white hover:bg-red-50 text-red-600 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
-                                  >
-                                    <MdDelete size={18} />
-                                    <span>Delete SKU</span>
-                                  </button>
-                                </Form>
-                              </div>
-                            </div>
-                          )}
-                        </span>
+                  {currentItems.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="7"
+                        className="px-4 py-12 text-center text-slate-500"
+                      >
+                        {isSearchActive
+                          ? "No matching SKUs found."
+                          : "No products available in this category."}
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    currentItems.map((item, index) => (
+                      <tr
+                        key={item._id || index}
+                        className="border-b border-slate-100 even:bg-slate-50/50 last:border-b-0 text-sm tracking-wider text-slate-600 bg-white transition-colors"
+                      >
+                        <td className="px-4 py-3">
+                          <img
+                            src={item.imageUrl}
+                            alt="img"
+                            className="h-10 w-12 object-cover rounded-md mx-auto border border-slate-200"
+                          />
+                        </td>
+                        <td className="text-left px-4 py-3">
+                          <p
+                            className="text-slate-800 font-bold capitalize truncate max-w-50 xl:max-w-75"
+                            title={item.skuTitle}
+                          >
+                            {item.skuTitle}
+                          </p>
+                          <p className="text-xs text-slate-400 tracking-widest mt-0.5">
+                            {item.skuId}
+                          </p>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="px-3 py-1 font-semibold rounded-full bg-blue-50 text-blue-500 text-xs tracking-widest">
+                            {item.category}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`font-semibold ${unitColorSwitch(item.stockStatus)}`}
+                          >
+                            {item.stockLevel || 0}{" "}
+                            <span className="font-light text-xs">units</span>
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 font-bold text-slate-800">
+                          $
+                          {Number(item.price || 0).toLocaleString("en-US", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={`px-3 py-1 text-xs font-bold rounded-full ${StatusColorSwitch(item.status)}`}
+                          >
+                            • {item.status}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right cursor-pointer font-bold tracking-widest">
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSkuId(
+                                isSkuId === item.skuId ? null : item.skuId,
+                              );
+                            }}
+                            className={`relative px-2 py-1 border rounded-md ${isSkuId === item.skuId ? "bg-slate-200 border-slate-300 text-slate-800" : "border-transparent text-slate-400 hover:text-slate-600"}`}
+                          >
+                            ...
+                            {isSkuId === item.skuId && (
+                              <div
+                                onClick={(e) => e.stopPropagation()}
+                                className="absolute z-50 right-full top-0 mr-2 w-56 flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-lg tracking-normal cursor-default"
+                              >
+                                <div className="text-[10px] text-slate-500 font-medium px-2 pb-2 border-b border-slate-100 mb-2 text-left">
+                                  SKU: {item.skuId} | Category:{" "}
+                                  <span className="capitalize">
+                                    {item.category}
+                                  </span>
+                                </div>
+
+                                <div className="flex flex-col gap-1 w-full">
+                                  <button
+                                    className="w-full flex items-center gap-3 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+                                    onClick={() => {
+                                      dispatch({
+                                        type: "SET_EDIT",
+                                        payload: item,
+                                      });
+                                    }}
+                                  >
+                                    <MdEdit size={18} />
+                                    <span>Edit SKU</span>
+                                  </button>
+
+                                  <Form
+                                    method="DELETE"
+                                    className="w-full m-0 p-0"
+                                  >
+                                    <input
+                                      type="hidden"
+                                      name="intent"
+                                      value="delete_product"
+                                    />
+                                    <input
+                                      type="hidden"
+                                      name="skuId"
+                                      value={item.skuId}
+                                    />
+
+                                    <button
+                                      type="submit"
+                                      className="w-full flex items-center gap-3 px-3 py-2 bg-white hover:bg-red-50 text-red-600 text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+                                    >
+                                      <MdDelete size={18} />
+                                      <span>Delete SKU</span>
+                                    </button>
+                                  </Form>
+                                </div>
+                              </div>
+                            )}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -500,12 +567,10 @@ function Inventory() {
             {/* --- PAGINATION FOOTER --- */}
             <div className="flex items-center justify-between w-full px-6 py-4 border-t border-slate-200 bg-white text-xs text-slate-500 font-medium">
               <p>
-                Showing
-                {filteredInventoryData.length === 0
-                  ? 0
-                  : indexOfFirstItem + 1}{" "}
-                to {Math.min(indexOfLastItem, filteredInventoryData.length)} of{" "}
-                {filteredInventoryData.length} entries
+                Showing {activeData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
+                {Math.min(indexOfLastItem, activeData.length)} of{" "}
+                {activeData.length} entries{" "}
+                {isSearchActive && "(filtered by search)"}
               </p>
 
               <div className="flex items-center border border-slate-200 rounded-md overflow-hidden">

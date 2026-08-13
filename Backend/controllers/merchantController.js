@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../model/Product.js";
 import User from "../model/User.js";
+import Order from "../model/Order.js";
 import { generateSKu } from "../utilit/skuGenerator.js";
 
 // post products
@@ -226,4 +227,118 @@ export const requestWithdrawal = async (req, res) => {
     pendingPayouts: updatedUser.sellerProfile.pendingPayouts,
     ledger: updatedUser.sellerProfile.payoutLedger,
   });
+};
+
+//inventory searcg
+export const searchInventory = async (req, res) => {
+  const { query } = req.query;
+  const merchantId = req.user.id;
+
+  if (!query || query.trim() === "") {
+    return res.status(200).json({ success: true, products: [] });
+  }
+
+  try {
+    const pipeline = [
+      {
+        $search: {
+          index: "product",
+          text: {
+            query: query,
+            path: ["skuTitle", "skuId", "brand", "category", "searchTags"],
+            fuzzy: {
+              maxEdits: 1,
+              prefixLength: 2,
+            },
+          },
+        },
+      },
+
+      {
+        $match: { merchantId: new mongoose.Types.ObjectId(merchantId) },
+      },
+    ];
+
+    const products = await Product.aggregate(pipeline);
+
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.error("Inventory Search Error:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Inventory search failed" });
+  }
+};
+
+//orders search
+export const searchOrder = async (req, res) => {
+  const { query } = req.query;
+  const merchantId = req.user.id;
+
+  if (!query || query.trim() === "") {
+    return res.status(200).json({ success: true, orders: [] });
+  }
+
+  try {
+    const pipeline = [
+      {
+        $search: {
+          index: "order",
+          text: {
+            query: query,
+
+            path: ["orderId", "merchantStatus"],
+            fuzzy: {
+              maxEdits: 1,
+            },
+          },
+        },
+      },
+
+      {
+        $match: { merchantId: new mongoose.Types.ObjectId(merchantId) },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "buyerId",
+          foreignField: "_id",
+          as: "buyerDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$buyerDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          orderId: 1,
+          createdAt: 1,
+          totalAmount: 1,
+          merchantStatus: 1,
+          buyerName: "$buyerDetails.fullName",
+          items: 1,
+          payment: 1,
+          address: 1,
+        },
+      },
+    ];
+
+    const orders = await Order.aggregate(pipeline);
+
+    return res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    console.error("Order Search Error:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Order search failed" });
+  }
 };

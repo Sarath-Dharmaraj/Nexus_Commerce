@@ -7,6 +7,8 @@ import {
   deleteProduct,
   updateMerchantInventory,
   requestWithdrawal,
+  searchInventory,
+  searchOrder,
 } from "../controllers/merchantController.js";
 import { uploadProductImg } from "../middleware/cloudinary.js";
 
@@ -24,6 +26,8 @@ merchantRouter.use(verifyCookie);
 merchantRouter.use(isSeller);
 
 // routes for merchant
+merchantRouter.get("/search/inventory", asyncHandler(searchInventory));
+merchantRouter.get("/search/order", asyncHandler(searchOrder));
 merchantRouter.post("/", multiImageUpload, asyncHandler(postProduct));
 merchantRouter.get("/", asyncHandler(getMerchanInventory));
 merchantRouter.put(
