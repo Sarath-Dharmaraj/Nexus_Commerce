@@ -30,6 +30,22 @@ cron.schedule("*/10 * * * *", async () => {
       .limit(10)
       .select("_id");
 
+    const viewed = await Product.find({
+      status: { $in: ["Approved", "Pending"] },
+      stockLevel: { $gt: 0 },
+    })
+      .sort({ viewCount: -1 })
+      .limit(10)
+      .select("_id");
+
+    const rating = await Product.find({
+      status: { $in: ["Approved", "Pending"] },
+      stockLevel: { $gt: 0 },
+    })
+      .sort({ averageRating: -1 })
+      .limit(10)
+      .select("_id");
+
     await HomepageFeed.findOneAndUpdate(
       { sectionId: "new_arrivals" },
       { title: "Fresh Drops", products: newArrivals.map((p) => p._id) },
@@ -39,6 +55,18 @@ cron.schedule("*/10 * * * *", async () => {
     await HomepageFeed.findOneAndUpdate(
       { sectionId: "trending" },
       { title: "Trending Now", products: trending.map((p) => p._id) },
+      { upsert: true, returnDocument: "after" },
+    );
+
+    await HomepageFeed.findOneAndUpdate(
+      { sectionId: "highlyViewd" },
+      { title: "Customer Attraction", products: viewed.map((p) => p._id) },
+      { upsert: true, returnDocument: "after" },
+    );
+
+    await HomepageFeed.findOneAndUpdate(
+      { sectionId: "highlyRated" },
+      { title: "Best Value", products: rating.map((p) => p._id) },
       { upsert: true, returnDocument: "after" },
     );
 

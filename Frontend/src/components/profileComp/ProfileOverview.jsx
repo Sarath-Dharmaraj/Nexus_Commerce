@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useProfile } from "../../context/profileContext";
 
 import {
@@ -12,6 +13,7 @@ import {
 
 function ProfileOverview() {
   const { dispatch, userData } = useProfile();
+  const nav = useNavigate();
   return (
     <div className=" relative row-span-4 md:h-full col-span-1 flex flex-col items-center gap-4">
       <MdOutlineCreate
@@ -43,11 +45,17 @@ function ProfileOverview() {
           <MdOutlinePerson className="self-center mx-1" />
           Profile Overview
         </p>
-        <span className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm">
+        <span
+          onClick={() => dispatch({ type: "OPEN_ORDERS" })}
+          className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm"
+        >
           <MdShoppingBag className="self-center mx-1" />
           My Orders
         </span>
-        <span className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm">
+        <span
+          onClick={() => nav("/wishlist")}
+          className="inline-flex px-4 py-2 cursor-pointer hover:bg-blue-100 hover:text-black hover:font-semibold rounded-sm"
+        >
           <MdFavoriteBorder className="self-center mx-1" />
           saved Items
         </span>
