@@ -15,12 +15,12 @@ const orderRouter = Router();
 orderRouter.use(verifyCookie);
 
 orderRouter.post("/", asyncHandler(postOrder));
+orderRouter.get("/user", asyncHandler(getUserOrders));
 
 // merchant rouets
 orderRouter.use(isSeller);
 
 orderRouter.get("/merchant", asyncHandler(getMerchantOrder));
-orderRouter.get("/user", asyncHandler(getUserOrders));
 orderRouter.put("/status/:orderId", asyncHandler(updateOrderStatus));
 
 export default orderRouter;

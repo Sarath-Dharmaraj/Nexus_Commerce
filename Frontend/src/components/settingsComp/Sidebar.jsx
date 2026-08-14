@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
   MdAccountCircle,
   MdCreditCard,
@@ -7,11 +9,12 @@ import {
   MdSecurity,
   MdDashboard,
   MdAdminPanelSettings,
+  MdLogout,
 } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 
 import { useGlobalAuth } from "../../context/globalAuthContext";
 import { useSettings } from "../../context/settingsContext";
+import api from "../../api/api";
 
 function Sidebar({ page, setPage }) {
   const { user } = useGlobalAuth();
@@ -28,13 +31,24 @@ function Sidebar({ page, setPage }) {
       page === targetPage ? "bg-blue-500 text-white" : "text-slate-600"
     }`;
 
+  const logout = async () => {
+    try {
+      const response = await api.post("/auth/logout");
+      if (response?.data?.success) {
+        navigate("/login", { replace: true });
+      }
+    } catch (error) {
+      return { success: false, error: error };
+    }
+  };
+
   return (
     <div className="w-full h-auto md:h-full flex flex-col items-start bg-slate-50 border-b md:border-b-0 md:border-r border-slate-200 px-2 md:px-4 py-4 md:py-8 gap-3 md:gap-6">
       <span className="text-slate-800 tracking-wider text-xl md:text-2xl font-thin px-2 md:px-4">
         Settings
       </span>
 
-      <div className="w-full flex flex-row md:flex-col items-center md:items-start gap-2 overflow-x-auto md:overflow-visible pb-2 md:px-0 scrollbar-none">
+      <div className="w-full h-full flex flex-row md:flex-col items-center md:items-start gap-2 overflow-x-auto md:overflow-visible pb-2 md:px-0 scrollbar-none">
         <button
           className={btnClass("account")}
           onClick={() => setPage("account")}
@@ -140,6 +154,19 @@ function Sidebar({ page, setPage }) {
             </button>
           </>
         )}
+
+        <button
+          className="w-fit md:w-full flex items-center gap-2 md:gap-3 text-sm font-medium capitalize text-red-600 hover:bg-red-50 px-3 py-2 md:px-4 md:py-2.5 rounded-md transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 md:mt-auto"
+          onClick={() => {
+            logout();
+            console.log("Logout triggered");
+          }}
+        >
+          <span className="text-lg md:text-xl shrink-0">
+            <MdLogout />
+          </span>
+          <span>Log Out</span>
+        </button>
       </div>
     </div>
   );

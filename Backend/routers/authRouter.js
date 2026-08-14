@@ -9,6 +9,7 @@ import {
   updateSecurityData,
   verifyCurrentPassword,
   googleAuthLogin,
+  logoutUser,
 } from "../controllers/authController.js";
 
 const authRouter = Router();
@@ -16,6 +17,7 @@ const authRouter = Router();
 authRouter.get("/me", verifyCookie, asyncHandler(verifyUserSession));
 authRouter.post("/signup", registerUser);
 authRouter.post("/login", userLogin);
+authRouter.post("/logout", asyncHandler(logoutUser));
 // google login
 authRouter.post("/google-login", asyncHandler(googleAuthLogin));
 

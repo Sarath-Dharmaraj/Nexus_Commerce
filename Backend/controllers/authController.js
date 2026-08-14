@@ -5,10 +5,13 @@ import bcrypt from "bcrypt";
 import User from "../model/User.js";
 
 //verifying user session
-export const verifyUserSession = (req, res) => {
+export const verifyUserSession = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  const { fullName, profileImage } = user;
+  const payload = { ...req.user, fullName, profileImage };
   res.status(200).json({
     success: true,
-    user: req.user,
+    user: payload,
   });
 };
 // Route to sign up
@@ -191,6 +194,28 @@ export const googleAuthLogin = async (req, res) => {
     return res.status(401).json({
       success: false,
       error: "Invalid Google Authentication Token",
+    });
+  }
+};
+
+// authController.js
+
+export const logoutUser = (req, res) => {
+  try {
+    res.clearCookie("nexus_commerce_security_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: "Failed to log out",
     });
   }
 };

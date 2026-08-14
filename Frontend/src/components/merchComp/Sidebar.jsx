@@ -8,10 +8,14 @@ import {
   MdBrightness7,
   MdContactSupport,
 } from "react-icons/md";
+
+import { useGlobalAuth } from "../../context/globalAuthContext";
 import { useMerchant } from "../../context/merchantContext";
 
 function Sidebar() {
+  const { user } = useGlobalAuth();
   const { state, dispatch } = useMerchant();
+
   const nav = useNavigate();
   return (
     <div className="hiddden md:static w-xs py-5 bg-blue-50 border-r border-slate-200 font-hanken">
@@ -83,14 +87,18 @@ function Sidebar() {
           {/* profile view */}
           <div className="flex items-center justify-around mb-2 bg-white py-3 border border-slate-200 rounded-md shadow-sm">
             <span className="w-12">
-              <img src="profile.png" alt="profile" className="rounded-xl" />
+              <img
+                src={user.profileImage}
+                alt="profile"
+                className="rounded-xl"
+              />
             </span>
             <div className="flex flex-col items-start justify-around capitalize">
               <span className="text-sm font-bold tracking-wider text-slate-800 text-nowrap">
                 nexus merchant
               </span>
               <span className="text-xs tracking-widest font-bold text-slate-600 text-nowrap">
-                ID: 987-D3
+                Name: {user.fullName.split(" ")[0]}
               </span>
             </div>
           </div>

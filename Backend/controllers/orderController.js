@@ -7,7 +7,6 @@ import { generateCode } from "../utilit/skuGenerator.js";
 // placing order for user
 export const postOrder = async (req, res) => {
   const { address, payment } = req.body;
-  console.log(address, payment);
   const method = payment.cardType || payment.method || "CARD";
 
   const user = await User.findById(req.user.id).populate({

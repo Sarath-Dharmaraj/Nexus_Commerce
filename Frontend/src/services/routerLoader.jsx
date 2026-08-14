@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import api from "../api/api";
-import { redirect, replace } from "react-router-dom";
 
 export const gatewayLoader = async () => {
   try {
@@ -30,7 +29,6 @@ export const profileLoader = async () => {
     return user;
   } catch (error) {
     console.error("Profile Loader Error:", error);
-    return replace("/login");
   }
 };
 
@@ -50,7 +48,6 @@ export const merchantLoader = async () => {
     };
   } catch (error) {
     console.error(error);
-    return redirect("/login");
   }
 };
 
@@ -67,7 +64,6 @@ export const homeFeedLoader = async () => {
     };
   } catch (error) {
     console.error("error data", error);
-    return redirect("/login");
   }
 };
 
@@ -88,7 +84,6 @@ export const productLoader = async ({ params }) => {
     };
   } catch (error) {
     console.error("error data", error);
-    return redirect("/login");
   }
 };
 
@@ -104,7 +99,6 @@ export const wishlistLoader = async () => {
     };
   } catch (error) {
     console.error("error data", error);
-    return redirect("/login");
   }
 };
 // cart dataloader

@@ -129,7 +129,6 @@ function AccountProfile() {
             />
           </div>
 
-          {/* New Merchant Opt-In Toggle */}
           {!isAlreadySeller && (
             <div className="flex items-center border rounded-md border-blue-200 bg-blue-50/50 py-3 px-4 mt-2">
               <div className="flex items-center justify-between gap-x-3 w-fit">

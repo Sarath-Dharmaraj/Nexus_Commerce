@@ -8,7 +8,6 @@ import {
   MdOutlineSettings,
 } from "react-icons/md";
 import api from "../../api/api";
-import { useEffect } from "react";
 
 function Navbar() {
   const location = useLocation();

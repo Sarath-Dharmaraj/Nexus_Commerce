@@ -23,7 +23,8 @@ function ProfileOverview() {
       <div className="aspect-square w-52 md:w-full rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col items-center justify-around overflow-hidden">
         <img
           src={userData?.profileImage || "profile.png"}
-          className="h-30 object-cover pt-5"
+          referrerPolicy="no-referrer"
+          className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover mt-4 shadow-sm border border-slate-100"
           alt="Profile"
         />
 

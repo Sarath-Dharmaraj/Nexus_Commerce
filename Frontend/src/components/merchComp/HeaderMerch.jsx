@@ -1,5 +1,6 @@
-import { MdOutlineSearch, MdHome, MdLocalGroceryStore } from "react-icons/md";
+import { MdHome, MdLocalGroceryStore, MdAccountCircle } from "react-icons/md";
 import { useMerchant } from "../../context/merchantContext";
+import { Link } from "react-router-dom";
 
 function HeaderMerch() {
   const { dispatch } = useMerchant();
@@ -8,24 +9,28 @@ function HeaderMerch() {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center justify-between flex-1">
           {/* search bar */}
-          <div className="relative flex items-center w-full md:w-auto">
-            <MdOutlineSearch className="absolute left-2 text-lg md:text-xl lg:text-2xl text-slate-500" />
-            <input
-              type="text"
-              name="search"
-              placeholder="Search..."
-              className="w-full md:w-40 lg:w-72 xl:w-96 h-8 md:h-10 text-sm lg:text-base text-slate-600 border border-slate-400 hover:border-blue-200 focus:border-blue-200 focus:outline-none rounded-md pl-8 md:pl-9 lg:pl-10 pr-3 md:pr-4 bg-slate-100"
-            />
-          </div>
+          <div className="flex flex-1"></div>
 
           {/* nav */}
           <div className="flex items-center justify-around gap-8 text-2xl ">
-            <span className="cursor-pointer hover:text-slate-400 transition-color">
+            <Link
+              to={"/profile"}
+              className="cursor-pointer hover:text-slate-400 transition-color"
+            >
+              <MdAccountCircle />
+            </Link>
+            <Link
+              to={"/home"}
+              className="cursor-pointer hover:text-slate-400 transition-color"
+            >
               <MdHome />
-            </span>
-            <span className="cursor-pointer hover:text-slate-400 transition-color">
+            </Link>
+            <Link
+              to={"/cart"}
+              className="cursor-pointer hover:text-slate-400 transition-color"
+            >
               <MdLocalGroceryStore className="cursor-pointer" />
-            </span>
+            </Link>
           </div>
         </div>
         {/* vertical line */}
