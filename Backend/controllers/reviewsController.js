@@ -10,7 +10,7 @@ export const getReview = async (req, res) => {
     res.status(400);
     throw new Error("Invalid product ID format.");
   }
-  
+
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
 

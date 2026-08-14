@@ -18,11 +18,9 @@ import FilterSort from "./FilterSort";
 import api from "../../api/api";
 
 function Inventory() {
-  const {
-    state,
-    dispatch,
-    merchantData: { sellerProfile: sellerData, inventory: inventoryData },
-  } = useMerchant();
+  const { state, dispatch, merchantData } = useMerchant();
+  const sellerData = merchantData?.sellerProfile || [];
+  const inventoryData = useMemo(() => merchantData?.inventory || [], [merchantData?.inventory]);
 
   const [isSkuId, setSkuId] = useState(false);
   const [tab, setTab] = useState("ALL_ITEM");

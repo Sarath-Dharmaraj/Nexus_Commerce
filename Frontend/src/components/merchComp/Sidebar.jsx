@@ -89,6 +89,7 @@ function Sidebar() {
             <span className="w-12">
               <img
                 src={user.profileImage}
+                referrerPolicy="no-referrer"
                 alt="profile"
                 className="rounded-xl"
               />

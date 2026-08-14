@@ -126,9 +126,15 @@ export const getMerchantOrder = async (req, res) => {
       select: "fullName email contact",
     });
 
-  if (!orders || orders.length === 0) {
+  if (!orders) {
     return res.status(404).json({
       success: false,
+      message: "No orders found for this merchant.",
+    });
+  }
+  if (orders.length === 0) {
+    return res.status(200).json({
+      success: true,
       message: "No orders found for this merchant.",
     });
   }
