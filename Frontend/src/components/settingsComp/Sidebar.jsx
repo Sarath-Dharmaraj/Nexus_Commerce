@@ -90,7 +90,8 @@ function Sidebar({ page, setPage }) {
         </button>
 
         <button
-          className={btnClass("notification")}
+          className="hidden"
+          // className={btnClass("notification")}
           onClick={() => setPage("notification")}
         >
           <span className="text-lg md:text-xl shrink-0">

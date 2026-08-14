@@ -46,7 +46,7 @@ export const softVerifyCookie = async (req, res, next) => {
     const token = req.cookies.nexus_commerce_security_token;
 
     if (!token) {
-      next();
+      return next();
     }
 
     const payload = jwt.verify(token, process.env.JSONWEBTOKEN_SECRET_KEY);

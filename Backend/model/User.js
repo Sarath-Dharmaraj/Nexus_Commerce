@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     contact: {
       type: Number,
       unique: true,
+      sparse: true,
     },
     profileImage: {
       type: String,

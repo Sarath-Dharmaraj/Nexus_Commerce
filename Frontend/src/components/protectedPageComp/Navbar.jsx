@@ -6,12 +6,16 @@ import {
   MdOutlineSearch,
   MdOutlineFavoriteBorder,
   MdOutlineSettings,
+  MdLogin,
 } from "react-icons/md";
 import api from "../../api/api";
+import { useGlobalAuth } from "../../context/globalAuthContext"; // Import your auth context
 
 function Navbar() {
   const location = useLocation();
   const nav = useNavigate();
+
+  const { user } = useGlobalAuth();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -36,7 +40,9 @@ function Navbar() {
       } finally {
         setIsSearching(false);
       }
-    } else if (searchQuery === "") return nav("/home");
+    } else if (e.key === "Enter" && searchQuery === "") {
+      return nav("/home");
+    }
   };
 
   return (
@@ -59,22 +65,10 @@ function Navbar() {
         >
           <nav className="hidden md:flex items-center text-sm lg:text-base font-bold text-slate-600 capitalize gap-4 md:gap-2 lg:gap-8 shrink-0">
             <a
-              href="/home"
+              onClick={() => nav("/home")}
               className="hover:text-blue-600 transition-colors cursor-pointer"
             >
               Shop
-            </a>
-            <a
-              href="#categories"
-              className="hover:text-blue-600 transition-colors cursor-pointer"
-            >
-              Categories
-            </a>
-            <a
-              href="#deals"
-              className="hover:text-blue-600 transition-colors cursor-pointer"
-            >
-              Deals
             </a>
           </nav>
 
@@ -98,22 +92,36 @@ function Navbar() {
         </div>
 
         <div className="flex items-center text-2xl lg:text-3xl text-slate-600 gap-4 lg:gap-6 shrink-0">
-          <MdOutlineAccountCircle
-            onClick={() => nav("/profile")}
-            className="cursor-pointer hover:text-blue-600 transition-colors"
-          />
-          <MdOutlineFavoriteBorder
-            onClick={() => nav("/wishlist")}
-            className="cursor-pointer hover:text-blue-600 transition-colors"
-          />
-          <MdOutlineShoppingCart
-            onClick={() => nav("/cart")}
-            className="cursor-pointer hover:text-blue-600 transition-colors"
-          />
-          <MdOutlineSettings
-            onClick={() => nav("/settings")}
-            className="cursor-pointer hover:text-blue-600 transition-colors"
-          />
+          {user ? (
+            <>
+              <MdOutlineAccountCircle
+                onClick={() => nav("/profile")}
+                className="cursor-pointer hover:text-blue-600 transition-colors"
+              />
+              <MdOutlineFavoriteBorder
+                onClick={() => nav("/wishlist")}
+                className="cursor-pointer hover:text-blue-600 transition-colors"
+              />
+              <MdOutlineShoppingCart
+                onClick={() => nav("/cart")}
+                className="cursor-pointer hover:text-blue-600 transition-colors"
+              />
+              <MdOutlineSettings
+                onClick={() => nav("/settings")}
+                className="cursor-pointer hover:text-blue-600 transition-colors"
+              />
+            </>
+          ) : (
+            <div
+              onClick={() => nav("/login")}
+              className="flex items-center gap-2 cursor-pointer group"
+            >
+              <MdLogin className="text-blue-600 group-hover:text-blue-800 transition-colors" />
+              <span className="hidden md:block text-sm font-bold text-blue-600 group-hover:text-blue-800 transition-colors">
+                Log In
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>

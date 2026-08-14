@@ -5,8 +5,7 @@ import ProductSlide from "../components/protectedPageComp/ProductSlide";
 
 export default function Home() {
   // hooks
-  const { feedData, wishlist, cart } = useLoaderData();
-
+  const { feedData = [], wishlist = [], cart = [] } = useLoaderData() || {};
   return (
     <div className="px-2 md:px-4 lg:px-8 py-1 md:py-3 lg:py-6 flex flex-col justify-around md:gap-3 lg:gap-5">
       <div className="flex flex-col justify-around gap-8">

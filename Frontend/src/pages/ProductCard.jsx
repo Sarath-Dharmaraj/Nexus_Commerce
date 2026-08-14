@@ -94,7 +94,7 @@ function ProductCard() {
     <div className="bg-white w-full min-h-screen flex flex-col font-hanken tracking-tight text-slate-600">
       <div className="w-full flex-1 px-4 md:px-8 pt-6 pb-12 flex flex-col items-start justify-start gap-5">
         {/* navigator */}
-        <div className="flex flex-wrap items-center justify-start gap-2 md:gap-4 capitalize text-slate-800 tracking-wider text-xs md:text-base">
+        <div className="hidden flex-wrap items-center justify-start gap-2 md:gap-4 capitalize text-slate-800 tracking-wider text-xs md:text-base">
           <span
             className="hover:font-black hover:underline cursor-pointer transition-all"
             onClick={() => nav("/home")}

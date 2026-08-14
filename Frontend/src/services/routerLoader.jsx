@@ -55,8 +55,18 @@ export const merchantLoader = async () => {
 export const homeFeedLoader = async () => {
   try {
     const homeResponse = await api.get("/home/");
-    const wishlistResponse = await api.get("/user/home/wishlist");
-    const cartResponse = await api.get("/user/home-wishlist/cart");
+    const wishlistPromise = api
+      .get("/user/home/wishlist")
+      .catch(() => ({ data: { wishlist: [] } }));
+
+    const cartPromise = api
+      .get("/user/home-wishlist/cart")
+      .catch(() => ({ data: { cart: [] } }));
+
+    const [wishlistResponse, cartResponse] = await Promise.all([
+      wishlistPromise,
+      cartPromise,
+    ]);
     return {
       feedData: homeResponse.data.data,
       wishlist: wishlistResponse.data.wishlist,
@@ -68,13 +78,27 @@ export const homeFeedLoader = async () => {
 };
 
 // product loader and review loader
-
 export const productLoader = async ({ params }) => {
   try {
     const { productId } = params;
-    const productResponse = await api.get(`/product/${productId}`);
-    const reviewsResponse = await api.get(`/reviews/${productId}?page=1`);
-    const userResponse = await api.get(`/user/product/${productId}`);
+
+    const productPromise = api.get(`/product/${productId}`);
+    const reviewsPromise = api.get(`/reviews/${productId}?page=1`);
+
+    const userPromise = api.get(`/user/product/${productId}`).catch(() => {
+      return {
+        data: {
+          wishlist: false,
+          cartQuantity: 0,
+        },
+      };
+    });
+
+    const [productResponse, reviewsResponse, userResponse] = await Promise.all([
+      productPromise,
+      reviewsPromise,
+      userPromise,
+    ]);
 
     return {
       productData: productResponse.data.product,
@@ -83,10 +107,9 @@ export const productLoader = async ({ params }) => {
       cartQuantity: userResponse.data.cartQuantity,
     };
   } catch (error) {
-    console.error("error data", error);
+    console.error("Failed to load product page data:", error);
   }
 };
-
 // loader for wishlist page
 export const wishlistLoader = async () => {
   try {
