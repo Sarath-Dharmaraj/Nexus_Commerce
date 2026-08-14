@@ -15,7 +15,8 @@ api.interceptors.response.use(
       window.location.pathname !== "/signup" &&
       window.location.pathname !== "/login" &&
       window.location.pathname !== "/home" &&
-      window.location.pathname !== "/product"
+      window.location.pathname !== "/product" &&
+      window.location.pathname !== "/"
     )
       window.location.href = "/login";
     return Promise.reject(error);

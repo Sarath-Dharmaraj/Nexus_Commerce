@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-
 import api from "../api/api";
 
 export const gatewayLoader = async () => {
