@@ -10,7 +10,7 @@ import {
 } from "react-icons/pi";
 
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
-function Signup() {
+function Login() {
   const [isVisible, setVisible] = useState(false);
   const [isError, setError] = useState(false);
   const actionData = useActionData();
@@ -144,6 +144,8 @@ function Signup() {
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={handleGoogleError}
+                auto_select={false}
+                useOneTap={false}
                 shape="square"
                 size="large"
                 width="300"
@@ -236,4 +238,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

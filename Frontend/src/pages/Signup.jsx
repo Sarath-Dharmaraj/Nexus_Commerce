@@ -213,7 +213,9 @@ function Signup() {
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={handleGoogleError}
-                shape="square" 
+                auto_select={false}
+                useOneTap={false}
+                shape="square"
                 size="large"
                 width="300"
                 text="continue_with"
