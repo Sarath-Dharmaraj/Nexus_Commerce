@@ -46,7 +46,7 @@ function Login() {
       )}
 
       {/* Main Card Frame */}
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl md:h-full max-h-[187.5] flex flex-col overflow-hidden">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl md:h-full max-h-187.5 flex flex-col overflow-hidden">
         <div className="flex flex-col md:flex-row flex-1 h-full">
           {/* Left Column: Sign In Details MAIN */}
           <div className="w-full md:w-7/12 lg:w-1/2 h-full px-6 sm:px-12 md:px-8 lg:px-16 xl:px-24 flex flex-col justify-center gap-y-2 lg:gap-y-6 py-4">

@@ -51,7 +51,7 @@ function Signup() {
       )}
 
       {/* Main Card Frame */}
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl h-full max-h-[187.5] flex flex-col overflow-hidden">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl h-full max-h-187.5 flex flex-col overflow-hidden">
         <div className="flex flex-col md:flex-row flex-1 h-full">
           {/* Left Column: Hero Image Frame */}
           <div className="w-full md:w-5/12 lg:w-1/2 h-full bg-[url('/login_image.png')] bg-cover bg-center bg-no-repeat hidden md:flex flex-col items-start justify-center gap-y-6 lg:gap-y-10 p-8 lg:p-12 xl:p-16">
