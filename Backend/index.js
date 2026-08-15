@@ -16,7 +16,10 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.IS_PRODUCTION === "true" ? "" : "http://localhost:5173",
+    origin:
+      process.env.IS_PRODUCTION === "true"
+        ? "https://nexus-commerce-project.netlify.app"
+        : "http://localhost:5173",
     credentials: true,
   }),
 );
