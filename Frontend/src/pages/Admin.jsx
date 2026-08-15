@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { MdMenu } from "react-icons/md";
 
-import AdminSideBar from "../components/adminComp/AdminSideBar";
+import AdminSideBar from "../components/adminComp/AdminSidebar";
 import MerchantPanel from "../components/adminComp/MerchantPanel";
 import ProductPanel from "../components/adminComp/ProductPanel";
 import UserPanel from "../components/adminComp/UserPanel";
