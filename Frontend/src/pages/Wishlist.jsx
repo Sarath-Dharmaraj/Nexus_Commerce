@@ -6,7 +6,6 @@ import ProductSlide from "../components/protectedPageComp/ProductSlide";
 
 function Wishlist() {
   const { wishlist, cart } = useLoaderData();
-  console.log(wishlist.length);
   const fetcher = useFetcher();
 
   return (

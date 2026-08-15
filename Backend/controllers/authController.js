@@ -199,13 +199,13 @@ export const googleAuthLogin = async (req, res) => {
 };
 
 // authController.js
-
+const PRODUCTION = process.env.IS_PRODUCTION === "true";
 export const logoutUser = (req, res) => {
   try {
     res.clearCookie("nexus_commerce_security_token", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: PRODUCTION,
+      sameSite: PRODUCTION ? "none" : "lax",
     });
 
     return res.status(200).json({

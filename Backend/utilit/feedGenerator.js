@@ -10,7 +10,7 @@ const CATEGORIES = [
   { id: "health_beauty", title: "Health & Beauty" },
 ];
 
-cron.schedule("*/10 * * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   console.log("Generating fresh homepage feeds...");
 
   try {
