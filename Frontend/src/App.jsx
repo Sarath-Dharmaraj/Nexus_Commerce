@@ -50,6 +50,11 @@ function App() {
     {
       path: "/",
       element: <RootLayout />,
+      HydrateFallback: () => (
+        <div className="w-screen h-screen flex items-center justify-center text-3xl">
+          Loading Nexus Commerce...
+        </div>
+      ),
       loader: gatewayLoader,
       children: [
         { index: true, element: <Navigate to="/home" replace /> },
@@ -143,12 +148,7 @@ function App() {
     },
   ]);
 
-  return (
-    <RouterProvider
-      router={router}
-      fallbackElement={<div>Loading Nexus Commerce...</div>}
-    />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

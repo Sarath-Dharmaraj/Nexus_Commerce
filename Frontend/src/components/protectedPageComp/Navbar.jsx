@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import {
   MdOutlineAccountCircle,
   MdOutlineShoppingCart,
@@ -9,11 +9,14 @@ import {
   MdLogin,
 } from "react-icons/md";
 import api from "../../api/api";
-import { useGlobalAuth } from "../../context/globalAuthContext"; // Import your auth context
+import { useGlobalAuth } from "../../context/globalAuthContext";
 
 function Navbar() {
   const location = useLocation();
   const nav = useNavigate();
+
+  const navigation = useNavigation();
+  const isLoading = navigation.state === "loading";
 
   const { user } = useGlobalAuth();
 
@@ -25,7 +28,6 @@ function Navbar() {
       setIsSearching(true);
       try {
         const response = await api.get(`/product/search?query=${searchQuery}`);
-        console.log(response);
         if (response.data.success) {
           nav("/explore", {
             state: {
@@ -92,7 +94,9 @@ function Navbar() {
         </div>
 
         <div className="flex items-center text-2xl lg:text-3xl text-slate-600 gap-4 lg:gap-6 shrink-0">
-          {user ? (
+          {isLoading ? (
+            <div className="w-6 h-6 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin"></div>
+          ) : user ? (
             <>
               <MdOutlineAccountCircle
                 onClick={() => nav("/profile")}
