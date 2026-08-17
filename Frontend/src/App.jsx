@@ -12,6 +12,15 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import RootLayout from "./layouts/RootLayout";
 import Merchant from "./pages/Merchant";
 import ProductCard from "./pages/ProductCard";
+import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
+import CheckoutLayout from "./layouts/CheckoutLayout";
+import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
+import Settings from "./pages/Settings";
+import Admin from "./pages/Admin";
+import Explore from "./pages/Explore";
+import HydrateFallback from "./pages/HydrateFallback";
 
 import {
   signupAction,
@@ -36,25 +45,13 @@ import {
   paymentLoader,
   adminLoader,
 } from "./services/routerLoader";
-import Wishlist from "./pages/Wishlist";
-import Cart from "./pages/Cart";
-import CheckoutLayout from "./layouts/CheckoutLayout";
-import Checkout from "./pages/Checkout";
-import Payment from "./pages/Payment";
-import Settings from "./pages/Settings";
-import Admin from "./pages/Admin";
-import Explore from "./pages/Explore";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <RootLayout />,
-      HydrateFallback: () => (
-        <div className="w-screen h-screen flex items-center justify-center text-3xl">
-          Loading Nexus Commerce...
-        </div>
-      ),
+      HydrateFallback: HydrateFallback,
       loader: gatewayLoader,
       children: [
         { index: true, element: <Navigate to="/home" replace /> },
